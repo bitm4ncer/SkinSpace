@@ -133,6 +133,9 @@
   <Bitmap id="pl_scroll_thumb_01_default.png"  file="images/pl_scroll_thumb_01_default.png"  alphacolor="#FE01FE"/>
   <Bitmap id="pl_scroll_thumb_02_rollover.png" file="images/pl_scroll_thumb_02_rollover.png" alphacolor="#FE01FE"/>
   <Bitmap id="pl_scroll_thumb_03_down.png"     file="images/pl_scroll_thumb_03_down.png"     alphacolor="#FE01FE"/>
+  <!-- Volume-Label als Mute-Anzeige (Bilder erzeugt von tools/make_extra_assets.ps1) -->
+  <Bitmap id="vol_label_on.png"   file="images/vol_label_on.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="vol_label_mute.png" file="images/vol_label_mute.png" alphacolor="#FE01FE"/>
 
   <Window id="main" position="Center">
     <Layout id="l_eq" width="1647" height="1182">
@@ -172,7 +175,11 @@
       <Image id="eq.volTrack" x="519" y="321" image="sl_track_h.png"/>
       <Slider id="eq.volume" x="519" y="321" points="(15,15),(198,15)" value="volume"
               up="horizontal_thumb.png" tooltiptext="Volume"/>
-      <Text id="eq.volLabel" font="small" x="576" y="354" width="180" color="#77CE07" text="Volume"/>
+      <!-- Volume-Label = Mute-Anzeige + Klick-Schalter (Mute direkt aufs Volume gemappt) -->
+      <Checkbox id="eq.volLabel" x="576" y="351"
+                up1="vol_label_on.png" up2="vol_label_mute.png" down1="none" down2="none" over1="none" over2="none"
+                state="vlc.isMute" action1="vlc.mute()" action2="vlc.mute()"
+                tooltiptext1="Mute" tooltiptext2="Unmute"/>
       <!-- 10-Band-Equalizer (Tracks = Komposite aus Original-Kacheln: Kappe-Linie-Kappe) -->
       <Image id="eq.track1"  x="285"  y="420" image="eq_track_v.png"/>
       <Slider id="eq.band1"  x="285"  y="420" points="(15,198),(15,24)" value="equalizer.band(0)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
@@ -365,7 +372,11 @@
       <Image id="both.eq.volTrack" x="519" y="321" image="sl_track_h.png"/>
       <Slider id="both.eq.volume" x="519" y="321" points="(15,15),(198,15)" value="volume"
               up="horizontal_thumb.png" tooltiptext="Volume"/>
-      <Text id="both.eq.volLabel" font="small" x="576" y="354" width="180" color="#77CE07" text="Volume"/>
+      <!-- Volume-Label = Mute-Anzeige + Klick-Schalter (Mute direkt aufs Volume gemappt) -->
+      <Checkbox id="both.eq.volLabel" x="576" y="351"
+                up1="vol_label_on.png" up2="vol_label_mute.png" down1="none" down2="none" over1="none" over2="none"
+                state="vlc.isMute" action1="vlc.mute()" action2="vlc.mute()"
+                tooltiptext1="Mute" tooltiptext2="Unmute"/>
       <!-- 10-Band -->
       <Image id="both.eq.track1"  x="285"  y="420" image="eq_track_v.png"/>
       <Slider id="both.eq.band1"  x="285"  y="420" points="(15,198),(15,24)" value="equalizer.band(0)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>

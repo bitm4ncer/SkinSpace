@@ -110,6 +110,24 @@ foreach($st in @('01_default','02_rollover','03_down')){
   Save-Bmp $b ("pl_scroll_thumb_{0}.png" -f $st)
 }
 
+# --- Volume-Label als Mute-Anzeige (Checkbox-Bilder): normal / durchgestrichen ---
+foreach($muted in @($false, $true)){
+  $b = New-Object System.Drawing.Bitmap(46, 11, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+  $g = [System.Drawing.Graphics]::FromImage($b)
+  $g.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::SingleBitPerPixelGridFit
+  $g.Clear([System.Drawing.Color]::Transparent)
+  $col = if($muted){ [System.Drawing.Color]::FromArgb(255,94,148,16) } else { [System.Drawing.Color]::FromArgb(255,119,206,7) }
+  $f = New-Object System.Drawing.Font('Segoe UI', 7.5)
+  $br = New-Object System.Drawing.SolidBrush($col)
+  $g.DrawString('Volume', $f, $br, 1, 0)
+  if($muted){
+    $g.DrawLine((New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,232,255,192), 1)), 0, 6, 44, 6)
+  }
+  $f.Dispose(); $br.Dispose(); $g.Dispose()
+  $name = if($muted){'vol_label_mute.png'}else{'vol_label_on.png'}
+  Save-Bmp $b $name
+}
+
 Get-ChildItem $dir -Filter 'led_*' | Select-Object Name
 Get-ChildItem $dir -Filter 'eq_link_*' | Select-Object Name
 Get-ChildItem $dir -Filter 'drawer_fill*' | Select-Object Name

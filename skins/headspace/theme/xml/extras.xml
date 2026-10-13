@@ -17,3 +17,6 @@
   <Bitmap id="pl_scroll_thumb_01_default.png"  file="images/pl_scroll_thumb_01_default.png"  alphacolor="#FE01FE"/>
   <Bitmap id="pl_scroll_thumb_02_rollover.png" file="images/pl_scroll_thumb_02_rollover.png" alphacolor="#FE01FE"/>
   <Bitmap id="pl_scroll_thumb_03_down.png"     file="images/pl_scroll_thumb_03_down.png"     alphacolor="#FE01FE"/>
+  <!-- Volume-Label als Mute-Anzeige (Bilder erzeugt von tools/make_extra_assets.ps1) -->
+  <Bitmap id="vol_label_on.png"   file="images/vol_label_on.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="vol_label_mute.png" file="images/vol_label_mute.png" alphacolor="#FE01FE"/>
