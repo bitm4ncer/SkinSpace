@@ -79,7 +79,7 @@
       <Image id="both.pl.scrollDown" x="661" y="224" image="pl_arrow_down_01_default.png"/>
       <Playtree id="both.pl.list" x="501" y="96" width="160" height="140" flat="true" font="small"
                 itemimage="pl_check.png"
-                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="white" playcolor="#E8FFC0" selcolor="#5FA517">
+                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="#FFFFFF" playcolor="#E8FFC0" selcolor="#5FA517">
         <Slider id="both.pl.scroll" x="661" y="108" points="(6,107),(6,9)"
                 up="pl_scroll_thumb_01_default.png" over="pl_scroll_thumb_02_rollover.png" down="pl_scroll_thumb_03_down.png"
                 tooltiptext="Playlist scroll"/>

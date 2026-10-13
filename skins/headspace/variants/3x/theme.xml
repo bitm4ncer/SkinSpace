@@ -301,7 +301,7 @@
       <Image id="pl.scrollDown" x="1983" y="672" image="pl_arrow_down_01_default.png"/>
       <Playtree id="pl.list" x="1503" y="288" width="480" height="420" flat="true" font="small"
                 itemimage="pl_check.png"
-                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="white" playcolor="#E8FFC0" selcolor="#5FA517">
+                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="#FFFFFF" playcolor="#E8FFC0" selcolor="#5FA517">
         <Slider id="pl.scroll" x="1983" y="324" points="(18,321),(18,27)"
                 up="pl_scroll_thumb_01_default.png" over="pl_scroll_thumb_02_rollover.png" down="pl_scroll_thumb_03_down.png"
                 tooltiptext="Playlist scroll"/>
@@ -456,7 +456,7 @@
       <Image id="both.pl.scrollDown" x="1983" y="672" image="pl_arrow_down_01_default.png"/>
       <Playtree id="both.pl.list" x="1503" y="288" width="480" height="420" flat="true" font="small"
                 itemimage="pl_check.png"
-                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="white" playcolor="#E8FFC0" selcolor="#5FA517">
+                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="#FFFFFF" playcolor="#E8FFC0" selcolor="#5FA517">
         <Slider id="both.pl.scroll" x="1983" y="324" points="(18,321),(18,27)"
                 up="pl_scroll_thumb_01_default.png" over="pl_scroll_thumb_02_rollover.png" down="pl_scroll_thumb_03_down.png"
                 tooltiptext="Playlist scroll"/>
