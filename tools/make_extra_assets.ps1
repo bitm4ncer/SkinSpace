@@ -35,14 +35,14 @@ $g.Clear([System.Drawing.Color]::FromArgb(255, 40, 95, 3))
 $g.Dispose()
 Save-Bmp $b 'drawer_fill.png'
 
-# --- "reset"-Link (unterstrichen): on/off (Funktion: EQ an/aus; Original-Text "reset" beibehalten) ---
+# --- "reset"-Link (unterstrichen, KRISP gerendert + hell fuer Lesbarkeit): on/off ---
 foreach($on in @($false, $true)){
   $b = New-Object System.Drawing.Bitmap(24, 10, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
   $g = [System.Drawing.Graphics]::FromImage($b)
-  $g.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::AntiAlias
+  $g.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::SingleBitPerPixelGridFit
   $g.Clear([System.Drawing.Color]::Transparent)
-  $col = if($on){ [System.Drawing.Color]::FromArgb(255,119,206,7) } else { [System.Drawing.Color]::FromArgb(255,85,130,34) }
-  $f = New-Object System.Drawing.Font('Segoe UI', 7)
+  $col = if($on){ [System.Drawing.Color]::FromArgb(255,232,255,192) } else { [System.Drawing.Color]::FromArgb(255,168,208,96) }
+  $f = New-Object System.Drawing.Font('Segoe UI', 7.5)
   $br = New-Object System.Drawing.SolidBrush($col)
   $g.DrawString('reset', $f, $br, 0, -1)
   $g.DrawLine((New-Object System.Drawing.Pen($col, 1)), 0, 9, 21, 9)

@@ -151,12 +151,10 @@
       <Image id="eq.drawerRight" x="753" y="258" image="left_drawer_right.png"/>
 
       <!-- ==== EQ-Bedienelemente im Drawer ==== -->
-      <!-- Balance-Slot -> Mute-LED (Ersatz, siehe Spec) -->
-      <Checkbox id="eq.mute" x="282" y="330"
-                up1="led_off.png" up2="led_on.png" down1="none" down2="none" over1="none" over2="none"
-                state="vlc.isMute" action1="vlc.mute()" action2="vlc.mute()"
-                tooltiptext1="Mute volume" tooltiptext2="Unmute volume"/>
-      <Text id="eq.muteLabel" font="small" x="264" y="381" width="120" color="#77CE07" text="Mute"/>
+      <!-- Balance (Original-Optik und Original-Position. Hinweis: VLC-Skins koennen Balance technisch nicht anbinden - der Regler ist rein optisch) -->
+      <Image id="eq.balTrack" x="276" y="321" image="sl_track_h.png"/>
+      <Slider id="eq.balance" x="276" y="321" points="(15,15),(198,15)" up="horizontal_thumb.png" tooltiptext="Balance"/>
+      <Text id="eq.balLabel" font="small" x="318" y="354" width="180" color="#77CE07" text="Balance"/>
       <!-- Volume -->
       <Image id="eq.volTrack" x="519" y="321" image="sl_track_h.png"/>
       <Slider id="eq.volume" x="519" y="321" points="(15,15),(198,15)" value="volume"
