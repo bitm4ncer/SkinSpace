@@ -1,0 +1,531 @@
+<!--
+    ©2000 Microsoft Corporation. All rights reserved.
+-->
+
+<theme id="headspace"
+    author="Microsoft Corporation"
+    copyright="©2000 Microsoft Corporation. All rights reserved."
+    >
+    <view
+        backgroundColor="none"
+        width="760" height="394"
+        titleBar="false" resizable="false"
+        scriptFile="headspace.js;res://wmploc.dll/RT_TEXT/#132;"
+        onLoad="Init();"
+        onClose="OnClose();"
+        >
+        <subview
+            left="261" top="0"
+            backgroundImage="head.bmp"
+            clippingColor="#FF0000"
+            transparencyColor="#FF00FF"
+            >
+            <buttongroup left="101" top="4" zIndex="2"
+                mappingImage="minimize_close_map.bmp"
+                image="minimize_close_01_default.bmp"
+                hoverImage="minimize_close_02_rollover.bmp"
+                downImage="minimize_close_03_down.bmp"
+                disabledImage="minimize_close_04_disabled.bmp"
+                >
+                <buttonelement mappingColor="#FF00CC"
+                    upToolTip="Minimize"
+                    onClick="view.minimize();"
+                    >
+                </buttonelement>
+                <buttonelement mappingColor="#CC0066"
+                    upToolTip="Close"
+                    onClick="view.close();"
+                    >
+                </buttonelement>
+            </buttongroup>
+            <buttongroup left="48" top="31" zIndex="2"
+                mappingImage="play_controls_map.bmp"
+                image="play_controls_01_default.bmp"
+                hoverImage="play_controls_02_rollover.bmp"
+                downImage="play_controls_03_down.bmp"
+                disabledImage="play_controls_04_disabled.bmp"
+                >
+                <prevelement mappingColor="#FF0033">
+                </prevelement>
+                <playelement mappingColor="#FFFF00"
+                    tabStop="wmpenabled:player.controls.play"
+                    >
+                </playelement>
+                <stopelement mappingColor="#00FF00">
+                </stopelement>
+                <nextelement mappingColor="#00FFFF">
+                </nextelement>
+                <buttonelement id="vis" mappingColor="#0000FF"
+                    upToolTip="Open visualization chooser"
+                    onClick="ToggleVisView();"
+                    >
+                </buttonelement>
+            </buttongroup>
+            <pausebutton left="74" top="32" zIndex="3"
+                visible="wmpenabled:player.controls.pause"
+                image="pause_01_default.bmp"
+                hoverImage="pause_02_rollover.bmp"
+                downImage="pause_03_down.bmp"
+                transparencyColor="#FF00FF"
+                >
+            </pausebutton>
+            <button id="bEq" zIndex="2"
+                left="15" top="214"
+                upToolTip="Open graphic equalizer controls"
+                image="EQ_01_DF.bmp"
+                hoverImage="EQ_02_RV.bmp"
+                downImage="EQ_03_Dwn.bmp"
+                disabledImage="EQ_04_Dis.bmp"
+                onClick="ToggleEqView();"
+                >
+            </button>
+            <button id="bPl" zIndex="2"
+                left="204" top="214"
+                upToolTip="Open playlist"
+                image="PL_01_DF.bmp"
+                hoverImage="PL_02_RV.bmp"
+                downImage="PL_03_Dwn.bmp"
+                disabledImage="PL_04_Dis.bmp"
+                onClick="TogglePlView();"
+                >
+            </button>
+            <slider id="seek" zIndex="2"
+                left="39" top="223" toolTip="Seek"
+                backgroundImage="progressbar.bmp" slide="false"
+                foregroundImage="progressbar_foreground.bmp"
+                thumbImage="thumb_01_default.bmp"
+                thumbHoverImage="thumb_02_rollover.bmp"
+                thumbDownImage="thumb_03_down.bmp"
+                transparencyColor="#FF00FF"
+                borderSize="9" min="0"
+                max="wmpprop:player.currentmedia.duration"
+                value="wmpprop:player.controls.currentposition"
+                onDragEnd="player.controls.currentposition=value;"
+                useForegroundProgress="true"
+                foregroundProgress="wmpprop:player.network.downloadProgress"
+                >
+            </slider>
+            <button left="101" top="232" zIndex="2"
+                upToolTip="Return to Full Mode"
+                image="themebutton_01_default.bmp"
+                hoverImage="themebutton_02_rollover.bmp"
+                downImage="themebutton_03_down.bmp"
+                onClick="view.returnToMediaCenter();"
+                >
+            </button>
+
+            <subview zIndex="-2"
+                left="9" top="59" width="216" height="158"
+                backgroundImage="vid_bkgd.bmp"
+                clippingColor="#FFFFFF"
+                >
+                <effects id="visEffects" visible="false"
+                    width="216" height="158"
+                    >
+                </effects>
+                <video id="vid" visible="false"
+                    left="12" top="11" width="193" height="135"
+                    OnVideoStart="StartVideo();"
+                    OnVideoEnd="EndVideo();"
+                    >
+                </video>
+            </subview>
+
+            <subview id="visDrop" zIndex="-1"
+                left="30" top="33"
+                backgroundImage="viz_drop.bmp"
+                clippingColor="#FF00FF"
+                titleBar="false"
+                resizable="false"
+                visible="false"
+                onEndMove="VisDropOnEndMove();"
+                >
+                <button left="9" top="3" zIndex="1"
+                    upToolTip="Previous visualization"
+                    image="viz_drop_L_01_default.bmp"
+                    hoverImage="viz_drop_L_02_rollover.bmp"
+                    downImage="viz_drop_L_03_down.bmp"
+                    disabledImage="viz_drop_L_04_disabled.bmp"
+                    transparencyColor="#FF00FF"
+                    onClick="visEffects.previous();"
+                    >
+                </button>
+                <button left="135" top="3" zIndex="1"
+                    upToolTip="Next visualization"
+                    image="viz_drop_R_01_default.bmp"
+                    hoverImage="viz_drop_R_02_rollover.bmp"
+                    downImage="viz_drop_R_03_down.bmp"
+                    disabledImage="viz_drop_R_04_disabled.bmp"
+                    onClick="visEffects.next();"
+                    >
+                </button>
+                <button left="157" top="8" zIndex="1"
+                    upToolTip="Close visualization chooser"
+                    image="viz_drop_X_01_default.bmp"
+                    hoverImage="viz_drop_X_02_rollover.bmp"
+                    downImage="viz_drop_X_03_down.bmp"
+                    disabledImage="viz_drop_X_04_disabled.bmp"
+                    onClick="ToggleVisView();"
+                    >
+                </button>
+                <text left="30" top="6" width="105" zIndex="2"
+                    justification="Center"
+                    value="wmpprop:visEffects.currentPresetTitle"
+                    >
+                </text>
+            </subview>
+        </subview>
+
+        <subview id="sEqEar" zIndex="-1"
+            left="207" top="86"
+            width="269" height="170"
+            backgroundColor="none"
+            transparencyColor="#FF00FF"
+            titleBar="false"
+            resizable="false"
+            onEndMove="EqOnEndMove();"
+            >
+            <subview
+                left="0" top="0"
+                backgroundImage="left_ear.bmp"
+                transparencyColor="#FF00FF"
+                >
+                <button id="bEqHandle" zIndex="1"
+                    left="8" top="66"
+                    upToolTip="Open graphic equalizer controls"
+                    image="L_drwr_open_01_default.bmp"
+                    hoverImage="L_drwr_open_02_rollover.bmp"
+                    downImage="L_drwr_open_03_down.bmp"
+                    transparencyColor="#FF00FF"
+                    onClick="ToggleEqView();"
+                    >
+                </button>
+                <button id="bEqClose" zIndex="1" visible="false"
+                    left="72" top="7"
+                    upToolTip="Close graphic equalizer controls"
+                    image="left_X_01_default.bmp"
+                    hoverImage="left_X_02_rollover.bmp"
+                    disabledImage="left_X_04_disabled.bmp"
+                    onClick="ToggleEqView();"
+                    >
+                </button>
+            </subview>
+            <subview
+                left="84" top="0"
+                backgroundImage="left_drawer_top.bmp"
+                >
+            </subview>
+            <subview
+                left="84" top="150"
+                backgroundImage="left_drawer_bottom.bmp"
+                >
+            </subview>
+            <subview
+                left="251" top="0"
+                backgroundImage="left_drawer_right.bmp"
+                transparencyColor="#FF00FF"
+                >
+            </subview>
+            <subview id="sEqView" zIndex="-1" visible="false"
+                left="84" top="10" width="171" height="140"
+                backgroundColor="#285F03"
+                titleBar="false" resizable="false"
+                >
+                <subview
+                    left="0" top="0"
+                    backgroundImage="drawer_bkgrnd_left.bmp"
+                    >
+                </subview>
+                <subview
+                    left="10" top="0"
+                    backgroundImage="drawer_bkgrnd_top.bmp"
+                    >
+                </subview>
+                <subview
+                    left="10" top="137"
+                    backgroundImage="drawer_bkgrnd_bottom.bmp"
+                    >
+                </subview>
+                <subview
+                    left="166" top="0"
+                    backgroundImage="drawer_bkgrnd_right.bmp"
+                    >
+                </subview>
+                <slider id="balance" zIndex="1" borderSize="7"
+                    left="8" top="11" width="71"
+                    toolTip="Balance" tiled="true"
+                    min="-100" max="100"
+                    backgroundImage="horizontal_slider.bmp"
+                    thumbImage="horizontal_thumb.bmp"
+                    value="wmpprop:player.settings.balance"
+                    value_onchange="player.settings.balance=value;"
+                    direction="horizontal"
+                    >
+                </slider>
+                <text zIndex="1" value="Balance"
+                    left="25" top="22"
+                    foregroundColor="#77CE07"
+                    fontSize="7" fontType="Verdana"
+                    >
+                </text>
+                <slider id="volume" zIndex="1" borderSize="7"
+                    left="jscript:balance.left+balance.width+10;"
+                    top="jscript:balance.top;" width="71"
+                    toolTip="Volume" tiled="true"
+                    backgroundImage="horizontal_slider.bmp"
+                    thumbImage="horizontal_thumb.bmp"
+                    min="0" max="100"
+                    value="wmpprop:player.settings.volume" 
+                    value_onchange="player.settings.volume=value;player.settings.mute='false';"
+                    >
+                </slider>
+                <text zIndex="1" value="Volume"
+                    left="jscript:volume.left+19" top="22"
+                    foregroundColor="#77CE07"
+                    fontSize="7"
+                    >
+                </text>
+
+                <equalizerSettings id="eq" enable="true">
+                </equalizerSettings>
+
+                <slider id="eq1" borderSize="7"
+                    left="jscript:balance.left+3;"
+                    top="jscript:balance.top+33;"
+                    height="76" tiled="true"
+                    toolTip="Graphic equalizer control"
+                    backgroundimage="vertical_slider.bmp"
+                    thumbImage="vertical_thumb.bmp"
+                    min="-14" max="14"
+                    value="wmpprop:eq.gainLevel1"
+                    value_onchange="eq.gainLevel1=value;"
+                    direction="vertical"
+                    >
+                </slider>
+                <slider id="eq2" borderSize="7"
+                    left="jscript:eq1.left+15;"
+                    top="jscript:eq1.top;"
+                    height="76" tiled="true"
+                    toolTip="Graphic equalizer control"
+                    backgroundimage="vertical_slider.bmp"
+                    thumbImage="vertical_thumb.bmp"
+                    min="-14" max="14"
+                    value="wmpprop:eq.gainLevel2"
+                    value_onchange="eq.gainLevel2=value;"
+                    direction="vertical"
+                    >
+                </slider>
+                <slider id="eq3" borderSize="7"
+                    left="jscript:eq2.left+15;"
+                    top="jscript:eq1.top;"
+                    height="76" tiled="true"
+                    toolTip="Graphic equalizer control"
+                    backgroundimage="vertical_slider.bmp"
+                    thumbImage="vertical_thumb.bmp"
+                    min="-14" max="14"
+                    value="wmpprop:eq.gainLevel3"
+                    value_onchange="eq.gainLevel3=value;"
+                    direction="vertical"
+                    >
+                </slider>
+                <slider id="eq4" borderSize="7"
+                    left="jscript:eq3.left+15;"
+                    top="jscript:eq1.top;"
+                    height="76" tiled="true"
+                    toolTip="Graphic equalizer control"
+                    backgroundimage="vertical_slider.bmp"
+                    thumbImage="vertical_thumb.bmp"
+                    min="-14" max="14"
+                    value="wmpprop:eq.gainLevel4"
+                    value_onchange="eq.gainLevel4=value;"
+                    direction="vertical"
+                    >
+                </slider>
+                <slider id="eq5" borderSize="7"
+                    left="jscript:eq4.left+15;"
+                    top="jscript:eq1.top;"
+                    height="76" tiled="true"
+                    toolTip="Graphic equalizer control"
+                    backgroundimage="vertical_slider.bmp"
+                    thumbImage="vertical_thumb.bmp"
+                    min="-14" max="14"
+                    value="wmpprop:eq.gainLevel5"
+                    value_onchange="eq.gainLevel5=value;"
+                    direction="vertical"
+                    >
+                </slider>
+                <slider id="eq6" borderSize="7"
+                    left="jscript:eq5.left+15;"
+                    top="jscript:eq1.top;"
+                    height="76" tiled="true"
+                    toolTip="Graphic equalizer control"
+                    backgroundimage="vertical_slider.bmp"
+                    thumbImage="vertical_thumb.bmp"
+                    min="-14" max="14"
+                    value="wmpprop:eq.gainLevel6"
+                    value_onchange="eq.gainLevel6=value;"
+                    direction="vertical"
+                    >
+                </slider>
+                <slider id="eq7" borderSize="7"
+                    left="jscript:eq6.left+15;"
+                    top="jscript:eq1.top;"
+                    height="76" tiled="true"
+                    toolTip="Graphic equalizer control"
+                    backgroundimage="vertical_slider.bmp"
+                    thumbImage="vertical_thumb.bmp"
+                    min="-14" max="14"
+                    value="wmpprop:eq.gainLevel7"
+                    value_onchange="eq.gainLevel7=value;"
+                    direction="vertical"
+                    >
+                </slider>
+                <slider id="eq8" borderSize="7"
+                    left="jscript:eq7.left+15;"
+                    top="jscript:eq1.top;"
+                    height="76" tiled="true"
+                    toolTip="Graphic equalizer control"
+                    backgroundimage="vertical_slider.bmp"
+                    thumbImage="vertical_thumb.bmp"
+                    min="-14" max="14"
+                    value="wmpprop:eq.gainLevel8"
+                    value_onchange="eq.gainLevel8=value;"
+                    direction="vertical"
+                    >
+                </slider>
+                <slider id="eq9" borderSize="7"
+                    left="jscript:eq8.left+15;"
+                    top="jscript:eq1.top;"
+                    height="76" tiled="true"
+                    toolTip="Graphic equalizer control"
+                    backgroundimage="vertical_slider.bmp"
+                    thumbImage="vertical_thumb.bmp"
+                    min="-14" max="14"
+                    value="wmpprop:eq.gainLevel9"
+                    value_onchange="eq.gainLevel9=value;"
+                    direction="vertical"
+                    >
+                </slider>
+                <slider id="eq10" borderSize="7"
+                    left="jscript:eq9.left+15;"
+                    top="jscript:eq1.top;"
+                    height="76" tiled="true"
+                    toolTip="Graphic equalizer control"
+                    backgroundimage="vertical_slider.bmp"
+                    thumbImage="vertical_thumb.bmp"
+                    min="-14" max="14"
+                    value="wmpprop:eq.gainLevel10"
+                    value_onchange="eq.gainLevel10=value;"
+                    direction="vertical"
+                    >
+                </slider>
+                <text zIndex="1" value="reset"
+                    left="jscript:eq10.left-6;"
+                    top="jscript:eq1.top+83;"
+                    toolTip="Reset graphic equalizer controls"
+                    foregroundColor="#DDDDDD"
+                    fontSize="7" fontStyle="Underline"
+                    cursor="hand"
+                    onClick="eq.reset();"
+                    >
+                </text>
+            </subview>
+        </subview>
+        <subview id="sPlEar" zIndex="-1"
+            left="277" top="86"
+            width="272" height="170"
+            backgroundColor="none"
+            titleBar="false"
+            resizable="false"
+            onEndMove="PlOnEndMove();"
+            >
+            <subview left="0" top="0"
+                backgroundImage="right_drawer_left.bmp"
+                transparencyColor="#FF00FF"
+                >
+            </subview>
+            <subview left="13" top="0"
+                backgroundImage="right_drawer_top.bmp"
+                >
+            </subview>
+            <subview left="13" top="150"
+                backgroundImage="right_drawer_bottom.bmp"
+                >
+            </subview>
+            <subview zIndex="0"
+                left="185" top="0"
+                backgroundImage="right_ear.bmp"
+                transparencyColor="#FF00FF"
+                >
+                <button id="bPlHandle" zIndex="1"
+                    left="61" top="65"
+                    upToolTip="Open playlist"
+                    image="R_drwr_open_01_default.bmp"
+                    hoverImage="R_drwr_open_02_rollover.bmp"
+                    downImage="R_drwr_open_03_down.bmp"
+                    transparencyColor="#FF00FF"
+                    onClick="TogglePlView();"
+                    >
+                </button>
+                <button id="bPlClose" zIndex="1"
+                    left="4" top="7" visible="false"
+                    upToolTip="Close playlist"
+                    image="right_X_01_default.bmp"
+                    hoverImage="right_X_02_rollover.bmp"
+                    disabledImage="right_X_04_disabled.bmp"
+                    onClick="TogglePlView();"
+                    >
+                </button>
+            </subview>
+            <subview zIndex="-1"
+                left="13" top="10" width="172" height="140"
+                backgroundColor="#285F03"
+                titleBar="false" resizable="false"
+                >
+                <subview left="0" top="0"
+                    backgroundImage="drawer_bkgrnd_left.bmp"
+                    >
+                </subview>
+                <subview left="10" top="0"
+                    backgroundImage="drawer_bkgrnd_top.bmp"
+                    >
+                </subview>
+                <subview left="10" top="137"
+                    backgroundImage="drawer_bkgrnd_bottom.bmp"
+                    >
+                </subview>
+                <subview left="167" top="0"
+                    backgroundImage="drawer_bkgrnd_right.bmp"
+                    >
+                </subview>
+                <playlist id="pl" zIndex="0"
+                    left="0" top="0" width="172" height="140"
+                    backgroundcolor="#285F03"
+                    foregroundcolor="white"
+                    columnsVisible="false"
+                    columns="name=Name;Duration=Time"
+                    dropDownVisible="true"
+                    playlistItemsVisible="true"
+                    visible="false"
+                    >
+                </playlist>
+            </subview>
+        </subview>
+
+        <text id="xEqTt" enabled="false" visible="false"
+         toolTip="Open graphic equalizer controls"
+         value="Close graphic equalizer controls"
+         >
+        </text>
+        <text id="xPlTt" enabled="false" visible="false"
+         toolTip="Open playlist"
+         value="Close playlist"
+         >
+        </text>
+        <text id="xVisTt" enabled="false" visible="false"
+         toolTip="Open visualization chooser"
+         value="Close visualization chooser"
+         >
+        </text>
+    </view>
+</theme>

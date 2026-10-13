@@ -1,0 +1,5 @@
+tools/realesrgan/
+research/spike/*.log
+research/spike/vlcrc.backup
+.superpowers/
+*.tmp

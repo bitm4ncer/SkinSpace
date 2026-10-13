@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Theme PUBLIC "-//VideoLAN//DTD VLC Skins V2.0//EN" "skin.dtd">
+<Theme version="2.0">
+  <ThemeInfo name="Headspace Probe" author="VLC_Skins spike" webpage=""/>
+
+  <Font id="f1" file="font.otf"/>
+  <Bitmap id="bg1.png"       file="bg1.png"       alphacolor="#FE01FE"/>
+  <Bitmap id="bg2.png"       file="bg2.png"       alphacolor="#FE01FE"/>
+  <Bitmap id="btn.png"       file="btn.png"       alphacolor="#FE01FE"/>
+  <Bitmap id="thumb.png"     file="thumb.png"     alphacolor="#FE01FE"/>
+  <Bitmap id="ledoff.png"    file="ledoff.png"    alphacolor="#FE01FE"/>
+  <Bitmap id="ledon.png"     file="ledon.png"     alphacolor="#FE01FE"/>
+  <Bitmap id="vidframe.png"  file="vidframe.png"  alphacolor="#FE01FE"/>
+  <Bitmap id="popbg.png"     file="popbg.png"     alphacolor="#FE01FE"/>
+  <Bitmap id="track_v.png"   file="track_v.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="track_h.png"   file="track_h.png"   alphacolor="#FE01FE"/>
+
+  <Window id="main" x="140" y="140">
+    <Layout id="l1" width="400" height="300">
+      <Image id="l1.bg" image="bg1.png" action="move"/>
+      <Button id="l1.tol2" x="8" y="8" up="btn.png" action="main.setLayout(l2)" tooltiptext="Switch to Layout 2"/>
+      <Button id="l1.quit" x="366" y="270" up="btn.png" action="vlc.quit()" tooltiptext="Quit VLC"/>
+      <Checkbox id="l1.pop" x="8" y="36" up1="btn.png" up2="ledoff.png"
+                down1="none" down2="none" over1="none" over2="none"
+                state="pop.isVisible" action1="pop.show()" action2="pop.hide()"
+                tooltiptext1="Show pop window" tooltiptext2="Hide pop window"/>
+      <Slider id="l1.eq0" x="60" y="170" points="(0,60),(0,10)" value="equalizer.band(0)" up="thumb.png" tooltiptext="EQ band0 ($V%)">
+        <SliderBackground id="l1.eq0.bg" image="track_v.png" nbvert="5"/>
+      </Slider>
+      <Checkbox id="l1.eqon" x="100" y="170" up1="ledoff.png" up2="ledon.png"
+                down1="none" down2="none" over1="none" over2="none"
+                state="equalizer.isEnabled" action1="equalizer.enable()" action2="equalizer.disable()"
+                tooltiptext1="Enable EQ" tooltiptext2="Disable EQ"/>
+      <Image id="l1.screenbg" x="180" y="40" image="vidframe.png"/>
+      <Video id="l1.vid" x="180" y="40" width="200" height="150" visible="vlc.hasVout"/>
+      <Slider id="l1.seek" x="180" y="200" points="(0,0),(200,0)" value="time" up="thumb.png" tooltiptext="Seek">
+        <SliderBackground id="l1.seek.bg" image="track_h.png" nbhoriz="4"/>
+      </Slider>
+      <Text id="l1.info" font="f1" text="$T / $D   Vol: $V%" x="180" y="228" width="210" color="#CCFFCC"/>
+    </Layout>
+    <Layout id="l2" width="700" height="300">
+      <Image id="l2.bg" image="bg2.png" action="move"/>
+      <Button id="l2.tol1" x="8" y="8" up="btn.png" action="main.setLayout(l1)" tooltiptext="Switch to Layout 1"/>
+      <Button id="l2.quit" x="666" y="270" up="btn.png" action="vlc.quit()" tooltiptext="Quit VLC"/>
+      <Video id="l2.vid" x="180" y="40" width="200" height="150" visible="vlc.hasVout"/>
+      <Image id="l2.screenbg" x="180" y="40" image="vidframe.png"/>
+      <Slider id="l2.seek" x="180" y="200" points="(0,0),(200,0)" value="time" up="thumb.png" tooltiptext="Seek">
+        <SliderBackground id="l2.seek.bg" image="track_h.png" nbhoriz="4"/>
+      </Slider>
+      <Text id="l2.info" font="f1" text="$T / $D   Vol: $V%" x="180" y="228" width="210" color="#CCFFCC"/>
+      <Text id="l2.hint" font="f1" text="L2: Video BEFORE Image (z-order test)" x="420" y="150" width="260" color="#FFFFFF"/>
+    </Layout>
+  </Window>
+
+  <Window id="pop" x="600" y="140" visible="false">
+    <Layout id="popl" width="160" height="80">
+      <Image id="pop.bg" image="popbg.png" action="move"/>
+      <Text id="pop.txt" font="f1" text="POP WINDOW" x="28" y="30" width="120" color="#FFFFFF"/>
+      <Button id="pop.close" x="130" y="6" up="btn.png" action="pop.hide()" tooltiptext="Close pop"/>
+    </Layout>
+  </Window>
+</Theme>

@@ -1,0 +1,83 @@
+file,bytes,width,height,format,states,role
+drawer_bkgrnd_bottom.bmp,1470,157,3,BMP24,-,Drawer-Panel: unterer Innenhintergrund (3px Kante; opak) | uprez=nein (Flaechenverlauf)
+drawer_bkgrnd_left.bmp,4534,10,140,BMP24,-,Drawer-Panel: linker Innenhintergrund (10px; opak) | uprez=nein (Flaechenverlauf)
+drawer_bkgrnd_right.bmp,2294,5,140,BMP24,-,Drawer-Panel: rechter Innenhintergrund (5px; opak) | uprez=nein (Flaechenverlauf)
+drawer_bkgrnd_top.bmp,5246,157,11,BMP24,-,Drawer-Panel: oberer Innenhintergrund/Titelzeile (opak) | uprez=nein (Flaechenverlauf)
+EQ_01_DF.bmp,1196,20,19,BMP24,01_default,EQ-Toggle bEq auf dem Kopf (Drawer links) - Zustand default (Dateiname-Kuerzel DF) | uprez=hoch
+EQ_02_RV.bmp,1196,20,19,BMP24,02_rollover,EQ-Toggle bEq - Zustand rollover (RV) | uprez=hoch
+EQ_03_Dwn.bmp,1196,20,19,BMP24,03_down,EQ-Toggle bEq - Zustand down (Dwn) | uprez=hoch
+EQ_04_Dis.bmp,1196,20,19,BMP24,04_disabled,EQ-Toggle bEq - Zustand disabled (Dis) | uprez=hoch
+head.bmp,277430,234,394,BMP24,keyed,Kopf/Gesicht: Hauptgrafik. #FF00FF Magenta = Screen-Aussparung (transparent+nicht klickbar) in 31487 px. #FF0000 Rot = Clip-/Aussenbereich (transparent+nicht klickbar) in 17909 px | uprez=kritisch (Foto-Render; Key-Farben exakt erhalten)
+headspace.js,3590,,,JS,code,JScript-Logik des Skins (147 Zeilen) - Variablen/Funktionen fuer Drawer-Slides und Video-/Viz-Umschaltung
+headspace.wms,22262,,,WMS,code,Skin-Definition XML (531 Zeilen) - theme/view/subviews/controls
+horizontal_slider.bmp,582,15,11,BMP24,-,Balance+Volume: Slider-Track (tiled=71px; 15px Kachel = linker Rand + tiled Mittelteil) | uprez=mittel
+horizontal_thumb.bmp,362,9,11,BMP24,-,Balance+Volume: Thumb (9x11; keine Zustandssuffixe) | uprez=mittel
+L_drwr_04_disabled.bmp,3752,18,66,BMP24,04_disabled,EQ-Drawer-Handle links - disabled-Variante | NICHT im .wms referenziert (toter Asset) | uprez=niedrig
+L_drwr_close_01_default.bmp,3752,18,66,BMP24,01_default,EQ-Drawer-Handle bEqHandle im OFFENEN Zustand (Close-Symbol) - per Skript gesetzt (js Z.75-77) | uprez=mittel
+L_drwr_close_02_rollover.bmp,3752,18,66,BMP24,02_rollover,EQ-Drawer-Handle offen - rollover - per Skript (js Z.75-77) | uprez=mittel
+L_drwr_close_03_down.bmp,3752,18,66,BMP24,03_down,EQ-Drawer-Handle offen - down - per Skript (js Z.75-77) | uprez=mittel
+L_drwr_open_01_default.bmp,3752,18,66,BMP24,01_default,EQ-Drawer-Handle bEqHandle GESCHLOSSEN (Open-Symbol) - im .wms deklariert (Z.196) | uprez=mittel
+L_drwr_open_02_rollover.bmp,3752,18,66,BMP24,02_rollover,EQ-Drawer-Handle geschlossen - rollover (.wms Z.197) | uprez=mittel
+L_drwr_open_03_down.bmp,3752,18,66,BMP24,03_down,EQ-Drawer-Handle geschlossen - down (.wms Z.198) | uprez=mittel
+left_drawer_bottom.bmp,5094,168,10,BMP24,-,EQ-Drawer: untere Blende (opak) | uprez=niedrig
+left_drawer_right.bmp,7734,16,160,BMP24,-,EQ-Drawer: rechte Blende; Magenta-Transparenz in Spalten 10-15 (abgerundete Ecke) | uprez=mittel
+left_drawer_top.bmp,5094,167,10,BMP24,-,EQ-Drawer: obere Blende (opak) | uprez=niedrig
+left_ear.bmp,42894,84,170,BMP24,-,Linkes Ohr: Lautsprecher-Turm; Magenta #FF00FF als Aussenkontur links (2265 px) | uprez=kritisch (Foto-Render)
+left_X_01_default.bmp,450,11,11,BMP24,01_default,EQ-Drawer Close-X (bEqClose) - default | uprez=mittel
+left_X_02_rollover.bmp,450,11,11,BMP24,02_rollover,EQ-Drawer Close-X - rollover | uprez=mittel
+left_X_04_disabled.bmp,450,11,11,BMP24,04_disabled,EQ-Drawer Close-X - disabled (kein 03_down vorhanden) | uprez=mittel
+minimize_close_01_default.bmp,1464,29,16,BMP24,01_default,Buttongroup Minimieren+Close auf dem Kopf - Strip default | uprez=hoch
+minimize_close_02_rollover.bmp,1464,29,16,BMP24,02_rollover,Minimieren+Close-Strip - rollover | uprez=hoch
+minimize_close_03_down.bmp,1464,29,16,BMP24,03_down,Minimieren+Close-Strip - down | uprez=hoch
+minimize_close_04_disabled.bmp,1464,29,16,BMP24,04_disabled,Minimieren+Close-Strip - disabled | uprez=hoch
+minimize_close_map.bmp,1464,29,16,BMP24,map,Mapping-Image fuer Minimieren+Close: #FF00CC=Minimize (x0-13) / #CC0066=Close (x15-28). Wird NIE gezeichnet (nur Hit-Test) | uprez=nein
+pause_01_default.bmp,1712,23,23,BMP24,01_default,Pause-Overlay ueber dem Play-Button - default (Magenta-Ecken) | uprez=hoch
+pause_02_rollover.bmp,1712,23,23,BMP24,02_rollover,Pause-Overlay - rollover | uprez=hoch
+pause_03_down.bmp,1712,23,23,BMP24,03_down,Pause-Overlay - down (kein 04_disabled) | uprez=hoch
+PL_01_DF.bmp,1256,19,20,BMP24,01_default,Playlist-Toggle bPl auf dem Kopf - default (DF) | uprez=hoch
+PL_02_RV.bmp,1256,19,20,BMP24,02_rollover,Playlist-Toggle bPl - rollover (RV) | uprez=hoch
+PL_03_Dwn.bmp,1256,19,20,BMP24,03_down,Playlist-Toggle bPl - down (Dwn) | uprez=hoch
+PL_04_Dis.bmp,1256,19,20,BMP24,04_disabled,Playlist-Toggle bPl - disabled (Dis) | uprez=hoch
+play_controls_01_default.bmp,10856,144,25,BMP24,01_default,Transport-Strip (prev/play/stop/next + vis) - default | uprez=hoch (5 Buttons in 23px-Kreisen)
+play_controls_02_rollover.bmp,10856,144,25,BMP24,02_rollover,Transport-Strip - rollover (1413 px anders als default) | uprez=hoch
+play_controls_03_down.bmp,10856,144,25,BMP24,03_down,Transport-Strip - down | uprez=hoch
+play_controls_04_disabled.bmp,10856,144,25,BMP24,04_disabled,Transport-Strip - disabled (3197 px anders als default) | uprez=hoch
+play_controls_map.bmp,10856,144,25,BMP24,map,Mapping-Image Transport: #FF0033=prev / #FFFF00=play / #00FF00=stop / #00FFFF=next / #0000FF=vis (Kreise 23px in y1-23). Wird NIE gezeichnet | uprez=nein
+progressbar.bmp,4484,163,9,BMP24,-,Seek-Track (backgroundImage): grauer Doppel-Gradient (hellste Stelle x=81 = Mitte) mit gruener Unterkante | uprez=hoch
+progressbar_foreground.bmp,4484,163,9,BMP24,-,Seek-Download-Fortschritt (foregroundImage): violetter Doppel-Gradient; wird bei useForegroundProgress=true bis downloadProgress aufgedeckt | uprez=hoch
+R_drwr_04_disabled.bmp,3808,18,67,BMP24,04_disabled,PL-Drawer-Handle rechts - disabled | NICHT im .wms referenziert (toter Asset) | uprez=niedrig
+R_drwr_close_01_default.bmp,3808,18,67,BMP24,01_default,PL-Drawer-Handle bPlHandle im OFFENEN Zustand - per Skript (js Z.99-101) | uprez=mittel
+R_drwr_close_02_rollover.bmp,3808,18,67,BMP24,02_rollover,PL-Drawer-Handle offen - rollover - per Skript | uprez=mittel
+R_drwr_close_03_down.bmp,3808,18,67,BMP24,03_down,PL-Drawer-Handle offen - down - per Skript | uprez=mittel
+R_drwr_open_01_default.bmp,3808,18,67,BMP24,01_default,PL-Drawer-Handle bPlHandle GESCHLOSSEN - im .wms deklariert (Z.463) | uprez=mittel
+R_drwr_open_02_rollover.bmp,3808,18,67,BMP24,02_rollover,PL-Drawer-Handle geschlossen - rollover | uprez=mittel
+R_drwr_open_03_down.bmp,3808,18,67,BMP24,03_down,PL-Drawer-Handle geschlossen - down | uprez=mittel
+right_drawer_bottom.bmp,5214,172,10,BMP24,-,PL-Drawer: untere Blende (opak) | uprez=niedrig
+right_drawer_left.bmp,6454,13,160,BMP24,-,PL-Drawer: linke Blende; Magenta-Transparenz in Spalten 0-6 | uprez=mittel
+right_drawer_top.bmp,5214,172,10,BMP24,-,PL-Drawer: obere Blende (opak) | uprez=niedrig
+right_ear.bmp,44934,87,170,BMP24,-,Rechtes Ohr: Lautsprecher-Turm; Magenta #FF00FF als Aussenkontur rechts (2291 px) | uprez=kritisch (Foto-Render)
+right_X_01_default.bmp,450,11,11,BMP24,01_default,PL-Drawer Close-X (bPlClose) - default | uprez=mittel
+right_X_02_rollover.bmp,450,11,11,BMP24,02_rollover,PL-Drawer Close-X - rollover | uprez=mittel
+right_X_04_disabled.bmp,450,11,11,BMP24,04_disabled,PL-Drawer Close-X - disabled (kein 03_down) | uprez=mittel
+themebutton_01_default.bmp,3404,35,31,BMP24,01_default,Return-to-Full-Mode-Button - default | uprez=hoch
+themebutton_02_rollover.bmp,3404,35,31,BMP24,02_rollover,Return-to-Full-Mode-Button - rollover | uprez=hoch
+themebutton_03_down.bmp,3404,35,31,BMP24,03_down,Return-to-Full-Mode-Button - down (kein 04_disabled) | uprez=hoch
+thumb_01_default.bmp,558,18,9,BMP24,01_default,Seek-Thumb - default (Magenta-Ecken) | uprez=hoch
+thumb_02_rollover.bmp,558,18,9,BMP24,02_rollover,Seek-Thumb - rollover | uprez=hoch
+thumb_03_down.bmp,558,18,9,BMP24,03_down,Seek-Thumb - down (kein 04_disabled) | uprez=hoch
+vertical_slider.bmp,594,11,15,BMP24,-,EQ-Slider-Track (10x wiederverwendet; vertical=tiled auf Hoehe 76) | uprez=mittel
+vertical_thumb.bmp,450,11,11,BMP24,-,EQ-Thumb (10x wiederverwendet; kein Magenta und keine Zustandssuffixe) | uprez=mittel
+vid_bkgd.bmp,4514,216,159,BMP1,-,Screen-Hintergrund in 1bpp: Schwarz=Flaeche / Weiss=geclippte Ecken (clippingColor #FFFFFF); 1px hoeher als das 158px-Screen-Subview | uprez=nein (prozedural ersetzbar)
+viz_drop.bmp,13678,174,26,BMP24,-,Visualisierungs-Auswahl-Panel (Pille) mit Magenta-Transparenz (352 px) | uprez=hoch
+viz_drop_L_01_default.bmp,1484,22,21,BMP24,01_default,Viz-Auswahl: Previous-Button - default | uprez=hoch
+viz_drop_L_02_rollover.bmp,1484,22,21,BMP24,02_rollover,Viz-Auswahl: Previous-Button - rollover | uprez=hoch
+viz_drop_L_03_down.bmp,1484,22,21,BMP24,03_down,Viz-Auswahl: Previous-Button - down | uprez=hoch
+viz_drop_L_04_disabled.bmp,1484,22,21,BMP24,04_disabled,Viz-Auswahl: Previous-Button - disabled | uprez=hoch
+viz_drop_R_01_default.bmp,1484,22,21,BMP24,01_default,Viz-Auswahl: Next-Button - default | uprez=hoch
+viz_drop_R_02_rollover.bmp,1484,22,21,BMP24,02_rollover,Viz-Auswahl: Next-Button - rollover | uprez=hoch
+viz_drop_R_03_down.bmp,1484,22,21,BMP24,03_down,Viz-Auswahl: Next-Button - down | uprez=hoch
+viz_drop_R_04_disabled.bmp,1484,22,21,BMP24,04_disabled,Viz-Auswahl: Next-Button - disabled | uprez=hoch
+viz_drop_X_01_default.bmp,576,13,13,BMP24,01_default,Viz-Auswahl: Close-Button - default | uprez=hoch
+viz_drop_X_02_rollover.bmp,576,13,13,BMP24,02_rollover,Viz-Auswahl: Close-Button - rollover | uprez=hoch
+viz_drop_X_03_down.bmp,576,13,13,BMP24,03_down,Viz-Auswahl: Close-Button - down | uprez=hoch
+viz_drop_X_04_disabled.bmp,576,13,13,BMP24,04_disabled,Viz-Auswahl: Close-Button - disabled | uprez=hoch
