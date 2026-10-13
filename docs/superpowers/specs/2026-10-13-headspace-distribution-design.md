@@ -17,7 +17,7 @@ Der VLC-Headspace-Skin existiert (`dist/Headspace.vlt` + Varianten). Neu kommt e
 ## 2. Entscheidungen (abgestimmt)
 
 1. **Scope:** Ein Installer, drei wählbare Erlebnisse; Umsetzung gestaffelt.
-2. **Priorität:** Feasibility-Spike „IWMPEffects-Host in VLC" zuerst (läuft separat, Ergebnis nur informativ für Phase 2 der Roadmap); Paket-Design/Umsetzung hängt nicht davon ab.
+2. **Priorität:** Feasibility-Spike „IWMPEffects-Host in VLC" zuerst — **abgeschlossen mit Verdict GO** (3/3 getestete GDI-Vizzes laden registration-frei und rendern). Der Host wird als optionale, experimentelle Phase F geführt; Paket-Design/-Umsetzung hängt nicht davon ab.
 3. **Hosting:** **Runtime-Downloader + BYO-Fallback** — keine proprietären Binaries in Repo oder Release. Repo enthält nur eigenes Material, Manifeste, Hashes, Doku.
 4. **Winamp-Pack:** Plugin-Track **und** Standalone-Track.
 5. **Technik:** Ansatz A — Manifest + PowerShell-Engine + Inno-Setup-Installer; Engine zusätzlich als portables Skript.
@@ -96,6 +96,7 @@ Beispiel:
 - **Core-Visualizer:** Alchemy, Battery, Bars and Waves, Plenoptic, Musical Colors, 3D Alchemy, WMP8-Legacy-Pack, Trilogy I–III, Blazing Colors, Color Cubes, Pulsing Colors, Picture Viz I/II, StarTime, SnowTime, Yule Log, WMP9-Visualizer → DLLs nach `…\Windows Media Player\Visualizations\`, `regsvr32`, Transition-Bug-Fix.
 - **Extended-Visualizer:** Warner Bros (Grind, Terminator III, Looney Tunes), Dungeon Siege, projectMwmp u. a. — einzeln abwählbar, Status (`works|buggy|unknown`) im Manifest.
 - **Info:** vizz.fm (Browser-Clone), WhiteCap.
+- **Experimentell (nur mit vom Nutzer bereitgestellten DLLs):** eigener WMP-Viz-Host in VLC. Spike-Verdikt **GO** für GDI-Vizzes (`vizhost32.exe` als x86-Helper, registration-freies `DllGetClassObject`, Shared-Memory-Frame-Transport, gespeistes `TimedLevel`). D3D-Ära-Vizzes (Battery & Co.) offen → zweiter Spike. DLLs werden **nie** mitgeliefert.
 - Quellen laufen über `sources.json`-Mirror-Ketten (WMP Goodies → Original-MS-Links → MediaFire); **BYO-Picker** springt ein, wenn alle Quellen tot sind.
 
 ### 5.3 Winamp-Pack (opt-in)
@@ -154,6 +155,7 @@ Geplant und umgesetzt wird phasenweise; **der erste Implementierungsplan umfasst
 | C | Winamp-Pack (Plugin- + Standalone-Track) | beide Tracks getestet |
 | D | Inno-Installer um die Engine | Wizard-Flow DE/EN, Silent-Test, Uninstall |
 | E | Release (Root-README, Release-ZIP, Offline-Cache-Tool, Credits) | Release-ZIP enthält Setup + Cache-Tool + Doku |
+| F (optional, eigener Spec-/Plan-Zyklus) | Experimenteller WMP-Viz-Host in VLC (`vizhost32.exe` + IPC) | opt-in läuft; Zusicherung nur für GDI-Vizzes, D3D-Ära per zweitem Spike geklärt |
 
 Jede Phase endet mit Tests + Commit. Neue Items sind danach reine JSON-Änderungen.
 
@@ -179,4 +181,4 @@ Kein Auto-Updater, kein Mehrsprachen-Framework (DE + EN Strings genügen), kein 
 - SoundSpectrum WhiteCap (VLC-Support seit 6.9.8, 05.09.2026)
 - CVE-2026-102875 (skins2 ThemeLoader; gefixt in VLC 3.0.24)
 - MilkDrop 3 (`github.com/milkdrop2077/MilkDrop3`), AVS (`github.com/grandchild/vis_avs`), Geiss (`github.com/geissomatik/geiss`)
-- Spike „IWMPEffects-Host" (separate Session) — Ergebnis wird nur als optionales experimentelles Item nachgeführt.
+- Spike „IWMPEffects-Host" (**abgeschlossen: Verdict GO**): 3/3 GDI-Vizzes rendern registration-frei in einen Memory-DC (120/120 Frames, kein eigenes Fenster); verifizierte Referenz (IIDs, Vtable, `TimedLevel` x86 = 4112 Bytes) im Spike-Report; D3D-/DirectDraw-Vizzes = offener zweiter Spike. Aufwand für Phase F: ca. 1–2 Wochen funktional, 3–5 Wochen robust.
