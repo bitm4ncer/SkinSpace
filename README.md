@@ -112,6 +112,11 @@ enables **goom** by default; manual option:
   will ship a small curated selection.
 - In development: **"Bitmancer Visualizer Pack"** -- custom retro and modern
   visualizers (100% own code).
+- **Screen mask:** the screen recess in the artwork is round, but VLC renders
+  video/visualizers into a rectangular window *on top of* the skin. The starter
+  bat therefore also launches `tools/vout_mask.ps1`, which clips that window to
+  the round screen shape (DPI-aware, follows layouts and size changes). Starting
+  VLC directly with `--skins2-last` bypasses the mask -- square corners.
 
 ## INSTALLER & PACKS (work in progress)
 
