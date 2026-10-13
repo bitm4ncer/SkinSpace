@@ -63,8 +63,10 @@ deaktivierter Mediathek → saubere Playlist wie im Original).
 
 ## Bekannte Abweichungen vom Original (technisch bedingt, dokumentiert)
 
-- **Visualisierungen** sind über VLC-Skins nicht steuerbar → Screen zeigt Video (und bleibt sonst schwarz
-  wie im Original ohne Visualisierung); die Visualisierungs-Auswahl entfällt.
+- **Visualisierungen**: VLCs eigene Visualizer (goom, projectM, …) laufen **im Kopf-Screen** mit —
+  aktiviert über `--audio-visual=goom` bzw. `projectm` (siehe `Start-Headspace-Visualizer.bat`).
+  Im Skin selbst nicht umschaltbar (VLC bietet Skins keine Visualizer-Aktionen); die Optik des
+  Original-Wählers (◄ Name ►) ist daher nicht funktional nachbildbar.
 - **Balance** → **Preamp** umfunktioniert (VLC-Skins können Balance nicht anbinden): gleiche
   Position/Optik, Label „Preamp", steuert den EQ-Vorverstärker.
 - **reset**-Link schaltet den Equalizer an/aus statt Gains zu nullen.
