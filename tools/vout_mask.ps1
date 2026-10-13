@@ -30,21 +30,57 @@ $MaskX  = 10;  $MaskY  = 59; $MaskW  = $VideoW; $MaskH = $VideoH
 $MaskPath = Join-Path $PSScriptRoot '..\skins\headspace\theme\images\head.png'
 
 # --- Region-Rechtecke (maskenlokal) aus der Alpha-Maske bauen ---
+# Wichtig: Nur das LOCH im Kopf zaehlt - nicht der transparente Aussenraum
+# (der Kopf ist oben schmaler als das Video-Rechteck). Darum wird das Loch per
+# Flood-Fill von der Mitte aus eingesammelt; der Aussenraum ist davon getrennt.
 $flat = New-Object System.Collections.Generic.List[int]
 if (Test-Path $MaskPath) {
   $bmp = New-Object System.Drawing.Bitmap($MaskPath)
+  $trans = New-Object 'bool[,]' $MaskW, $MaskH
+  for ($y = 0; $y -lt $MaskH; $y++) {
+    for ($x = 0; $x -lt $MaskW; $x++) {
+      $trans[$x, $y] = ($bmp.GetPixel($MaskX + $x, $MaskY + $y).A -lt 128)
+    }
+  }
+  $bmp.Dispose()
+
+  # Startpunkt im Loch suchen
+  $sx = -1; $sy = -1
+  $cx = [int]($MaskW / 2); $cy = [int]($MaskH / 2)
+  if ($trans[$cx, $cy]) { $sx = $cx; $sy = $cy }
+  else {
+    for ($y = 0; $y -lt $MaskH -and $sx -lt 0; $y++) {
+      for ($x = 0; $x -lt $MaskW; $x++) { if ($trans[$x, $y]) { $sx = $x; $sy = $y; break } }
+    }
+  }
+
+  $seen = New-Object 'bool[,]' $MaskW, $MaskH
+  if ($sx -ge 0) {
+    $q = New-Object System.Collections.Queue
+    $q.Enqueue(($sy * $MaskW + $sx)); $seen[$sx, $sy] = $true
+    while ($q.Count -gt 0) {
+      $idx = [int]$q.Dequeue()
+      $x = $idx % $MaskW; $y = [int][Math]::Floor($idx / $MaskW)
+      foreach ($d in @(@(1, 0), @(-1, 0), @(0, 1), @(0, -1))) {
+        $nx = $x + $d[0]; $ny = $y + $d[1]
+        if ($nx -ge 0 -and $nx -lt $MaskW -and $ny -ge 0 -and $ny -lt $MaskH -and -not $seen[$nx, $ny] -and $trans[$nx, $ny]) {
+          $seen[$nx, $ny] = $true; $q.Enqueue(($ny * $MaskW + $nx))
+        }
+      }
+    }
+  }
+
   for ($y = 0; $y -lt $MaskH; $y++) {
     $x = 0
     while ($x -lt $MaskW) {
-      if ($bmp.GetPixel($MaskX + $x, $MaskY + $y).A -lt 128) {
+      if ($seen[$x, $y]) {
         $x0 = $x
-        while ($x -lt $MaskW -and $bmp.GetPixel($MaskX + $x, $MaskY + $y).A -lt 128) { $x++ }
+        while ($x -lt $MaskW -and $seen[$x, $y]) { $x++ }
         $flat.Add($x0); $flat.Add($y); $flat.Add($x); $flat.Add($y + 1)
       } else { $x++ }
     }
   }
-  $bmp.Dispose()
-  Write-Host ("Maske geladen: " + ($flat.Count / 4) + " Rechtecke")
+  Write-Host ("Loch-Maske: " + ($flat.Count / 4) + " Rechtecke")
 } else {
   Write-Host "head.png nicht gefunden - Fallback auf rundes Rechteck"
 }
