@@ -22,8 +22,7 @@ Requirements: VLC 3.0.x (tested: 3.0.23, Windows).
 **Option 1 -- starter bat (recommended, no admin needed):**
 
 ```text
-skins/headspace/Start-Headspace.bat              (normal, EQ enabled)
-skins/headspace/Start-Headspace-Visualizer.bat   (with projectM in the screen)
+skins/headspace/Start-Headspace.bat   (2x skin, EQ + goom visualizer enabled)
 ```
 
 **Option 2 -- command line:**
@@ -95,13 +94,12 @@ Drag & drop                   Drop media onto the window -- videos and
 
 ## VISUALIZERS (goom / projectM in the head screen)
 
-VLC's own visualizers run inside the skin screen. Enable via start option:
+VLC's own visualizers run inside the skin screen. The standard starter bat
+enables **goom** by default; manual option:
 
 ```text
 --audio-visual=goom            (goom: ships with VLC, works reliably via CLI)
 ```
-
-Ready-made starter: `skins/headspace/Start-Headspace-Visualizer.bat` (goom).
 
 - VLC also ships **projectM** and **glSpectrum**, but VLC's `audio-visual`
   option validation silently drops these two when set on the command line or
@@ -174,7 +172,6 @@ SkinSpace/
 |       +-- variants/           staged 2x/3x variants (generated)
 |       +-- originals/          original raw files (WMZ, bitmaps, previews)
 |       +-- Start-Headspace.bat
-|       +-- Start-Headspace-Visualizer.bat
 |
 +-- tools/                      shared build chain (-Skin <name>)
 +-- dist/                       finished .vlt files for all skins
