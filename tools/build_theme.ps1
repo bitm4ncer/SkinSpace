@@ -46,6 +46,7 @@ $sb = New-Object System.Text.StringBuilder
 [void]$sb.AppendLine((Scale-Xml $header $Scale))
 [void]$sb.AppendLine((Scale-Xml $bitmaps $Scale))
 [void]$sb.AppendLine((Scale-Xml (Read-Frag 'subbitmaps.xml') $Scale))
+[void]$sb.AppendLine((Scale-Xml (Read-Frag 'extras.xml') $Scale))
 [void]$sb.AppendLine('  <Window id="main" position="Center">')
 foreach($l in $layouts){
   [void]$sb.AppendLine(('    <Layout id="{0}" width="{1}" height="{2}">' -f $l.id, $w, $h))

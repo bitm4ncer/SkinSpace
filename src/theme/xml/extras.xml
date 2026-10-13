@@ -1,0 +1,6 @@
+  <!-- Zusatz-Assets (unser Ersatz-Design; von tools/make_extra_assets.ps1 erzeugt) -->
+  <Bitmap id="led_off.png"       file="images/led_off.png"       alphacolor="#FE01FE"/>
+  <Bitmap id="led_on.png"        file="images/led_on.png"        alphacolor="#FE01FE"/>
+  <Bitmap id="drawer_fill.png"   file="images/drawer_fill.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="eq_link_off.png"   file="images/eq_link_off.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="eq_link_on.png"    file="images/eq_link_on.png"    alphacolor="#FE01FE"/>
