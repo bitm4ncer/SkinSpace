@@ -1,18 +1,17 @@
-# vout_mask.ps1 - setzt das Video-Fenster des Skins "hinter" den Skin-Rahmen.
+# vout_mask.ps1 - setzt den Video-Screen gross und rahmenbündig in den Kopf.
 #
-# Hintergrund: skins2 zeichnet das Video in KIND-Fenster des Skin-Fensters.
-# Kind-Fenster liegen in Windows IMMER ueber der Zeichnung des Elternfensters -
-# ein Skin kann sein Video also nicht selbst ueberdecken. Bei einem runden
-# Screen-Ausschnitt (wie Headspace) stehen die rechteckigen Video-Ecken deshalb
-# ueber den Rahmen (und das Letterbox-Schwarz liegt zwischen Video und Rahmen).
+# Hintergrund: skins2 legt das Video in ein Kind-Fenster INNERHALB der Video-
+# Steuerung. Diese Steuerung ist ein Rechteck - liegt sie auf Lochgroesse,
+# schaut an den Kopf-Ecken ihr schwarzer Hintergrund heraus. Bleibt sie klein,
+# ist der Rand weg, aber das Video ist zu klein.
 #
-# Loesung: Diesen Kind-Fenstern eine Fenster-Region (SetWindowRgn) in Form des
-# Screen-Lochs geben. Die Form wird direkt aus der Alpha-Maske von head.png
-# gelesen - dadurch sitzt das Video exakt im Ausschnitt und der gemalte Rahmen
-# bleibt sichtbar.
+# Loesung: Die Steuerung bleibt (wie im Original) klein. Dieser Waechter haengt
+# die eigentlichen Video-Fenster DIREKT an das Skin-Fenster um, zieht sie auf
+# die exakte Lochgroesse und schneidet sie mit einer Region auf die Lochform
+# (aus der Alpha-Maske von head.png) zu. Ergebnis: Video randfuellend, kein
+# schwarzer Rand, gerundete Ecken.
 #
-# Der Waechter wird vom Starter-Bat parallel zu VLC gestartet und beendet sich,
-# wenn kein VLC mehr laeuft.
+# Wird vom Starter-Bat parallel zu VLC gestartet; endet, wenn kein VLC laeuft.
 $ErrorActionPreference = 'Stop'
 
 Add-Type -AssemblyName System.Drawing
@@ -24,65 +23,48 @@ public class DpiFix { [DllImport("user32.dll")] public static extern bool SetPro
 [void][DpiFix]::SetProcessDPIAware()
 
 # --- Konfiguration im 1x-Layout (Headspace) ---
-# Screen-Bereich (Video-Control) im Skin und der dazu passende Ausschnitt in head.png.
-$VideoX = 271; $VideoY = 59; $VideoW = 214; $VideoH = 157
-$MaskX  = 10;  $MaskY  = 59; $MaskW  = $VideoW; $MaskH = $VideoH
+$HoleX = 271; $HoleY = 59; $HoleW = 214; $HoleH = 157
+$MaskX = 10;  $MaskY = 59
 $MaskPath = Join-Path $PSScriptRoot '..\skins\headspace\theme\images\head.png'
 
-# --- Region-Rechtecke (maskenlokal) aus der Alpha-Maske bauen ---
-# Wichtig: Nur das LOCH im Kopf zaehlt - nicht der transparente Aussenraum
-# (der Kopf ist oben schmaler als das Video-Rechteck). Darum wird das Loch per
-# Flood-Fill von der Mitte aus eingesammelt; der Aussenraum ist davon getrennt.
+# --- Loch-Form (maskenlokal) per Flood-Fill aus head.png lesen ---
 $flat = New-Object System.Collections.Generic.List[int]
 if (Test-Path $MaskPath) {
   $bmp = New-Object System.Drawing.Bitmap($MaskPath)
-  $trans = New-Object 'bool[,]' $MaskW, $MaskH
-  for ($y = 0; $y -lt $MaskH; $y++) {
-    for ($x = 0; $x -lt $MaskW; $x++) {
+  $mw = $HoleW; $mh = $HoleH
+  $trans = New-Object 'bool[,]' $mw, $mh
+  for ($y = 0; $y -lt $mh; $y++) {
+    for ($x = 0; $x -lt $mw; $x++) {
       $trans[$x, $y] = ($bmp.GetPixel($MaskX + $x, $MaskY + $y).A -lt 128)
     }
   }
   $bmp.Dispose()
-
-  # Startpunkt im Loch suchen
   $sx = -1; $sy = -1
-  $cx = [int]($MaskW / 2); $cy = [int]($MaskH / 2)
+  $cx = [int]($mw / 2); $cy = [int]($mh / 2)
   if ($trans[$cx, $cy]) { $sx = $cx; $sy = $cy }
-  else {
-    for ($y = 0; $y -lt $MaskH -and $sx -lt 0; $y++) {
-      for ($x = 0; $x -lt $MaskW; $x++) { if ($trans[$x, $y]) { $sx = $x; $sy = $y; break } }
-    }
-  }
-
-  $seen = New-Object 'bool[,]' $MaskW, $MaskH
+  else { for ($y = 0; $y -lt $mh -and $sx -lt 0; $y++) { for ($x = 0; $x -lt $mw; $x++) { if ($trans[$x, $y]) { $sx = $x; $sy = $y; break } } } }
+  $seen = New-Object 'bool[,]' $mw, $mh
   if ($sx -ge 0) {
     $q = New-Object System.Collections.Queue
-    $q.Enqueue(($sy * $MaskW + $sx)); $seen[$sx, $sy] = $true
+    $q.Enqueue(($sy * $mw + $sx)); $seen[$sx, $sy] = $true
     while ($q.Count -gt 0) {
-      $idx = [int]$q.Dequeue()
-      $x = $idx % $MaskW; $y = [int][Math]::Floor($idx / $MaskW)
+      $idx = [int]$q.Dequeue(); $x = $idx % $mw; $y = [int][Math]::Floor($idx / $mw)
       foreach ($d in @(@(1, 0), @(-1, 0), @(0, 1), @(0, -1))) {
         $nx = $x + $d[0]; $ny = $y + $d[1]
-        if ($nx -ge 0 -and $nx -lt $MaskW -and $ny -ge 0 -and $ny -lt $MaskH -and -not $seen[$nx, $ny] -and $trans[$nx, $ny]) {
-          $seen[$nx, $ny] = $true; $q.Enqueue(($ny * $MaskW + $nx))
+        if ($nx -ge 0 -and $nx -lt $mw -and $ny -ge 0 -and $ny -lt $mh -and -not $seen[$nx, $ny] -and $trans[$nx, $ny]) {
+          $seen[$nx, $ny] = $true; $q.Enqueue(($ny * $mw + $nx))
         }
       }
     }
   }
-
-  for ($y = 0; $y -lt $MaskH; $y++) {
+  for ($y = 0; $y -lt $mh; $y++) {
     $x = 0
-    while ($x -lt $MaskW) {
-      if ($seen[$x, $y]) {
-        $x0 = $x
-        while ($x -lt $MaskW -and $seen[$x, $y]) { $x++ }
-        $flat.Add($x0); $flat.Add($y); $flat.Add($x); $flat.Add($y + 1)
-      } else { $x++ }
+    while ($x -lt $mw) {
+      if ($seen[$x, $y]) { $x0 = $x; while ($x -lt $mw -and $seen[$x, $y]) { $x++ }; $flat.Add($x0); $flat.Add($y); $flat.Add($x); $flat.Add($y + 1) }
+      else { $x++ }
     }
   }
   Write-Host ("Loch-Maske: " + ($flat.Count / 4) + " Rechtecke")
-} else {
-  Write-Host "head.png nicht gefunden - Fallback auf rundes Rechteck"
 }
 $flatArr = $flat.ToArray()
 
@@ -94,20 +76,22 @@ using System.Runtime.InteropServices;
 
 public class ScreenMask {
   public delegate bool EnumProc(IntPtr hWnd, IntPtr lParam);
-  [DllImport("user32.dll")] public static extern bool EnumWindows(EnumProc lpEnumFunc, IntPtr lParam);
-  [DllImport("user32.dll")] public static extern bool EnumChildWindows(IntPtr hWnd, EnumProc lpEnumFunc, IntPtr lParam);
-  [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint pid);
-  [DllImport("user32.dll")] public static extern int GetClassName(IntPtr hWnd, StringBuilder s, int max);
-  [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr hWnd, out RECT r);
-  [DllImport("user32.dll")] public static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool redraw);
-  [DllImport("gdi32.dll")] public static extern IntPtr CreateRectRgn(int x1, int y1, int x2, int y2);
-  [DllImport("gdi32.dll")] public static extern IntPtr CreateRoundRectRgn(int x1, int y1, int x2, int y2, int ew, int eh);
-  [DllImport("gdi32.dll")] public static extern int CombineRgn(IntPtr dst, IntPtr s1, IntPtr s2, int mode);
-  [DllImport("gdi32.dll")] public static extern bool DeleteObject(IntPtr hObj);
+  [DllImport("user32.dll")] public static extern bool EnumWindows(EnumProc f, IntPtr l);
+  [DllImport("user32.dll")] public static extern bool EnumChildWindows(IntPtr h, EnumProc f, IntPtr l);
+  [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
+  [DllImport("user32.dll")] public static extern int GetClassName(IntPtr h, StringBuilder s, int m);
+  [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
+  [DllImport("user32.dll")] public static extern IntPtr GetParent(IntPtr h);
+  [DllImport("user32.dll")] public static extern IntPtr SetParent(IntPtr h, IntPtr p);
+  [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr h, IntPtr after, int x, int y, int cx, int cy, uint flags);
+  [DllImport("user32.dll")] public static extern int SetWindowRgn(IntPtr h, IntPtr hRgn, bool redraw);
+  [DllImport("gdi32.dll")] public static extern IntPtr CreateRectRgn(int a, int b, int c, int d);
+  [DllImport("gdi32.dll")] public static extern int CombineRgn(IntPtr d, IntPtr a, IntPtr b, int m);
+  [DllImport("gdi32.dll")] public static extern bool DeleteObject(IntPtr h);
   [StructLayout(LayoutKind.Sequential)] public struct RECT { public int L, T, R, B; }
 
-  private static IntPtr Skin;
-  private static readonly List<IntPtr> Kids = new List<IntPtr>();
+  private static IntPtr Skin = IntPtr.Zero;
+  private static readonly List<IntPtr> Vids = new List<IntPtr>();
 
   private static IntPtr FindSkin(uint pid) {
     IntPtr res = IntPtr.Zero;
@@ -123,65 +107,57 @@ public class ScreenMask {
     return res;
   }
 
-  /* Sucht Skin + Video-Kind-Fenster und liefert einen Schluessel fuer die aktuelle Lage. */
-  public static string Scan(uint pid) {
-    Skin = FindSkin(pid);
-    Kids.Clear();
-    if (Skin == IntPtr.Zero) return "wait";
-    StringBuilder key = new StringBuilder();
-    EnumChildWindows(Skin, delegate(IntPtr ch, IntPtr lp) {
-      StringBuilder c = new StringBuilder(256);
-      GetClassName(ch, c, 256);
-      string cs = c.ToString();
-      if (cs == "SkinWindowClass" || cs.StartsWith("VLC video")) {
-        RECT r; GetWindowRect(ch, out r);
-        Kids.Add(ch);
-        key.Append(ch).Append(':').Append(r.R - r.L).Append('x').Append(r.B - r.T).Append('@').Append(r.L).Append(',').Append(r.T).Append(';');
-      }
-      return true;
-    }, IntPtr.Zero);
-    if (Kids.Count == 0) return "novout";
-    return key.ToString();
-  }
-
   private static double ScaleFor(IntPtr skin) {
     RECT sr; GetWindowRect(skin, out sr);
     int sw = sr.R - sr.L, sh = sr.B - sr.T;
     if (sw <= 0 || sh <= 0) return 0;
-    double aspect = (double)sw / (double)sh;
-    int layoutW = (aspect > 1.65) ? 760 : 549;   /* 760er- bzw. 549er-Layout */
-    return (double)sw / (double)layoutW;
+    int layoutW = ((double)sw / sh > 1.65) ? 760 : 549;
+    return (double)sw / layoutW;
   }
 
-  /* Setzt die Region (aus der Maske, maskenlokal) auf alle Video-Kind-Fenster. */
-  public static void Apply(int vx, int vy, int mw, int mh, int[] rects) {
-    if (Skin == IntPtr.Zero || Kids.Count == 0) return;
+  /* Skin + Video-Fenster suchen; liefert Schluessel fuer die aktuelle Lage. */
+  public static string Scan(uint pid) {
+    Skin = FindSkin(pid);
+    Vids.Clear();
+    if (Skin == IntPtr.Zero) return "wait";
+    StringBuilder key = new StringBuilder();
+    EnumChildWindows(Skin, delegate(IntPtr ch, IntPtr lp) {
+      StringBuilder c = new StringBuilder(256); GetClassName(ch, c, 256);
+      if (c.ToString().StartsWith("VLC video")) {
+        RECT r; GetWindowRect(ch, out r);
+        Vids.Add(ch);
+        key.Append(ch).Append(':').Append(r.R - r.L).Append('x').Append(r.B - r.T).Append('@').Append(r.L).Append(',').Append(r.T).Append(';');
+      }
+      return true;
+    }, IntPtr.Zero);
+    if (Vids.Count == 0) return "novout";
+    return key.ToString();
+  }
+
+  /* Video-Fenster an das Skin-Fenster haengen, auf Lochgroesse ziehen, Lochform clippen. */
+  public static void Apply(int vx, int vy, int vw, int vh, int[] rects) {
+    if (Skin == IntPtr.Zero || Vids.Count == 0) return;
     double scale = ScaleFor(Skin);
     if (scale <= 0) return;
-    RECT sr; GetWindowRect(Skin, out sr);
+    int hx = (int)Math.Round(vx * scale), hy = (int)Math.Round(vy * scale);
+    int hw = (int)Math.Round(vw * scale), hh = (int)Math.Round(vh * scale);
 
-    foreach (IntPtr ch in Kids) {
-      RECT r; GetWindowRect(ch, out r);
-      int cl = r.L - sr.L, ct = r.T - sr.T;
+    foreach (IntPtr v in Vids) {
+      if (GetParent(v) != Skin) SetParent(v, Skin);
+      SetWindowPos(v, IntPtr.Zero, hx, hy, hw, hh, 0x0004 | 0x0010);  /* NOZORDER|NOACTIVATE */
       IntPtr reg = CreateRectRgn(0, 0, 0, 0);
       if (rects.Length == 0) {
-        /* Fallback: rundes Rechteck */
-        IntPtr rr = CreateRoundRectRgn(0, 0, (r.R - r.L) + 1, (r.B - r.T) + 1,
-                                       (int)Math.Round(108 * scale), (int)Math.Round(108 * scale));
-        SetWindowRgn(ch, rr, true);
-        DeleteObject(reg);
-        continue;
+        SetWindowRgn(v, reg, true);
+      } else {
+        for (int i = 0; i < rects.Length; i += 4) {
+          int x0 = (int)Math.Round(rects[i] * scale), y0 = (int)Math.Round(rects[i + 1] * scale);
+          int x1 = (int)Math.Round(rects[i + 2] * scale), y1 = (int)Math.Round(rects[i + 3] * scale);
+          IntPtr rr = CreateRectRgn(x0, y0, x1, y1);
+          CombineRgn(reg, reg, rr, 2); /* RGN_OR */
+          DeleteObject(rr);
+        }
+        SetWindowRgn(v, reg, true);
       }
-      for (int i = 0; i < rects.Length; i += 4) {
-        int x0 = (int)Math.Round(rects[i]     * scale) + (int)Math.Round(vx * scale) - cl;
-        int y0 = (int)Math.Round(rects[i + 1] * scale) + (int)Math.Round(vy * scale) - ct;
-        int x1 = (int)Math.Round(rects[i + 2] * scale) + (int)Math.Round(vx * scale) - cl;
-        int y1 = (int)Math.Round(rects[i + 3] * scale) + (int)Math.Round(vy * scale) - ct;
-        IntPtr rr = CreateRectRgn(x0, y0, x1, y1);
-        CombineRgn(reg, reg, rr, 2);   /* RGN_OR */
-        DeleteObject(rr);
-      }
-      SetWindowRgn(ch, reg, true);
     }
   }
 }
@@ -199,13 +175,12 @@ while ($true) {
   foreach ($vp in $procs) {
     $key = [ScreenMask]::Scan([uint32]$vp.Id)
     if ($key -eq 'wait' -or $key -eq 'novout') { continue }
-    # bei geaenderter Fensterlage ODER regelmaessig als Sicherheit neu anwenden
-    if ($key -ne $lastKey -or ($tick % 10) -eq 0) {
-      [ScreenMask]::Apply($VideoX, $VideoY, $MaskW, $MaskH, $flatArr)
+    if ($key -ne $lastKey -or ($tick % 4) -eq 0) {
+      [ScreenMask]::Apply($HoleX, $HoleY, $HoleW, $HoleH, $flatArr)
       $lastKey = $key
     }
   }
   $tick++
-  Start-Sleep -Milliseconds 900
+  Start-Sleep -Milliseconds 700
 }
 exit 0
