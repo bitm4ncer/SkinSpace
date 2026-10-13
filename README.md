@@ -7,11 +7,12 @@ visualizers run right inside the skin screen. Unofficial fan project.
 ## INCLUDED SKINS
 
 ```text
-Skin          Status           Files (dist/)
------------   --------------   ------------------------------------------
-Headspace     finished (v1.0)  Headspace.vlt      (1x, 549x394)
-<more>        planned          Headspace-2x.vlt   (2x, pixel look)
-                               Headspace-3x.vlt   (3x, pixel look)
+Skin            Status           Files (dist/)
+-------------   --------------   ------------------------------------------
+Headspace       finished (v1.0)  Headspace.vlt      (1x, 549x394)
+9SeriesDefault  in design        (WMP9 default "Corona", 859x468)
+<more>          planned          Headspace-2x.vlt   (2x, pixel look)
+                                 Headspace-3x.vlt   (3x, pixel look)
 ```
 
 ## QUICK START
