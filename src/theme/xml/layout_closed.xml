@@ -1,9 +1,7 @@
       <!-- l_closed — Geschlossener Zustand. Koordinaten = Original (headspace.wms), Kopf-Offset 261,0 bereits eingerechnet. -->
       <!-- Zeichenreihenfolge = spätere Elemente liegen oben (wird im Ladetest verifiziert). -->
 
-      <!-- ==== Screen-Hintergrund + Ohren (liegen UNTER dem Kopf) ==== -->
-      <Image id="cl.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
-      <Video id="cl.vid" x="282" y="70" width="193" height="135" autoresize="false" visible="vlc.hasVout"/>
+      <!-- ==== Ohren (liegen UNTER Kopf UND Screen) ==== -->
       <Image id="cl.eq.ear" x="207" y="86" image="left_ear.png"/>
       <Image id="cl.eq.drawerTop" x="291" y="86" image="left_drawer_top.png"/>
       <Image id="cl.eq.drawerBottom" x="291" y="236" image="left_drawer_bottom.png"/>
@@ -18,6 +16,9 @@
       <Button id="cl.pl.handle" x="523" y="151"
               up="R_drwr_open_01_default.png" over="R_drwr_open_02_rollover.png" down="R_drwr_open_03_down.png"
               action="main.setLayout(l_pl)" tooltiptext="Open playlist"/>
+      <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
+      <Image id="cl.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
+      <Video id="cl.vid" x="282" y="70" width="193" height="135" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Kopf (zichbar) ==== -->
       <Image id="cl.head" x="261" y="0" image="head.png" action="move"/>

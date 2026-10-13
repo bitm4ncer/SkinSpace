@@ -139,9 +139,7 @@
       <!-- l_eq â€” EQ-Schublade OFFEN (linkes Ohr bei x=0). Koordinaten = Original (headspace.wms), Kopf-Offset 261,0 eingerechnet. -->
       <!-- Zeichenreihenfolge = spÃ¤tere Elemente liegen oben. -->
 
-      <!-- ==== Screen-Hintergrund + rechtes Ohr (geschlossen) ==== -->
-      <Image id="eq.vidbkgd" x="540" y="118" image="vid_bkgd.png"/>
-      <Video id="eq.vid" x="564" y="140" width="386" height="270" autoresize="false" visible="vlc.hasVout"/>
+      <!-- ==== Rechtes Ohr (geschlossen, liegt UNTER dem Screen) ==== -->
       <Image id="eq.pl.drawerLeft" x="554" y="172" image="right_drawer_left.png"/>
       <Image id="eq.pl.drawerTop" x="580" y="172" image="right_drawer_top.png"/>
       <Image id="eq.pl.drawerBottom" x="580" y="472" image="right_drawer_bottom.png"/>
@@ -160,6 +158,9 @@
       <Image id="eq.drawerTop" x="168" y="172" image="left_drawer_top.png"/>
       <Image id="eq.drawerBottom" x="168" y="472" image="left_drawer_bottom.png"/>
       <Image id="eq.drawerRight" x="502" y="172" image="left_drawer_right.png"/>
+      <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
+      <Image id="eq.vidbkgd" x="540" y="118" image="vid_bkgd.png"/>
+      <Video id="eq.vid" x="564" y="140" width="386" height="270" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== EQ-Bedienelemente im Drawer ==== -->
       <!-- Preamp (umfunktioniert aus dem Original-Balance-Slider - VLC-Skins koennen Balance technisch nicht anbinden) -->
@@ -478,9 +479,7 @@
       <!-- l_closed â€” Geschlossener Zustand. Koordinaten = Original (headspace.wms), Kopf-Offset 261,0 bereits eingerechnet. -->
       <!-- Zeichenreihenfolge = spÃ¤tere Elemente liegen oben (wird im Ladetest verifiziert). -->
 
-      <!-- ==== Screen-Hintergrund + Ohren (liegen UNTER dem Kopf) ==== -->
-      <Image id="cl.vidbkgd" x="540" y="118" image="vid_bkgd.png"/>
-      <Video id="cl.vid" x="564" y="140" width="386" height="270" autoresize="false" visible="vlc.hasVout"/>
+      <!-- ==== Ohren (liegen UNTER Kopf UND Screen) ==== -->
       <Image id="cl.eq.ear" x="414" y="172" image="left_ear.png"/>
       <Image id="cl.eq.drawerTop" x="582" y="172" image="left_drawer_top.png"/>
       <Image id="cl.eq.drawerBottom" x="582" y="472" image="left_drawer_bottom.png"/>
@@ -495,6 +494,9 @@
       <Button id="cl.pl.handle" x="1046" y="302"
               up="R_drwr_open_01_default.png" over="R_drwr_open_02_rollover.png" down="R_drwr_open_03_down.png"
               action="main.setLayout(l_pl)" tooltiptext="Open playlist"/>
+      <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
+      <Image id="cl.vidbkgd" x="540" y="118" image="vid_bkgd.png"/>
+      <Video id="cl.vid" x="564" y="140" width="386" height="270" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Kopf (zichbar) ==== -->
       <Image id="cl.head" x="522" y="0" image="head.png" action="move"/>
