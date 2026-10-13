@@ -1,14 +1,15 @@
-# make_original_assets.ps1 — konvertiert ALLE Original-BMPs 1:1 nach src/theme/images/ (PNG32, exakte Key-Entfernung)
-# und generiert src/theme/xml/bitmaps.xml (Bitmap-Deklarationen für den Builder).
+# make_original_assets.ps1 — konvertiert ALLE Original-BMPs 1:1 nach skins/<skin>/theme/images/ (PNG32, exakte Key-Entfernung)
+# und generiert skins/<skin>/theme/xml/bitmaps.xml (Bitmap-Deklarationen für den Builder).
 # Regeln (siehe research/upscale-review/decisions.md): Magenta -> Alpha überall; Rot -> Alpha nur in head.bmp; sonst unverändert.
+param([string]$Skin = 'headspace', [string]$Root)
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'prepare_assets.ps1')   # liefert ConvertTo-Png32 + Remove-KeyColor
 
-$root = 'C:\GitHub\VLC_Skins'
-$src  = Join-Path $root 'research\original\extracted'
-$imgDir = Join-Path $root 'src\theme\images'
-$xmlDir = Join-Path $root 'src\theme\xml'
-$fontDir = Join-Path $root 'src\theme\fonts'
+if(-not $Root){ $Root = Split-Path $PSScriptRoot -Parent }
+$src    = Join-Path $Root "skins\$Skin\originals\extracted"
+$imgDir = Join-Path $Root "skins\$Skin\theme\images"
+$xmlDir = Join-Path $Root "skins\$Skin\theme\xml"
+$fontDir = Join-Path $Root "skins\$Skin\theme\fonts"
 New-Item -ItemType Directory -Force -Path $imgDir, $xmlDir, $fontDir | Out-Null
 
 # Font mitkopieren (Font-ID 'defaultfont' muss auf diese Datei zeigen)

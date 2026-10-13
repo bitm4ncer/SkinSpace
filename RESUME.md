@@ -1,31 +1,30 @@
-# RESUME — Headspace → VLC Port (Stand: 2026-10-13)
+# RESUME — SkinSpace (Stand: 2026-10-13, Abend)
 
-**Situation:** Systemneustart wurde ausgeführt, weil VLC systemweit phasenweise beim Start crasht
-(Display/GPU-Stack der Maschine; NICHT der Skin — verifiziert mit Qt + VLC-Default-Skin).
+**Projekt:** Multi-Skin-Repo „SkinSpace" — WMP-Klassiker als VLC-Skins (skins2).
+Erstes Skin: **Headspace** (Microsoft © 2000/2001) — fertig (v1.0 + Nachbesserungen).
 
-## Was fertig ist
-- **Task 1 + 2 + 3 abgeschlossen** (committed, Branch `headspace-port`):
-  - Original-Assets 1:1 konvertiert (`tools/make_original_assets.ps1`, 78 Assets)
-  - `theme.xml`-Generator (`tools/build_theme.ps1` + Fragmente in `src/theme/xml/`)
-  - `l_closed` KOMPLETT + pixel-verifiziert (vs. `research/previews/states/state-A-closed.png`)
-  - Sonnen-Button (vis-Zone) als "Open media" wieder eingebaut (letzter Commit `a75628c`)
-  - Größen-Varianten: **`dist/Headspace.vlt` (1×)**, **`-2x.vlt` (1098×788)**, **`-3x.vlt` (1647×1182)**
-  - Testsuite: `tools/tests/run_task3.ps1` (Assets + Builder + Pack + Ladetest)
+## Aktueller Stand
+- Alle 7 Plan-Tasks abgeschlossen; dazu die Nachbesserungen der letzten Runden:
+  EQ-Debug (Starter-Bat mit EQ aktiv) · Preamp statt Balance · Playlist-Optik (Checkboxen,
+  Scrollbar mit Pfeilen/Thumb, Live-Laufzeit `$t / $d`) · Idle-Screen pures Schwarz ·
+  Video/Visualizer füllen das Screen-Loch · Visualizer via `--audio-visual=goom|projectm`.
+- **Multi-Skin-Struktur:** `skins/<name>/{theme,variants,originals,Start-*.bat}`;
+  `tools/` = gemeinsame Kette (alle Tools mit `-Skin <name>`, Default `headspace`).
+- Ledger (alle Rulings): `.superpowers/sdd/2026-10-13-headspace-vlc-skin-plan/progress.md`
+- Plan/Specs: `docs/superpowers/…` · Nutzer-Doku: `README.md`
 
-## Nach dem Neustart — nächste Schritte
-1. VLC testen: `dist\Headspace-2x.vlt` per Rechtsklick → Open skin… (oder starten lassen)
-2. **Visuelle Verifikation Sonnen-Button** (steht noch aus wegen Environment-Blocker)
-3. **Task 4: EQ-Schublade** (l_eq: Balance→Mute-LED, Volume, 10-Band-EQ + Enable-Link, Drawer-Grafiken)
-4. Task 5: Playlist-Schublade (l_pl) · Task 6: l_both + Video · Task 7: README + Endabnahme
+## Betriebsregeln (wichtig)
+1. **Crashdump-Falle:** Wenn VLC plötzlich nicht mehr startet → Ordner
+   `%APPDATA%\vlc\crashdump` leeren (liegengebliebener Dump blockiert jeden Start).
+2. **„Open skin…" meiden** (`dialogs.changeSkin()` crasht auf VLC 3.0.23 reproduzierbar) →
+   Neustart über die Starter-Bats bzw. `--skins2-last`.
+3. **Start-Process-Argumente mit Leerzeichen immer quoten** (Fehlersuche sonst evtl. Scheinbefunde).
+4. Tests klickfrei per `skins2-config`-Layout-Preset; Klick-Tests nur nach Absprache.
+5. Native Pipelines mit frühem Abbruch (`Select-Object -First`) killen Prozesse →
+   Ausgabe erst in eine Variable sammeln, dann filtern.
 
-## 🚨 GELÖST: Der „VLC-crasht-Phasen"-Bug des Tages
-**Ursache:** Ein liegengebliebener Crash-Dump in `%APPDATA%\vlc\crashdump\*.dmp` lässt JEDEN VLC-Start crashen
-(auch Qt/Portable/Headless; auch nach Reboot!). Bewiesen per Gegen-Test (Dump rein → Crash, Dump raus → OK).
-**Fix/Regel:** Bei „VLC startet plötzlich nicht mehr": Ordner `%APPDATA%\vlc\crashdump` leeren.
-**Status:** AppData repariert (Settings/Artwork/Mediathek wiederhergestellt, Dump in `vlc.quarantine` als Beleg). Sonnen-Button visuell verifiziert (`research/progress/sun_verify_2x.png`), Skin 2× läuft.
-
-## Wichtige Kontexte
-- Ledger: `.superpowers/sdd/2026-10-13-headspace-vlc-skin-plan/progress.md` (alle Rulings)
-- Plan: `docs/superpowers/plans/2026-10-13-headspace-vlc-skin-plan.md`
-- Bekannte offene Punkte: Tooltips (auch mit Probe-Skin flaky → später), Umgebungs-Flakes
-- Bekannte Abweichungen: siehe `research/upscale-review/decisions.md` + Mapping `research/04-vlc-mapping-summary.md`
+## Offene Punkte
+- **Upscale** (Real-ESRGAN): swap-ready, nicht aktiv — Gate liegt in Plan-Task 1.
+- **Layout-Toggle-Klicktest** am Live-Fenster (bewusst beim Nutzer).
+- **Distribution Phase A** (Manifest+Engine+VLC-Pack) und **Bitmancer Visualizer Pack**:
+  eigene Docs unter `docs/` (eigener Strang).

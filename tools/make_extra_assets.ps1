@@ -1,8 +1,10 @@
 # make_extra_assets.ps1 - erzeugt die Zusatz-Assets (unser Ersatz-Design, Stil an Original angelehnt)
-# Ausgaben nach src/theme/images/ (werden von make_scaled_variant fuer 2x/3x mit-skaliert)
+# Ausgaben nach skins/<skin>/theme/images/ (werden von make_scaled_variant fuer 2x/3x mit-skaliert)
+param([string]$Skin = 'headspace', [string]$Root)
 $ErrorActionPreference = 'Stop'
+if(-not $Root){ $Root = Split-Path $PSScriptRoot -Parent }
 Add-Type -AssemblyName System.Drawing
-$dir = 'C:\GitHub\VLC_Skins\src\theme\images'
+$dir = Join-Path $Root "skins\$Skin\theme\images"
 New-Item -ItemType Directory -Force -Path $dir | Out-Null
 
 function Save-Bmp($b, [string]$name){

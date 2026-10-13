@@ -31,7 +31,7 @@ anderen Plattformen ungetestet.
 **Oder** die `.vlt` nach `C:\Program Files\VideoLAN\VLC\skins\` kopieren und in VLC unter
 *Werkzeuge → Einstellungen → Interface → „Benutzerdefiniertes Skin verwenden"* auswählen (Neustart nötig).
 
-**Am einfachsten:** `Start-Headspace.bat` doppelklicken (startet VLC mit der 2×-Version und
+**Am einfachsten:** `skins/headspace/Start-Headspace.bat` doppelklicken (startet VLC mit der 2×-Version und
 deaktivierter Mediathek → saubere Playlist wie im Original).
 
 > ℹ️ **Zur Playlist:** VLC zeigt im Skin standardmäßig seine Playlist-Wurzelknoten („Playlist"/„Media
@@ -72,7 +72,7 @@ deaktivierter Mediathek → saubere Playlist wie im Original).
 ## Bekannte Abweichungen vom Original (technisch bedingt, dokumentiert)
 
 - **Visualisierungen**: VLCs eigene Visualizer (goom, projectM, …) laufen **im Kopf-Screen** mit —
-  aktiviert über `--audio-visual=goom` bzw. `projectm` (siehe `Start-Headspace-Visualizer.bat`).
+  aktiviert über `--audio-visual=goom` bzw. `projectm` (siehe `skins/headspace/Start-Headspace-Visualizer.bat`).
   Im Skin selbst nicht umschaltbar (VLC bietet Skins keine Visualizer-Aktionen); die Optik des
   Original-Wählers (◄ Name ►) ist daher nicht funktional nachbildbar.
 - **Balance** → **Preamp** umfunktioniert (VLC-Skins können Balance nicht anbinden): gleiche
@@ -95,15 +95,29 @@ deaktivierter Mediathek → saubere Playlist wie im Original).
   (`archive.org/details/windowsmediaplayerskinscollection`). Alle Rechte am Original liegen bei Microsoft.
 - Dieser Fan-Port ist ein inoffizielles, nicht-kommerzielles Projekt.
 
+## Repo-Struktur (Multi-Skin)
+
+    skins/<name>/theme        Skin-Quellen (XML-Fragmente, Bilder, Fonts) -> theme.xml
+    skins/<name>/variants     gestagte 2x/3x-Varianten (generiert)
+    skins/<name>/originals    Original-Rohdateien (Referenz für die Konvertierung)
+    skins/<name>/Start-*.bat  Starter für dieses Skin
+    tools/                    gemeinsame Build-Kette (alle Tools: -Skin <name>, Default headspace)
+    dist/                     fertige .vlt-Dateien aller Skins
+    research/, docs/          Projektwissen & Doku
+
+**Neues Skin hinzufügen:** Ordner `skins/<name>/` anlegen (mit `theme/` und `originals/`),
+Original-Assets nach `originals/extracted/` legen, XML-Fragmente/Bilder anpassen — dann die
+Kette mit `-Skin <name>` durchlaufen lassen.
+
 ## Build (für Interessierte)
 
 ```
-tools/make_original_assets.ps1     # BMP -> PNG32 + Farbkey-Alpha (+ bitmaps.xml)
-tools/make_extra_assets.ps1        # LED/Füllung/Link-Grafiken (Ersatz-Elemente)
-tools/make_track_assets.ps1        # Slider-Tracks (Kappe-Linie-Kappe) aus Original-Kacheln
-tools/build_theme.ps1 -Scale 1     # theme.xml aus XML-Fragmenten (src/theme/xml/) + Validierung
-tools/pack.ps1                     # -> dist/Headspace.vlt
-tools/build_variants.ps1           # 2x/3x-Varianten -> dist/Headspace-2x.vlt / -3x.vlt
+tools/make_original_assets.ps1 -Skin headspace   # BMP -> PNG32 + Farbkey-Alpha (+ bitmaps.xml)
+tools/make_extra_assets.ps1 -Skin headspace      # LED/Füllung/Link/Playlist-/Scrollbar-Grafiken
+tools/make_track_assets.ps1 -Skin headspace      # Slider-Tracks (Kappe-Linie-Kappe) aus Original-Kacheln
+tools/build_theme.ps1 -Skin headspace -Scale 1   # theme.xml aus XML-Fragmenten (skins/<skin>/theme/xml/) + Validierung
+tools/pack.ps1 -Skin headspace                   # -> dist/Headspace.vlt
+tools/build_variants.ps1 -Skin headspace         # 2x/3x-Varianten -> dist/Headspace-2x.vlt / -3x.vlt
 tools/tests/run_task3.ps1 …        # Test-Suiten (klickfrei)
 ```
 

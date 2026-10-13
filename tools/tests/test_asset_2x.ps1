@@ -2,7 +2,7 @@
 # Erwartet Ausgaben in research/upscale-review/renders/<name>.<model>.png
 $root = 'C:\GitHub\VLC_Skins'
 $renders = Join-Path $root 'research\upscale-review\renders'
-$orig = Join-Path $root 'research\original\extracted'
+$orig = Join-Path $root 'skins\headspace\originals\extracted'
 $verify = Join-Path $root 'tools\tests\verify_asset.ps1'
 
 $cases = @(

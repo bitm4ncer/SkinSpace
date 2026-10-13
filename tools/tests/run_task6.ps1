@@ -46,6 +46,15 @@ Test-Skin 'l_closed' 549 "$tmp\clipport.mp4" "$tmp\t6_video_closed_port.png" 'Vi
 Test-Skin 'l_closed' 549 "$root\research\spike\media\testaudio.mp3" "$tmp\t6_audio_idle.png" 'Audio-Idle l_closed'
 Test-Skin 'l_both' 760 "$root\research\spike\media\testvideo.mp4" "$tmp\t6_video_both.png" 'Video l_both'
 
+# broken.vlt selbst bauen (kaputte theme.xml) - damit die Suite nicht von tmp-Resten abhaengt
+$brokenDir = "$tmp\broken_pack"
+New-Item -ItemType Directory -Force -Path $brokenDir | Out-Null
+[System.IO.File]::WriteAllText("$brokenDir\theme.xml", 'BROKEN<<<NOT XML', (New-Object System.Text.UTF8Encoding($false)))
+Remove-Item "$tmp\broken.vlt" -ErrorAction SilentlyContinue
+Push-Location $brokenDir
+& 'C:\Program Files\7-Zip\7z.exe' a -tzip "$tmp\broken.vlt" theme.xml | Out-Null
+Pop-Location
+
 # --- Fehlerfall A: kaputtes theme.xml -> erwartet: SAUBERER EXIT ("no skins found"), kein Crash ---
 (Get-Content "$tmp\vlcrc.task6_backup") | Where-Object { $_ -notmatch '^skins2-(last|config)=' } | Set-Content $vlcrc
 Remove-Item "$env:APPDATA\vlc\crashdump" -Recurse -Force -ErrorAction SilentlyContinue

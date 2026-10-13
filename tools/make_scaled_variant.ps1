@@ -1,10 +1,14 @@
-# make_scaled_variant.ps1 — erzeugt eine N×-Bildvariante (Nearest-Neighbor = Pixel-Look) aus src/theme/images
+# make_scaled_variant.ps1 — erzeugt eine N×-Bildvariante (Nearest-Neighbor = Pixel-Look) aus skins/<skin>/theme/images
 param(
   [Parameter(Mandatory)][int]$Scale,
   [Parameter(Mandatory)][string]$OutDir,
-  [string]$Src = 'C:\GitHub\VLC_Skins\src\theme\images'
+  [string]$Skin = 'headspace',
+  [string]$Root,
+  [string]$Src
 )
 $ErrorActionPreference = 'Stop'
+if(-not $Root){ $Root = Split-Path $PSScriptRoot -Parent }
+if(-not $Src){ $Src = Join-Path $Root "skins\$Skin\theme\images" }
 Add-Type -AssemblyName System.Drawing
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 $count = 0

@@ -1,7 +1,7 @@
 # test_original_assets.ps1 — verifiziert die 1:1-Konvertierung aller Original-Assets (Task 2)
 $root = 'C:\GitHub\VLC_Skins'
-$src  = Join-Path $root 'research\original\extracted'
-$img  = Join-Path $root 'src\theme\images'
+$src  = Join-Path $root 'skins\headspace\originals\extracted'
+$img  = Join-Path $root 'skins\headspace\theme\images'
 Add-Type -AssemblyName System.Drawing
 
 function Get-PixelStats([string]$path, [string[]]$keys) {

@@ -5,7 +5,7 @@ $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 
 $root = 'C:\GitHub\VLC_Skins'
-$src = Join-Path $root 'research\original\extracted'
+$src = Join-Path $root 'skins\headspace\originals\extracted'
 $renders = Join-Path $ReviewDir 'renders'
 
 $cases = @(

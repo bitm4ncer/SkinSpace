@@ -20,7 +20,7 @@ else {
 # --- Fall B: Mutant (image-Referenz auf nicht existierendes Bitmap) ---
 $fragDir = Join-Path $tmp 'frag_broken'
 New-Item -ItemType Directory -Force -Path $fragDir | Out-Null
-Copy-Item (Join-Path $root 'src\theme\xml\*') $fragDir -Force
+Copy-Item (Join-Path $root 'skins\headspace\theme\xml\*') $fragDir -Force
 $closed = Join-Path $fragDir 'layout_closed.xml'
 $txt = Get-Content $closed -Raw
 $txt = $txt -replace 'image="head\.png"', 'image="doesnotexist.png"'

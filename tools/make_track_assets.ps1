@@ -1,9 +1,11 @@
 # make_track_assets.ps1 - baut die Track-Komposite aus den Original-Kacheln (Split: Kappe/Stiel/Kappe)
 #   eq_track_v.png (11x76) = Kappe oben (5px) + gruene Linie (Stielzeile) + gespiegelte Kappe unten
 #   sl_track_h.png (71x11) = Kappe links + Linie + gespiegelte Kappe rechts
+param([string]$Skin = 'headspace', [string]$Root)
 $ErrorActionPreference = 'Stop'
+if(-not $Root){ $Root = Split-Path $PSScriptRoot -Parent }
 Add-Type -AssemblyName System.Drawing
-$img = 'C:\GitHub\VLC_Skins\src\theme\images'
+$img = Join-Path $Root "skins\$Skin\theme\images"
 $capV = 5    # vertikale Kappengroesse (aus Zeilenanalyse)
 $capH = 5    # horizontale Kappengroesse
 

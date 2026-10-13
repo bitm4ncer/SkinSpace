@@ -1,14 +1,16 @@
-# build_theme.ps1 — assembliert src/theme/theme.xml aus XML-Fragmenten und validiert.
-# Parameter: -Scale (Koordinaten-Multiplikator; 1 = Originalgröße), -FragmentDir (für Tests), -OutFile
+# build_theme.ps1 — assembliert skins/<skin>/theme/theme.xml aus XML-Fragmenten und validiert.
+# Parameter: -Skin (Ordner unter skins/, Default headspace), -Scale (Koordinaten-Multiplikator), -FragmentDir (für Tests), -OutFile
 param(
   [int]$Scale = 1,
-  [string]$Root = 'C:\GitHub\VLC_Skins',
+  [string]$Skin = 'headspace',
+  [string]$Root,
   [string]$FragmentDir,
   [string]$OutFile
 )
 $ErrorActionPreference = 'Stop'
-if(-not $FragmentDir){ $FragmentDir = Join-Path $Root 'src\theme\xml' }
-if(-not $OutFile){ $OutFile = Join-Path $Root 'src\theme\theme.xml' }
+if(-not $Root){ $Root = Split-Path $PSScriptRoot -Parent }
+if(-not $FragmentDir){ $FragmentDir = Join-Path $Root "skins\$Skin\theme\xml" }
+if(-not $OutFile){ $OutFile = Join-Path $Root "skins\$Skin\theme\theme.xml" }
 
 function Read-Frag([string]$name){
   $p = Join-Path $FragmentDir $name

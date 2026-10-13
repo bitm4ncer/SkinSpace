@@ -3,8 +3,8 @@ $root = 'C:\GitHub\VLC_Skins'
 Add-Type -AssemblyName System.Drawing
 $fail = 0
 foreach($n in 2,3){
-  $stage = Join-Path $root "src\variants\${n}x"
-  $srcImg = Join-Path $root 'src\theme\images'
+  $stage = Join-Path $root "skins\headspace\variants\${n}x"
+  $srcImg = Join-Path $root 'skins\headspace\theme\images'
   $varImg = Join-Path $stage 'images'
   # 1) Bilder: gleiche Namen, exakt N×
   $bad = 0; $count = 0
