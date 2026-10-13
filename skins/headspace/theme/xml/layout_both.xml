@@ -2,7 +2,7 @@
 
       <!-- ==== Screen-Hintergrund + Video ==== -->
       <Image id="both.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
-      <Video id="both.vid" x="273" y="61" width="210" height="153" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="both.vid" x="271" y="59" width="214" height="157" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Linkes Ohr OFFEN: EQ-Schublade ==== -->
       <Image id="both.eq.ear" x="0" y="86" image="left_ear.png"/>
