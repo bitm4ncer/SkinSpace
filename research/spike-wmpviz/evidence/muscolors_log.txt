@@ -1,0 +1,48 @@
+
+######## spike run 2026-10-13T21:22:21 dll=C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\muscolors_unpack\wmpvis.dll ########
+===== child [sweep "C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\muscolors_unpack\wmpvis.dll" "C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\out_muscolors\sweep_hits.txt"] exit=0x00000000 =====
+[sweep] candidates to try: 383
+[sweep] LoadLibrary OK
+[sweep] HIT {fc2aad0f-d03a-453b-91a6-77cadee26282} @ .rdata@0x350
+[sweep] done: tried=383 hits=1
+
+===== child [probe "C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\muscolors_unpack\wmpvis.dll" {fc2aad0f-d03a-453b-91a6-77cadee26282}] exit=0x00000000 =====
+[probe] dll=C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\muscolors_unpack\wmpvis.dll clsid={fc2aad0f-d03a-453b-91a6-77cadee26282}
+[probe] DllGetClassObject hr=0x00000000
+[probe] CreateInstance(IID_IWMPEffects) hr=0x00000000
+[probe] QI(IID_IWMPEffects2) hr=0x80004002
+[probe] SetCurrentPreset(0) hr=0x00000000
+[probe] GetCapabilities hr=0x00000000 caps=0x00000004
+[probe] GetTitle='Musical Colors'
+[probe] GetPresetCount hr=0x00000000 count=20
+[probe] GetCurrentPreset hr=0x00000000 cur=0
+[probe] GetPresetTitle(0)='Night Lights'
+[probe] PROBE_OK
+
+===== child [render "C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\muscolors_unpack\wmpvis.dll" {fc2aad0f-d03a-453b-91a6-77cadee26282} "C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\out_muscolors"] exit=0x00000000 =====
+[render] dll=C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\muscolors_unpack\wmpvis.dll clsid={fc2aad0f-d03a-453b-91a6-77cadee26282} out=C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\out_muscolors
+[render] LoadLibrary OK
+[render] DllGetClassObject hr=0x00000000
+[render] CreateInstance(IID_IWMPEffects) hr=0x00000000
+[render] QI(IID_IWMPEffects2) hr=0x80004002
+[render] SetCurrentPreset(0) hr=0x00000000
+[render] GetCapabilities hr=0x00000000 caps=0x00000004
+[render] GetTitle='Musical Colors'
+[render] GetPresetCount hr=0x00000000 count=20
+[render] GetPresetTitle(0)='Night Lights'
+[render] MediaInfo(2,44100,'Spike Synthetic Track') hr=0x00000000
+[render] memDC=0x6101156E dib=0x53051CCE bits=0x4E60000
+[render] frame 0 render_hr=0x00000000 nonblack=0/307200
+[render] frame 29 render_hr=0x00000000 nonblack=112148/307200
+[render] frame 59 render_hr=0x00000000 nonblack=113907/307200
+[render] frame 89 render_hr=0x00000000 nonblack=108297/307200
+[render] frame 119 render_hr=0x00000000 nonblack=110785/307200
+[render] diff(frame_000, frame_029) = 120788 px (39.3%)
+[render] diff(frame_000, frame_059) = 122445 px (39.9%)
+[render] diff(frame_000, frame_089) = 118638 px (38.6%)
+[render] diff(frame_000, frame_119) = 121021 px (39.4%)
+[render] Render hr 0x00000000 count=120
+[render] WINDOW hwnd=0x4209EC class='GDI+ Hook Window Class' title='GDI+ Window (WmpHost.exe)'
+[render] WINDOW hwnd=0x260C44 class='IME' title='Default IME'
+[render] RENDER_DONE
+

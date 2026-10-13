@@ -21,6 +21,7 @@ Der VLC-Headspace-Skin existiert (`dist/Headspace.vlt` + Varianten). Neu kommt e
 3. **Hosting:** **Runtime-Downloader + BYO-Fallback** — keine proprietären Binaries in Repo oder Release. Repo enthält nur eigenes Material, Manifeste, Hashes, Doku.
 4. **Winamp-Pack:** Plugin-Track **und** Standalone-Track.
 5. **Technik:** Ansatz A — Manifest + PowerShell-Engine + Inno-Setup-Installer; Engine zusätzlich als portables Skript.
+6. **Zusatz-Pack:** „Bitmancer" — eigene Retro- und Modern-Visualizer eines separaten Agenten, 100 % Original-Inhalt (`redistribution: allowed`) — wird als viertes, vorausgewähltes Pack in den Installer eingeplant (§5.4).
 
 **Faktenlage (recherchiert):** WMP-Visualizer sind 32-bit-COM-DLLs (`IWMPEffects`) und laufen ausschließlich in Windows Media Player (Legacy). VLC nutzt eigene Visualizer (projectM/MilkDrop-Presets, Goom, Spectrum/Scope/VU u. a.). Der Visualizer aus dem Headspace-Screenshot, **WhiteCap (SoundSpectrum)**, ist kommerziell und läuft seit Version 6.9.8 (Sept. 2026) nativ in VLC.
 
@@ -104,6 +105,14 @@ Beispiel:
 - **Plugin-Track** (nur wenn Winamp 5.x oder WACUP erkannt): MilkDrop 2 (gefixter Community-Build, nicht das buggy 2.25d aus Winamp 5.9x), AVS + Preset-Packs, Geiss → in den `Plugins`-Ordner des erkannten Players. Winamp/WACUP selbst wird **nicht** gebündelt (bei Fehlen: Info + Download-Links).
 - **Standalone-Track** (immer möglich): MilkDrop 3 portable + Presets + Verknüpfung; Butterchurn als Browser-Info.
 
+### 5.4 Bitmancer-Pack (eigene Visualizer, vorausgewählt ✅)
+
+- **Eigenproduktion** eines separaten Agenten: eigene Retro- und Modern-Visualizer, 100 % eigener Code/Content → `redistribution: allowed`, darf in `payload/` liegen (kein Downloader nötig).
+- **Retro-Track:** neue `IWMPEffects`-DLLs im Stil der Klassiker (GDI-basiert; im WMP-Pack via `regsvr32` installierbar und im experimentellen Host aus §5.2 nutzbar) → `payload/bitmancer/retro/`.
+- **Modern-Track:** neue `.milk`-Presets (MilkDrop-/projectM-Format) im Bitmancer-Look für VLC → `payload/bitmancer/presets/`.
+- **Manifest:** Items mit Prefix `bitmancer.` in den VLC-/WMP-Manifesten (inkl. CLSIDs für Phase F); eigener Abschnitt im Installer, **default an**.
+- **Handoff:** `docs/handoffs/2026-10-13-bitmancer-visualizer-pack.md`.
+
 ## 6. Engine
 
 - **Erkennung:** VLC (Registry/Pfad), WMP Legacy (Installation + Feature-Status), Winamp/WACUP (Registry/Plugin-Ordner), `vlcrc`.
@@ -155,6 +164,7 @@ Geplant und umgesetzt wird phasenweise; **der erste Implementierungsplan umfasst
 | C | Winamp-Pack (Plugin- + Standalone-Track) | beide Tracks getestet |
 | D | Inno-Installer um die Engine | Wizard-Flow DE/EN, Silent-Test, Uninstall |
 | E | Release (Root-README, Release-ZIP, Offline-Cache-Tool, Credits) | Release-ZIP enthält Setup + Cache-Tool + Doku |
+| P (parallel, separater Agent) | Bitmancer-Pack (eigene Retro- + Modern-Visualizer), Handoff `docs/handoffs/2026-10-13-bitmancer-visualizer-pack.md` | Items in Manifest + Installer wählbar; `redistribution: allowed` |
 | F (optional, eigener Spec-/Plan-Zyklus) | Experimenteller WMP-Viz-Host in VLC (`vizhost32.exe` + IPC) | opt-in läuft; Zusicherung nur für GDI-Vizzes, D3D-Ära per zweitem Spike geklärt |
 
 Jede Phase endet mit Tests + Commit. Neue Items sind danach reine JSON-Änderungen.

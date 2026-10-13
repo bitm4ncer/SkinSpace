@@ -1,0 +1,48 @@
+
+######## spike run 2026-10-13T21:22:14 dll=C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\alchemy.dll ########
+===== child [sweep "C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\alchemy.dll" "C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\out_alchemy\sweep_hits.txt"] exit=0x00000000 =====
+[sweep] candidates to try: 440
+[sweep] LoadLibrary OK
+[sweep] HIT {0aa02e8d-f851-4cb0-9f64-bba9be7a983d} @ .rsrc@0x6A34
+[sweep] done: tried=440 hits=1
+
+===== child [probe "C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\alchemy.dll" {0aa02e8d-f851-4cb0-9f64-bba9be7a983d}] exit=0x00000000 =====
+[probe] dll=C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\alchemy.dll clsid={0aa02e8d-f851-4cb0-9f64-bba9be7a983d}
+[probe] DllGetClassObject hr=0x00000000
+[probe] CreateInstance(IID_IWMPEffects) hr=0x00000000
+[probe] QI(IID_IWMPEffects2) hr=0x00000000 (IWMPEffects2 supported)
+[probe] SetCurrentPreset(0) hr=0x00000000
+[probe] GetCapabilities hr=0x00000000 caps=0x00000000
+[probe] GetTitle='Tolerance'
+[probe] GetPresetCount hr=0x00000000 count=1
+[probe] GetCurrentPreset hr=0x00000000 cur=0
+[probe] GetPresetTitle(0)='Random'
+[probe] PROBE_OK
+
+===== child [render "C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\alchemy.dll" {0aa02e8d-f851-4cb0-9f64-bba9be7a983d} "C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\out_alchemy"] exit=0x00000000 =====
+[render] dll=C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\alchemy.dll clsid={0aa02e8d-f851-4cb0-9f64-bba9be7a983d} out=C:\Users\konta\AppData\Local\Temp\opencode\wmpviz-spike\out_alchemy
+[render] LoadLibrary OK
+[render] DllGetClassObject hr=0x00000000
+[render] CreateInstance(IID_IWMPEffects) hr=0x00000000
+[render] QI(IID_IWMPEffects2) hr=0x00000000 (IWMPEffects2 supported)
+[render] SetCurrentPreset(0) hr=0x00000000
+[render] GetCapabilities hr=0x00000000 caps=0x00000000
+[render] GetTitle='Tolerance'
+[render] GetPresetCount hr=0x00000000 count=1
+[render] GetPresetTitle(0)='Random'
+[render] MediaInfo(2,44100,'Spike Synthetic Track') hr=0x00000000
+[render] memDC=0x6F011CF8 dib=0x52051CCE bits=0x4DD0000
+[render] frame 0 render_hr=0x00000000 nonblack=11452/307200
+[render] frame 29 render_hr=0x00000000 nonblack=307196/307200
+[render] frame 59 render_hr=0x00000000 nonblack=307196/307200
+[render] frame 89 render_hr=0x00000000 nonblack=307196/307200
+[render] frame 119 render_hr=0x00000000 nonblack=307196/307200
+[render] diff(frame_000, frame_029) = 307196 px (100.0%)
+[render] diff(frame_000, frame_059) = 307196 px (100.0%)
+[render] diff(frame_000, frame_089) = 307196 px (100.0%)
+[render] diff(frame_000, frame_119) = 307196 px (100.0%)
+[render] Render hr 0x00000000 count=120
+[render] WINDOW hwnd=0x250C44 class='GDI+ Hook Window Class' title='GDI+ Window (WmpHost.exe)'
+[render] WINDOW hwnd=0x200C76 class='IME' title='Default IME'
+[render] RENDER_DONE
+
