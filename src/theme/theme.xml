@@ -123,6 +123,16 @@
   <!-- Track-Komposite aus den Original-Kacheln (tools/make_track_assets.ps1) -->
   <Bitmap id="eq_track_v.png"    file="images/eq_track_v.png"    alphacolor="#FE01FE"/>
   <Bitmap id="sl_track_h.png"    file="images/sl_track_h.png"    alphacolor="#FE01FE"/>
+  <!-- Playlist-Optik (nachgebaut: WMP rendert Checkbox/Scrollbar intern, keine Original-Assets) -->
+  <Bitmap id="pl_check.png"                    file="images/pl_check.png"                    alphacolor="#FE01FE"/>
+  <Bitmap id="pl_arrow_up_01_default.png"      file="images/pl_arrow_up_01_default.png"      alphacolor="#FE01FE"/>
+  <Bitmap id="pl_arrow_up_02_rollover.png"     file="images/pl_arrow_up_02_rollover.png"     alphacolor="#FE01FE"/>
+  <Bitmap id="pl_arrow_down_01_default.png"    file="images/pl_arrow_down_01_default.png"    alphacolor="#FE01FE"/>
+  <Bitmap id="pl_arrow_down_02_rollover.png"   file="images/pl_arrow_down_02_rollover.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="pl_scroll_track.png"             file="images/pl_scroll_track.png"             alphacolor="#FE01FE"/>
+  <Bitmap id="pl_scroll_thumb_01_default.png"  file="images/pl_scroll_thumb_01_default.png"  alphacolor="#FE01FE"/>
+  <Bitmap id="pl_scroll_thumb_02_rollover.png" file="images/pl_scroll_thumb_02_rollover.png" alphacolor="#FE01FE"/>
+  <Bitmap id="pl_scroll_thumb_03_down.png"     file="images/pl_scroll_thumb_03_down.png"     alphacolor="#FE01FE"/>
 
   <Window id="main" position="Center">
     <Layout id="l_eq" width="549" height="394">
@@ -267,9 +277,16 @@
       <Image id="pl.drawerTop" x="501" y="86" image="right_drawer_top.png"/>
       <Image id="pl.drawerBottom" x="501" y="236" image="right_drawer_bottom.png"/>
       <Image id="pl.fill" x="501" y="96" width="172" height="140" resize="mosaic" image="drawer_fill.png"/>
-      <Playtree id="pl.list" x="501" y="96" width="172" height="140" flat="true" font="small"
-                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="white" playcolor="#E8FFC0" selcolor="#77CE07">
-        <Slider id="pl.scroll" x="163" y="6" points="(5,5),(5,125)" up="vertical_thumb.png" tooltiptext="Playlist scroll"/>
+      <!-- Scrollbar-Spalte: vor dem Tree gezeichnet (Thumb des Tree-Kind-Sliders liegt darueber) -->
+      <Image id="pl.scrollTrack" x="661" y="108" image="pl_scroll_track.png"/>
+      <Image id="pl.scrollUp" x="661" y="96" image="pl_arrow_up_01_default.png"/>
+      <Image id="pl.scrollDown" x="661" y="224" image="pl_arrow_down_01_default.png"/>
+      <Playtree id="pl.list" x="501" y="96" width="160" height="140" flat="true" font="small"
+                itemimage="pl_check.png"
+                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="white" playcolor="#E8FFC0" selcolor="#5FA517">
+        <Slider id="pl.scroll" x="661" y="108" points="(6,107),(6,9)"
+                up="pl_scroll_thumb_01_default.png" over="pl_scroll_thumb_02_rollover.png" down="pl_scroll_thumb_03_down.png"
+                tooltiptext="Playlist scroll"/>
       </Playtree>
       <Image id="pl.ear" x="673" y="86" image="right_ear.png"/>
       <Button id="pl.handle" x="734" y="151"
@@ -393,9 +410,16 @@
       <Image id="both.pl.drawerTop" x="501" y="86" image="right_drawer_top.png"/>
       <Image id="both.pl.drawerBottom" x="501" y="236" image="right_drawer_bottom.png"/>
       <Image id="both.pl.fill" x="501" y="96" width="172" height="140" resize="mosaic" image="drawer_fill.png"/>
-      <Playtree id="both.pl.list" x="501" y="96" width="172" height="140" flat="true" font="small"
-                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="white" playcolor="#E8FFC0" selcolor="#77CE07">
-        <Slider id="both.pl.scroll" x="163" y="6" points="(5,5),(5,125)" up="vertical_thumb.png" tooltiptext="Playlist scroll"/>
+      <!-- Scrollbar-Spalte: vor dem Tree gezeichnet (Thumb des Tree-Kind-Sliders liegt darueber) -->
+      <Image id="both.pl.scrollTrack" x="661" y="108" image="pl_scroll_track.png"/>
+      <Image id="both.pl.scrollUp" x="661" y="96" image="pl_arrow_up_01_default.png"/>
+      <Image id="both.pl.scrollDown" x="661" y="224" image="pl_arrow_down_01_default.png"/>
+      <Playtree id="both.pl.list" x="501" y="96" width="160" height="140" flat="true" font="small"
+                itemimage="pl_check.png"
+                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="white" playcolor="#E8FFC0" selcolor="#5FA517">
+        <Slider id="both.pl.scroll" x="661" y="108" points="(6,107),(6,9)"
+                up="pl_scroll_thumb_01_default.png" over="pl_scroll_thumb_02_rollover.png" down="pl_scroll_thumb_03_down.png"
+                tooltiptext="Playlist scroll"/>
       </Playtree>
       <Image id="both.pl.ear" x="673" y="86" image="right_ear.png"/>
       <Button id="both.pl.handle" x="734" y="151"

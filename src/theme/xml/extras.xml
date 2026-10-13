@@ -7,3 +7,13 @@
   <!-- Track-Komposite aus den Original-Kacheln (tools/make_track_assets.ps1) -->
   <Bitmap id="eq_track_v.png"    file="images/eq_track_v.png"    alphacolor="#FE01FE"/>
   <Bitmap id="sl_track_h.png"    file="images/sl_track_h.png"    alphacolor="#FE01FE"/>
+  <!-- Playlist-Optik (nachgebaut: WMP rendert Checkbox/Scrollbar intern, keine Original-Assets) -->
+  <Bitmap id="pl_check.png"                    file="images/pl_check.png"                    alphacolor="#FE01FE"/>
+  <Bitmap id="pl_arrow_up_01_default.png"      file="images/pl_arrow_up_01_default.png"      alphacolor="#FE01FE"/>
+  <Bitmap id="pl_arrow_up_02_rollover.png"     file="images/pl_arrow_up_02_rollover.png"     alphacolor="#FE01FE"/>
+  <Bitmap id="pl_arrow_down_01_default.png"    file="images/pl_arrow_down_01_default.png"    alphacolor="#FE01FE"/>
+  <Bitmap id="pl_arrow_down_02_rollover.png"   file="images/pl_arrow_down_02_rollover.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="pl_scroll_track.png"             file="images/pl_scroll_track.png"             alphacolor="#FE01FE"/>
+  <Bitmap id="pl_scroll_thumb_01_default.png"  file="images/pl_scroll_thumb_01_default.png"  alphacolor="#FE01FE"/>
+  <Bitmap id="pl_scroll_thumb_02_rollover.png" file="images/pl_scroll_thumb_02_rollover.png" alphacolor="#FE01FE"/>
+  <Bitmap id="pl_scroll_thumb_03_down.png"     file="images/pl_scroll_thumb_03_down.png"     alphacolor="#FE01FE"/>

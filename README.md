@@ -70,7 +70,10 @@ deaktivierter Mediathek → saubere Playlist wie im Original).
 - **reset**-Link schaltet den Equalizer an/aus statt Gains zu nullen.
 - Keine „disabled"-Optik auf Knöpfen (skins2 kennt nur up/hover/down).
 - Ohr-Schubladen öffnen **ohne Slide-Animation** (skins2 hat keine Bewegungsanimation).
-- Playlist einzeilig ohne Dauer-Spalte (skins2-Limit).
+- Playlist-Optik: Checkboxen pro Zeile und Scrollbar mit Pfeilen sind **nachgebaute Original-Optik** —
+  VLC kennt keinen Eintrag-Status (Checkboxen sind immer „an") und keine Pfeil-Scrollfunktion
+  (gescrollt wird per Mausrad oder Ziehen am Thumb). Die **Dauer-Spalte fehlt**: VLC liefert dem Skin
+  nur den Titel (Engine-Limit, keine Dauer verfügbar).
 - Cursor wechselt nicht zu einem Hand-Cursor (im Skin-System nicht vorgesehen).
 - Ton-Standard-Optik des Original-Screens (Download-Fortschritt im Seekbar) entfällt.
 

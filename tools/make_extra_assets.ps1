@@ -51,8 +51,66 @@ foreach($on in @($false, $true)){
   Save-Bmp $b $name
 }
 
+# --- Playlist-Optik: Checkbox + Scrollbar (WMP rendert das intern; stilgerecht nachgebaut) ---
+# Checkbox 10x10 (dunkle Box, heller Haken) - wird via itemimage in jeder Playlist-Zeile gezeichnet
+$b = New-Object System.Drawing.Bitmap(10, 10, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+$g = [System.Drawing.Graphics]::FromImage($b)
+$g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+$g.Clear([System.Drawing.Color]::Transparent)
+$g.FillRectangle((New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(255,15,42,0))), 0, 0, 10, 10)
+$g.DrawRectangle((New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,26,61,2), 1)), 0, 0, 9, 9)
+$penC = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,119,206,7), 2)
+[System.Drawing.Point[]]$ptsC = @((New-Object System.Drawing.Point(2,5)), (New-Object System.Drawing.Point(4,7)), (New-Object System.Drawing.Point(8,3)))
+$g.DrawLines($penC, $ptsC)
+$g.Dispose()
+Save-Bmp $b 'pl_check.png'
+
+# Pfeile 12x12 (oben/unten, default/rollover)
+foreach($ud in @('up','down')){
+  foreach($hv in @($false, $true)){
+    $b = New-Object System.Drawing.Bitmap(12, 12, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+    $g = [System.Drawing.Graphics]::FromImage($b)
+    $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+    $g.Clear([System.Drawing.Color]::Transparent)
+    $bgc = if($hv){ [System.Drawing.Color]::FromArgb(255,53,111,8) } else { [System.Drawing.Color]::FromArgb(255,36,84,3) }
+    $trc = if($hv){ [System.Drawing.Color]::FromArgb(255,168,232,90) } else { [System.Drawing.Color]::FromArgb(255,119,206,7) }
+    $g.FillRectangle((New-Object System.Drawing.SolidBrush($bgc)), 0, 0, 12, 12)
+    $g.DrawRectangle((New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,26,61,2), 1)), 0, 0, 11, 11)
+    if($ud -eq 'up'){ [System.Drawing.Point[]]$pts = @((New-Object System.Drawing.Point(2,8)), (New-Object System.Drawing.Point(6,4)), (New-Object System.Drawing.Point(10,8))) }
+    else { [System.Drawing.Point[]]$pts = @((New-Object System.Drawing.Point(2,4)), (New-Object System.Drawing.Point(6,8)), (New-Object System.Drawing.Point(10,4))) }
+    $g.FillPolygon((New-Object System.Drawing.SolidBrush($trc)), $pts)
+    $g.Dispose()
+    $sfx = if($hv){'02_rollover'}else{'01_default'}
+    Save-Bmp $b ("pl_arrow_{0}_{1}.png" -f $ud, $sfx)
+  }
+}
+
+# Scroll-Track 12x116 (helle Rinne) + Thumb 12x18 (3 Zustaende)
+$b = New-Object System.Drawing.Bitmap(12, 116, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+$g = [System.Drawing.Graphics]::FromImage($b)
+$g.Clear([System.Drawing.Color]::Transparent)
+$g.FillRectangle((New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(255,26,61,2))), 0, 0, 12, 116)
+$g.FillRectangle((New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(255,53,111,8))), 1, 1, 10, 114)
+$g.Dispose()
+Save-Bmp $b 'pl_scroll_track.png'
+
+foreach($st in @('01_default','02_rollover','03_down')){
+  $b = New-Object System.Drawing.Bitmap(12, 18, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+  $g = [System.Drawing.Graphics]::FromImage($b)
+  $g.Clear([System.Drawing.Color]::Transparent)
+  $bgc = switch($st){ '01_default' { [System.Drawing.Color]::FromArgb(255,26,61,2) } '02_rollover' { [System.Drawing.Color]::FromArgb(255,36,84,3) } '03_down' { [System.Drawing.Color]::FromArgb(255,53,111,8) } }
+  $grc = switch($st){ '01_default' { [System.Drawing.Color]::FromArgb(255,119,206,7) } '02_rollover' { [System.Drawing.Color]::FromArgb(255,168,232,90) } '03_down' { [System.Drawing.Color]::FromArgb(255,200,240,122) } }
+  $g.FillRectangle((New-Object System.Drawing.SolidBrush($bgc)), 0, 0, 12, 18)
+  $g.DrawRectangle((New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,15,42,0), 1)), 0, 0, 11, 17)
+  $g.FillRectangle((New-Object System.Drawing.SolidBrush($grc)), 3, 7, 6, 1)
+  $g.FillRectangle((New-Object System.Drawing.SolidBrush($grc)), 3, 10, 6, 1)
+  $g.Dispose()
+  Save-Bmp $b ("pl_scroll_thumb_{0}.png" -f $st)
+}
+
 Get-ChildItem $dir -Filter 'led_*' | Select-Object Name
 Get-ChildItem $dir -Filter 'eq_link_*' | Select-Object Name
 Get-ChildItem $dir -Filter 'drawer_fill*' | Select-Object Name
+Get-ChildItem $dir -Filter 'pl_*' | Select-Object Name
 'OK: Zusatz-Assets erzeugt'
 exit 0
