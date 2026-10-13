@@ -173,7 +173,7 @@
       <Image id="eq.drawerRight" x="753" y="258" image="left_drawer_right.png"/>
       <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
       <Image id="eq.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
-      <Video id="eq.vid" x="825" y="189" width="618" height="447" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="eq.vid" x="813" y="177" width="642" height="471" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== EQ-Bedienelemente im Drawer ==== -->
       <!-- Preamp (umfunktioniert aus dem Original-Balance-Slider - VLC-Skins koennen Balance technisch nicht anbinden) -->
@@ -288,7 +288,7 @@
               up="L_drwr_open_01_default.png" over="L_drwr_open_02_rollover.png" down="L_drwr_open_03_down.png"
               action="main.setLayout(l_both)" tooltiptext="Open graphic equalizer controls"/>
       <Image id="pl.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
-      <Video id="pl.vid" x="825" y="189" width="618" height="447" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="pl.vid" x="813" y="177" width="642" height="471" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Rechtes Ohr OFFEN: Schublade (sPlEar bei x=488) ==== -->
       <Image id="pl.drawerLeft" x="1464" y="258" image="right_drawer_left.png"/>
@@ -377,7 +377,7 @@
 
       <!-- ==== Screen-Hintergrund + Video ==== -->
       <Image id="both.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
-      <Video id="both.vid" x="825" y="189" width="618" height="447" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="both.vid" x="813" y="177" width="642" height="471" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Linkes Ohr OFFEN: EQ-Schublade ==== -->
       <Image id="both.eq.ear" x="0" y="258" image="left_ear.png"/>
@@ -547,7 +547,7 @@
               action="main.setLayout(l_pl)" tooltiptext="Open playlist"/>
       <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
       <Image id="cl.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
-      <Video id="cl.vid" x="825" y="189" width="618" height="447" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="cl.vid" x="813" y="177" width="642" height="471" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Kopf (zichbar) ==== -->
       <Image id="cl.head" x="783" y="0" image="head.png" action="move"/>
