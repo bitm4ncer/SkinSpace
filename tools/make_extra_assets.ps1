@@ -35,17 +35,17 @@ $g.Clear([System.Drawing.Color]::FromArgb(255, 40, 95, 3))
 $g.Dispose()
 Save-Bmp $b 'drawer_fill.png'
 
-# --- EQ-Enable-Link (Text "equalizer", unterstrichen): on/off ---
+# --- "reset"-Link (unterstrichen): on/off (Funktion: EQ an/aus; Original-Text "reset" beibehalten) ---
 foreach($on in @($false, $true)){
-  $b = New-Object System.Drawing.Bitmap(42, 10, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+  $b = New-Object System.Drawing.Bitmap(24, 10, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
   $g = [System.Drawing.Graphics]::FromImage($b)
   $g.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::AntiAlias
   $g.Clear([System.Drawing.Color]::Transparent)
   $col = if($on){ [System.Drawing.Color]::FromArgb(255,119,206,7) } else { [System.Drawing.Color]::FromArgb(255,85,130,34) }
   $f = New-Object System.Drawing.Font('Segoe UI', 7)
   $br = New-Object System.Drawing.SolidBrush($col)
-  $g.DrawString('equalizer', $f, $br, 0, -1)
-  $g.DrawLine((New-Object System.Drawing.Pen($col, 1)), 0, 9, 40, 9)
+  $g.DrawString('reset', $f, $br, 0, -1)
+  $g.DrawLine((New-Object System.Drawing.Pen($col, 1)), 0, 9, 21, 9)
   $f.Dispose(); $br.Dispose(); $g.Dispose()
   $name = if($on){'eq_link_on.png'}else{'eq_link_off.png'}
   Save-Bmp $b $name

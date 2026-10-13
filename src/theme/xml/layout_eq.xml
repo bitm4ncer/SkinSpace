@@ -30,33 +30,44 @@
                 tooltiptext1="Mute volume" tooltiptext2="Unmute volume"/>
       <Text id="eq.muteLabel" font="small" x="88" y="127" width="40" color="#77CE07" text="Mute"/>
       <!-- Volume -->
-      <Image id="eq.volTrack" x="173" y="107" width="71" height="11" resize="mosaic" image="horizontal_slider.png"/>
+      <Image id="eq.volTrack" x="173" y="107" image="sl_track_h.png"/>
       <Slider id="eq.volume" x="173" y="107" points="(5,5),(66,5)" value="volume"
               up="horizontal_thumb.png" tooltiptext="Volume"/>
       <Text id="eq.volLabel" font="small" x="192" y="118" width="60" color="#77CE07" text="Volume"/>
-      <!-- 10-Band-Equalizer -->
-      <Image id="eq.track1"  x="95"  y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <!-- 10-Band-Equalizer (Tracks = Komposite aus Original-Kacheln: Kappe-Linie-Kappe) -->
+      <Image id="eq.track1"  x="95"  y="140" image="eq_track_v.png"/>
       <Slider id="eq.band1"  x="95"  y="140" points="(5,66),(5,8)" value="equalizer.band(0)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track2"  x="110" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track2"  x="110" y="140" image="eq_track_v.png"/>
       <Slider id="eq.band2"  x="110" y="140" points="(5,66),(5,8)" value="equalizer.band(1)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track3"  x="125" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track3"  x="125" y="140" image="eq_track_v.png"/>
       <Slider id="eq.band3"  x="125" y="140" points="(5,66),(5,8)" value="equalizer.band(2)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track4"  x="140" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track4"  x="140" y="140" image="eq_track_v.png"/>
       <Slider id="eq.band4"  x="140" y="140" points="(5,66),(5,8)" value="equalizer.band(3)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track5"  x="155" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track5"  x="155" y="140" image="eq_track_v.png"/>
       <Slider id="eq.band5"  x="155" y="140" points="(5,66),(5,8)" value="equalizer.band(4)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track6"  x="170" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track6"  x="170" y="140" image="eq_track_v.png"/>
       <Slider id="eq.band6"  x="170" y="140" points="(5,66),(5,8)" value="equalizer.band(5)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track7"  x="185" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track7"  x="185" y="140" image="eq_track_v.png"/>
       <Slider id="eq.band7"  x="185" y="140" points="(5,66),(5,8)" value="equalizer.band(6)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track8"  x="200" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track8"  x="200" y="140" image="eq_track_v.png"/>
       <Slider id="eq.band8"  x="200" y="140" points="(5,66),(5,8)" value="equalizer.band(7)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track9"  x="215" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track9"  x="215" y="140" image="eq_track_v.png"/>
       <Slider id="eq.band9"  x="215" y="140" points="(5,66),(5,8)" value="equalizer.band(8)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track10" x="230" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track10" x="230" y="140" image="eq_track_v.png"/>
       <Slider id="eq.band10" x="230" y="140" points="(5,66),(5,8)" value="equalizer.band(9)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <!-- Enable-Link (Ersatz fuer Original-"reset"-Link) -->
-      <Checkbox id="eq.enableLink" x="224" y="221"
+      <!-- Frequenz-Labels unter den Banden -->
+      <Text id="eq.freq1"  font="tiny" x="92"  y="217" width="16" color="#77CE07" text="32"/>
+      <Text id="eq.freq2"  font="tiny" x="107" y="217" width="16" color="#77CE07" text="63"/>
+      <Text id="eq.freq3"  font="tiny" x="122" y="217" width="16" color="#77CE07" text="125"/>
+      <Text id="eq.freq4"  font="tiny" x="137" y="217" width="16" color="#77CE07" text="250"/>
+      <Text id="eq.freq5"  font="tiny" x="152" y="217" width="16" color="#77CE07" text="500"/>
+      <Text id="eq.freq6"  font="tiny" x="167" y="217" width="16" color="#77CE07" text="1K"/>
+      <Text id="eq.freq7"  font="tiny" x="182" y="217" width="16" color="#77CE07" text="2K"/>
+      <Text id="eq.freq8"  font="tiny" x="197" y="217" width="16" color="#77CE07" text="4K"/>
+      <Text id="eq.freq9"  font="tiny" x="212" y="217" width="16" color="#77CE07" text="8K"/>
+      <Text id="eq.freq10" font="tiny" x="227" y="217" width="16" color="#77CE07" text="16K"/>
+      <!-- "reset"-Link (Original-Optik; Funktion: Equalizer an/aus) -->
+      <Checkbox id="eq.enableLink" x="226" y="225"
                 up1="eq_link_off.png" up2="eq_link_on.png" down1="none" down2="none" over1="none" over2="none"
                 state="equalizer.isEnabled" action1="equalizer.enable()" action2="equalizer.disable()"
                 tooltiptext1="Enable equalizer" tooltiptext2="Disable equalizer"/>

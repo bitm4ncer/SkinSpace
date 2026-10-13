@@ -1,3 +1,4 @@
   <ThemeInfo name="Headspace" author="Headspace-Port — original skin (c) 2000 Microsoft Corporation"/>
   <Font id="defaultfont" file="fonts/font.otf"/>
   <Font id="small" file="fonts/font.otf" size="9"/>
+  <Font id="tiny" file="fonts/font.otf" size="7"/>

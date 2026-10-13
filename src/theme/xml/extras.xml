@@ -4,3 +4,6 @@
   <Bitmap id="drawer_fill.png"   file="images/drawer_fill.png"   alphacolor="#FE01FE"/>
   <Bitmap id="eq_link_off.png"   file="images/eq_link_off.png"   alphacolor="#FE01FE"/>
   <Bitmap id="eq_link_on.png"    file="images/eq_link_on.png"    alphacolor="#FE01FE"/>
+  <!-- Track-Komposite aus den Original-Kacheln (tools/make_track_assets.ps1) -->
+  <Bitmap id="eq_track_v.png"    file="images/eq_track_v.png"    alphacolor="#FE01FE"/>
+  <Bitmap id="sl_track_h.png"    file="images/sl_track_h.png"    alphacolor="#FE01FE"/>

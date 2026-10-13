@@ -4,6 +4,7 @@
   <ThemeInfo name="Headspace" author="Headspace-Port â€” original skin (c) 2000 Microsoft Corporation"/>
   <Font id="defaultfont" file="fonts/font.otf"/>
   <Font id="small" file="fonts/font.otf" size="27"/>
+  <Font id="tiny" file="fonts/font.otf" size="21"/>
 
   <!-- GENERIERT von tools/make_original_assets.ps1 Ã¢â‚¬â€ nicht von Hand editieren -->
   <Bitmap id="drawer_bkgrnd_bottom.png" file="images/drawer_bkgrnd_bottom.png" alphacolor="#FE01FE"/>
@@ -119,6 +120,9 @@
   <Bitmap id="drawer_fill.png"   file="images/drawer_fill.png"   alphacolor="#FE01FE"/>
   <Bitmap id="eq_link_off.png"   file="images/eq_link_off.png"   alphacolor="#FE01FE"/>
   <Bitmap id="eq_link_on.png"    file="images/eq_link_on.png"    alphacolor="#FE01FE"/>
+  <!-- Track-Komposite aus den Original-Kacheln (tools/make_track_assets.ps1) -->
+  <Bitmap id="eq_track_v.png"    file="images/eq_track_v.png"    alphacolor="#FE01FE"/>
+  <Bitmap id="sl_track_h.png"    file="images/sl_track_h.png"    alphacolor="#FE01FE"/>
 
   <Window id="main" position="Center">
     <Layout id="l_eq" width="1647" height="1182">
@@ -154,33 +158,44 @@
                 tooltiptext1="Mute volume" tooltiptext2="Unmute volume"/>
       <Text id="eq.muteLabel" font="small" x="264" y="381" width="120" color="#77CE07" text="Mute"/>
       <!-- Volume -->
-      <Image id="eq.volTrack" x="519" y="321" width="213" height="33" resize="mosaic" image="horizontal_slider.png"/>
+      <Image id="eq.volTrack" x="519" y="321" image="sl_track_h.png"/>
       <Slider id="eq.volume" x="519" y="321" points="(15,15),(198,15)" value="volume"
               up="horizontal_thumb.png" tooltiptext="Volume"/>
       <Text id="eq.volLabel" font="small" x="576" y="354" width="180" color="#77CE07" text="Volume"/>
-      <!-- 10-Band-Equalizer -->
-      <Image id="eq.track1"  x="285"  y="420" width="33" height="228" resize="mosaic" image="vertical_slider.png"/>
+      <!-- 10-Band-Equalizer (Tracks = Komposite aus Original-Kacheln: Kappe-Linie-Kappe) -->
+      <Image id="eq.track1"  x="285"  y="420" image="eq_track_v.png"/>
       <Slider id="eq.band1"  x="285"  y="420" points="(15,198),(15,24)" value="equalizer.band(0)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track2"  x="330" y="420" width="33" height="228" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track2"  x="330" y="420" image="eq_track_v.png"/>
       <Slider id="eq.band2"  x="330" y="420" points="(15,198),(15,24)" value="equalizer.band(1)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track3"  x="375" y="420" width="33" height="228" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track3"  x="375" y="420" image="eq_track_v.png"/>
       <Slider id="eq.band3"  x="375" y="420" points="(15,198),(15,24)" value="equalizer.band(2)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track4"  x="420" y="420" width="33" height="228" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track4"  x="420" y="420" image="eq_track_v.png"/>
       <Slider id="eq.band4"  x="420" y="420" points="(15,198),(15,24)" value="equalizer.band(3)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track5"  x="465" y="420" width="33" height="228" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track5"  x="465" y="420" image="eq_track_v.png"/>
       <Slider id="eq.band5"  x="465" y="420" points="(15,198),(15,24)" value="equalizer.band(4)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track6"  x="510" y="420" width="33" height="228" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track6"  x="510" y="420" image="eq_track_v.png"/>
       <Slider id="eq.band6"  x="510" y="420" points="(15,198),(15,24)" value="equalizer.band(5)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track7"  x="555" y="420" width="33" height="228" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track7"  x="555" y="420" image="eq_track_v.png"/>
       <Slider id="eq.band7"  x="555" y="420" points="(15,198),(15,24)" value="equalizer.band(6)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track8"  x="600" y="420" width="33" height="228" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track8"  x="600" y="420" image="eq_track_v.png"/>
       <Slider id="eq.band8"  x="600" y="420" points="(15,198),(15,24)" value="equalizer.band(7)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track9"  x="645" y="420" width="33" height="228" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track9"  x="645" y="420" image="eq_track_v.png"/>
       <Slider id="eq.band9"  x="645" y="420" points="(15,198),(15,24)" value="equalizer.band(8)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <Image id="eq.track10" x="690" y="420" width="33" height="228" resize="mosaic" image="vertical_slider.png"/>
+      <Image id="eq.track10" x="690" y="420" image="eq_track_v.png"/>
       <Slider id="eq.band10" x="690" y="420" points="(15,198),(15,24)" value="equalizer.band(9)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
-      <!-- Enable-Link (Ersatz fuer Original-"reset"-Link) -->
-      <Checkbox id="eq.enableLink" x="672" y="663"
+      <!-- Frequenz-Labels unter den Banden -->
+      <Text id="eq.freq1"  font="tiny" x="276"  y="651" width="48" color="#77CE07" text="32"/>
+      <Text id="eq.freq2"  font="tiny" x="321" y="651" width="48" color="#77CE07" text="63"/>
+      <Text id="eq.freq3"  font="tiny" x="366" y="651" width="48" color="#77CE07" text="125"/>
+      <Text id="eq.freq4"  font="tiny" x="411" y="651" width="48" color="#77CE07" text="250"/>
+      <Text id="eq.freq5"  font="tiny" x="456" y="651" width="48" color="#77CE07" text="500"/>
+      <Text id="eq.freq6"  font="tiny" x="501" y="651" width="48" color="#77CE07" text="1K"/>
+      <Text id="eq.freq7"  font="tiny" x="546" y="651" width="48" color="#77CE07" text="2K"/>
+      <Text id="eq.freq8"  font="tiny" x="591" y="651" width="48" color="#77CE07" text="4K"/>
+      <Text id="eq.freq9"  font="tiny" x="636" y="651" width="48" color="#77CE07" text="8K"/>
+      <Text id="eq.freq10" font="tiny" x="681" y="651" width="48" color="#77CE07" text="16K"/>
+      <!-- "reset"-Link (Original-Optik; Funktion: Equalizer an/aus) -->
+      <Checkbox id="eq.enableLink" x="678" y="675"
                 up1="eq_link_off.png" up2="eq_link_on.png" down1="none" down2="none" over1="none" over2="none"
                 state="equalizer.isEnabled" action1="equalizer.enable()" action2="equalizer.disable()"
                 tooltiptext1="Enable equalizer" tooltiptext2="Disable equalizer"/>
