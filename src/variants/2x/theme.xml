@@ -83,18 +83,21 @@
     <SubBitmap id="play_controls_01_default.png.play" x="52" y="2" width="46" height="46"/>
     <SubBitmap id="play_controls_01_default.png.stop" x="104" y="2" width="46" height="46"/>
     <SubBitmap id="play_controls_01_default.png.next" x="154" y="2" width="46" height="46"/>
+    <SubBitmap id="play_controls_01_default.png.vis"  x="238" y="2" width="46" height="46"/>
   </Bitmap>
   <Bitmap id="play_controls_02_rollover.png" file="images/play_controls_02_rollover.png" alphacolor="#FE01FE">
     <SubBitmap id="play_controls_02_rollover.png.prev" x="2"  y="2" width="46" height="46"/>
     <SubBitmap id="play_controls_02_rollover.png.play" x="52" y="2" width="46" height="46"/>
     <SubBitmap id="play_controls_02_rollover.png.stop" x="104" y="2" width="46" height="46"/>
     <SubBitmap id="play_controls_02_rollover.png.next" x="154" y="2" width="46" height="46"/>
+    <SubBitmap id="play_controls_02_rollover.png.vis"  x="238" y="2" width="46" height="46"/>
   </Bitmap>
   <Bitmap id="play_controls_03_down.png" file="images/play_controls_03_down.png" alphacolor="#FE01FE">
     <SubBitmap id="play_controls_03_down.png.prev" x="2"  y="2" width="46" height="46"/>
     <SubBitmap id="play_controls_03_down.png.play" x="52" y="2" width="46" height="46"/>
     <SubBitmap id="play_controls_03_down.png.stop" x="104" y="2" width="46" height="46"/>
     <SubBitmap id="play_controls_03_down.png.next" x="154" y="2" width="46" height="46"/>
+    <SubBitmap id="play_controls_03_down.png.vis"  x="238" y="2" width="46" height="46"/>
   </Bitmap>
   <Bitmap id="minimize_close_01_default.png" file="images/minimize_close_01_default.png" alphacolor="#FE01FE">
     <SubBitmap id="minimize_close_01_default.png.min"   x="0"  y="0" width="28" height="32"/>
@@ -173,6 +176,9 @@
       <Button id="cl.next" x="772" y="64"
               up="play_controls_01_default.png.next" over="play_controls_02_rollover.png.next" down="play_controls_03_down.png.next"
               action="playlist.next()" tooltiptext="Next"/>
+      <Button id="cl.vis" x="856" y="64"
+              up="play_controls_01_default.png.vis" over="play_controls_02_rollover.png.vis" down="play_controls_03_down.png.vis"
+              action="dialogs.file()" tooltiptext="Open media"/>
       <Button id="cl.pause" x="670" y="64"
               up="pause_01_default.png" over="pause_02_rollover.png" down="pause_03_down.png"
               visible="vlc.isPlaying" action="vlc.pause()" tooltiptext="Pause"/>

@@ -5,18 +5,21 @@
     <SubBitmap id="play_controls_01_default.png.play" x="26" y="1" width="23" height="23"/>
     <SubBitmap id="play_controls_01_default.png.stop" x="52" y="1" width="23" height="23"/>
     <SubBitmap id="play_controls_01_default.png.next" x="77" y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_01_default.png.vis"  x="119" y="1" width="23" height="23"/>
   </Bitmap>
   <Bitmap id="play_controls_02_rollover.png" file="images/play_controls_02_rollover.png" alphacolor="#FE01FE">
     <SubBitmap id="play_controls_02_rollover.png.prev" x="1"  y="1" width="23" height="23"/>
     <SubBitmap id="play_controls_02_rollover.png.play" x="26" y="1" width="23" height="23"/>
     <SubBitmap id="play_controls_02_rollover.png.stop" x="52" y="1" width="23" height="23"/>
     <SubBitmap id="play_controls_02_rollover.png.next" x="77" y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_02_rollover.png.vis"  x="119" y="1" width="23" height="23"/>
   </Bitmap>
   <Bitmap id="play_controls_03_down.png" file="images/play_controls_03_down.png" alphacolor="#FE01FE">
     <SubBitmap id="play_controls_03_down.png.prev" x="1"  y="1" width="23" height="23"/>
     <SubBitmap id="play_controls_03_down.png.play" x="26" y="1" width="23" height="23"/>
     <SubBitmap id="play_controls_03_down.png.stop" x="52" y="1" width="23" height="23"/>
     <SubBitmap id="play_controls_03_down.png.next" x="77" y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_03_down.png.vis"  x="119" y="1" width="23" height="23"/>
   </Bitmap>
   <Bitmap id="minimize_close_01_default.png" file="images/minimize_close_01_default.png" alphacolor="#FE01FE">
     <SubBitmap id="minimize_close_01_default.png.min"   x="0"  y="0" width="14" height="16"/>

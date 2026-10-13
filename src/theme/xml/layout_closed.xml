@@ -42,6 +42,9 @@
       <Button id="cl.next" x="386" y="32"
               up="play_controls_01_default.png.next" over="play_controls_02_rollover.png.next" down="play_controls_03_down.png.next"
               action="playlist.next()" tooltiptext="Next"/>
+      <Button id="cl.vis" x="428" y="32"
+              up="play_controls_01_default.png.vis" over="play_controls_02_rollover.png.vis" down="play_controls_03_down.png.vis"
+              action="dialogs.file()" tooltiptext="Open media"/>
       <Button id="cl.pause" x="335" y="32"
               up="pause_01_default.png" over="pause_02_rollover.png" down="pause_03_down.png"
               visible="vlc.isPlaying" action="vlc.pause()" tooltiptext="Pause"/>
