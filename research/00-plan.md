@@ -1,40 +1,27 @@
-# Projekt: Headspace (WMP) → VLC Skin Port
+# Projekt: Headspace (WMP) → VLC Skin Port — FINAL
 
-Stand: 2026-10-13 (Spike abgeschlossen)
+Stand: 2026-10-13 · Branch `headspace-port` · Status: **Release v1.0**
 
-## Kontext
-- Reddit-Bounty (r/VLC, u/jbyrdab): "$50 bounty - Recreate the 'headspace' windows media player skin in VLC"
-- Original: offizieller Microsoft-WMP-Skin von 2000 („Headspace", WMP7-Ära, ©2000)
-- Original gesichert: `research/original/Headspace.wmz` (ZIP, 82 Dateien) + entpackt: `research/original/extracted/`
-- Zielmaschine: VLC 3.0.23 x64, 7-Zip, ffmpeg vorhanden
-- **Nutzer-Entscheidung: maximale Originaltreue (kein Bounty-Fokus)**
+## Was gebaut wurde
+Der offizielle Microsoft-Skin „Headspace" (WMP, © 2000/2001) als natives VLC-3.0.x-Skin,
+maximal originalgetreu (Original-Assets 1:1, keine Neuzeichnung):
 
-## Phasen
-- [x] Original-Assets beschafft + entpackt + vollständig RE'd
-- [x] Deep Research: `01-vlc-skins2-research.md`, `02-headspace-reverse-engineering.md` (+inventory.csv/controls.json), `03-wmp-format-ecosystem.md`
-- [x] Konsolidiertes Mapping: `04-vlc-mapping-summary.md`
-- [x] Zustandsrekonstruktionen: `previews/states/state-{A,B,C,D}.png`
-- [x] **Spike abgeschlossen:** `05-spike-results.md` — Layout-Switch ✅, Video-Einbettung ✅, EQ+Config-Write ✅, Seek ✅, Tooltips ✅, Pop-Fenster ✅, Viz ❌ (nicht erreichbar)
-- [ ] Design-Dokument (Spec) schreiben → User-Review
-- [ ] Implementierungsplan (writing-plans) → User-Review + Ausführungswahl
-- [ ] Build:
-  - [ ] Assets upscalen (2×?, Real-ESRGAN-ncnn / Alternative), Alpha aus Magenta, Retouch Kopf
-  - [ ] `theme.xml` bauen (4 Layouts: closed/eq/pl/both; DTD 2.0)
-  - [ ] Progressbar-Frames + Slider-Grafiken generieren
-  - [ ] Test-Suite: alle Zustände laden, Interaktionen, Vergleich mit `previews/states/`
-- [ ] Abschluss: Doku, Installationsanleitung, ggf. Bonus (About-Fenster mit Credits)
+- **4 Layouts** in einem Fenster: geschlossen (549×394) · EQ-Schublade · Playlist-Schublade · beide (760×394)
+- **EQ-Drawer**: 10-Band-Equalizer (schreibt in VLCs EQ), Volume, Balance (optisch), „reset"=EQ an/aus,
+  Rails+Kappen+Thumbs & Frequenz-Labels exakt nach Original-Referenzen
+- **Playlist**: Playtree (einzeilig, „…"-Abschneidung, Scroll)
+- **Screen**: eingebettetes Video (alle Layouts), Audio-Idle schwarz, `vid_bkgd`-Originalgrafik
+- **Größenvarianten**: 1× / 2× / 3× (Nearest-Pixel-Look)
 
-## Kern-Design-Entscheidungen (Arbeitsstand)
-1. EIN Fenster + 4 Layouts (Plan A); Fallback: getrennte Ohr-Fenster (Plan B, verifiziert)
-2. Screen: Video eingebettet + Idle-Grafik; Viz-Auswahl entfällt
-3. Balance → funktionaler Ersatz (Mute-Toggle) oder entfernt [im Design final]
-4. Reset-Link → EQ-Enable-Link
-5. „Return to Full Mode" → `dialogs.changeSkin()` oder entfernt [im Design final]
-6. Assets 2×-Upscale [im Design final]
+## Artefakte
+- `dist/Headspace.vlt` · `dist/Headspace-2x.vlt` · `dist/Headspace-3x.vlt`
+- `README.md` (Installation, Bedienung, Credits, Abweichungen)
+- `research/final-verification/acceptance.md` (Endabnahme)
+- Doku: `docs/superpowers/specs/…` (Spec), `docs/superpowers/plans/…` (Plan),
+  `research/01–05` (Research/RE/Spike), `.superpowers/sdd/…/progress.md` (Ledger, alle Rulings)
 
-## Bekannte Abweichungen (unvermeidbar)
-- Ohr-Slide-Animation (keine Bewegungsanimation in skins2) — Bounty-Ausnahme genannt
-- Visualisierungen + Viz-Menü (nicht skin-steuerbar)
-- Download-Progress-Doppelanzeige im Seekbar (kein Sekundärfortschritt)
-- Playlist ohne Spalten/Dropdown (skins2-Limit)
-- Kein weiches Fenster-Alpha gegen Desktop (nur binäre Form; `skins2-transparency`-Option gäbe Ganzfenster-Alpha)
+## Wichtige Betriebsregeln (aus dem Tag gelernt)
+1. **Crash-Dump-Falle**: Wenn VLC plötzlich nicht mehr startet → `%APPDATA%\vlc\crashdump` leeren.
+2. **„Open skin…" meiden** (changeSkin crasht auf 3.0.23) → Neustart mit `--skins2-last`.
+3. **Start-Process-Argumente mit Leerzeichen immer quoten** (Skripte).
+4. Tests klickfrei per `skins2-config`-Layout-Preset; Klick-Tests nur nach Absprache mit dem Nutzer.

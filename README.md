@@ -1,0 +1,83 @@
+# Headspace für VLC — Fan-Port
+
+Der legendäre **„Headspace"**-Skin (offizieller Microsoft-Skin für den Windows Media Player, © 2000/2001)
+als natives **VLC**-Skin (skins2). Fan-Projekt, maximale Originaltreue, Original-Assets 1:1.
+
+## Dateien
+
+| Datei | Größe | Beschreibung |
+|---|---|---|
+| `dist/Headspace.vlt` | 549×394 | Originalgröße (1×) |
+| `dist/Headspace-2x.vlt` | 1098×788 | 2×, Pixel-Look (Nearest) — Empfehlung für moderne Bildschirme |
+| `dist/Headspace-3x.vlt` | 1647×1182 | 3×, Pixel-Look (Nearest) |
+
+## Installation
+
+Voraussetzung: **VLC 3.0.x** (getestet: 3.0.23, Windows). Getestet auf Windows; DTD-2.0-konform, auf
+anderen Plattformen ungetestet.
+
+**Empfohlen (ohne Admin):**
+```
+"C:\Program Files\VideoLAN\VLC\vlc.exe" -I skins --skins2-last="C:\...\dist\Headspace-2x.vlt"
+```
+**Oder** die `.vlt` nach `C:\Program Files\VideoLAN\VLC\skins\` kopieren und in VLC unter
+*Werkzeuge → Einstellungen → Interface → „Benutzerdefiniertes Skin verwenden"* auswählen (Neustart nötig).
+
+> ⚠️ **Bekanntes Problem:** „Open skin…" (Rechtsklick-Menü im Skin) **kann VLC crashen** — auf
+> VLC 3.0.23 reproduziert (fehlerhafter Skin-Wechsel-Mechanismus des Builds). Workaround: VLC neu starten
+> bzw. `--skins2-last` verwenden.
+>
+> ⚠️ **Falls VLC nach einem Crash nicht mehr startet:** den Ordner `%APPDATA%\vlc\crashdump` leeren —
+> ein liegengebliebener Crash-Dump blockiert sonst jeden Start (bekanntes VLC-3.0.x-Verhalten).
+
+## Bedienung
+
+| Element | Funktion |
+|---|---|
+| Stirn links/rechts | Minimieren / Schließen |
+| Stirnmitte | ⏮ Zurück · ▶ Play · ⏹ Stop · ⏭ Weiter · ☀️ „Medien öffnen" |
+| (beim Abspielen) | Pause-Knopf erscheint über Play |
+| Kinn links (Balken-Icon) | **Equalizer-Schublade** (linkes Ohr) öffnen/schließen |
+| Kinn rechts (Listen-Icon) | **Playlist-Schublade** (rechtes Ohr) öffnen/schließen |
+| Kinnmitte (⌐-Symbol) | Einstellungen (Preferences) |
+| Seekbar | Suchen per Klick/Ziehen |
+| Kopf | Fenster ziehen |
+| Drag & Drop | Musik/Video auf das Fenster ziehen — Videos erscheinen **im Screen im Kopf** |
+
+**Equalizer-Schublade:** 10 Band-Regler (schreiben direkt in VLCs Equalizer), Volume, Balance (rein
+optisch — VLC-Skins können Balance nicht anbinden), „reset"-Link = Equalizer **an/aus** (echtes
+Zurücksetzen der Gains gibt es im Skin-System nicht), Mute über VLC-Taste `M`.
+
+## Bekannte Abweichungen vom Original (technisch bedingt, dokumentiert)
+
+- **Visualisierungen** sind über VLC-Skins nicht steuerbar → Screen zeigt Video (und bleibt sonst schwarz
+  wie im Original ohne Visualisierung); die Visualisierungs-Auswahl entfällt.
+- **Balance** ohne Funktion (kein Balance-Binding im Skin-System) — Optik 1:1.
+- **reset**-Link schaltet den Equalizer an/aus statt Gains zu nullen.
+- Keine „disabled"-Optik auf Knöpfen (skins2 kennt nur up/hover/down).
+- Ohr-Schubladen öffnen **ohne Slide-Animation** (skins2 hat keine Bewegungsanimation).
+- Playlist einzeilig ohne Dauer-Spalte (skins2-Limit).
+- Cursor wechselt nicht zu einem Hand-Cursor (im Skin-System nicht vorgesehen).
+- Ton-Standard-Optik des Original-Screens (Download-Fortschritt im Seekbar) entfällt.
+
+## Credits
+
+- Original-Skin **„Headspace" © 2000/2001 Microsoft Corporation** (offizieller WMP-Skin).
+  Assets aus dem Internet-Archive-Backup der Microsoft-Skin-Sammlung
+  (`archive.org/details/windowsmediaplayerskinscollection`). Alle Rechte am Original liegen bei Microsoft.
+- Dieser Fan-Port ist ein inoffizielles, nicht-kommerzielles Projekt.
+
+## Build (für Interessierte)
+
+```
+tools/make_original_assets.ps1     # BMP -> PNG32 + Farbkey-Alpha (+ bitmaps.xml)
+tools/make_extra_assets.ps1        # LED/Füllung/Link-Grafiken (Ersatz-Elemente)
+tools/make_track_assets.ps1        # Slider-Tracks (Kappe-Linie-Kappe) aus Original-Kacheln
+tools/build_theme.ps1 -Scale 1     # theme.xml aus XML-Fragmenten (src/theme/xml/) + Validierung
+tools/pack.ps1                     # -> dist/Headspace.vlt
+tools/build_variants.ps1           # 2x/3x-Varianten -> dist/Headspace-2x.vlt / -3x.vlt
+tools/tests/run_task3.ps1 …        # Test-Suiten (klickfrei)
+```
+
+Detail-Dokumentation: `research/` (Reverse-Engineering, Mapping, Spike-Ergebnisse) und
+`docs/superpowers/specs/` (Design-Spezifikation).
