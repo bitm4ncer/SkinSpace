@@ -1,35 +1,37 @@
-# Upscale-Entscheidungen (Task-1-Review) — Stand 2026-10-13
+# Asset-/Upscale-Entscheidungen (Task 1) — FINAL
 
-## Verfahren (implementiert in `tools/prepare_assets.ps1` v2)
+## Nutzer-Entscheidung (2026-10-13)
 
-1. **Farbkey → Alpha: deterministische Maske aus dem Original** (2×, Erosion 1 px, weiche 2-Ring-Kante 150/225).
-   Grund: Der erste Durchlauf zeigte, dass die KI-Modelle in flachen Key-Flächen **halluzinieren**
-   (schwarze Flecken im Screen-Loch, rotes Gekrissel am Rand) und Key-Farben verfärben →
-   Farb-Erkennung im KI-Ergebnis ist unzuverlässig. Die Maske erzwingt die Original-Silhouette.
-2. **KI-Assets** (Kopf, Ohren, Buttons, EQ-Icon, Drawer-Handle): Real-ESRGAN 4× → Downscale 2× → Maske.
-3. **Flache Geometrie** (`progressbar`, `progressbar_foreground`, `thumb_01_default`): **kein KI-Einsatz** —
-   HighQualityBicubic 2× → Maske. (KI erzeugte bei diesen dünnen/flachen Grafiken reines Rauschen.)
-4. Buttons ohne Key (`play_controls`, `EQ_01_DF`): Hintergrund ist im Original absichtlich die Kopffarbe
-   (opak) — bleibt 1:1 erhalten, keine Maske nötig.
+**Phase 1 wird mit den Original-Texturen 1:1 gebaut — kein Upscale.**
+- Alle Assets gehen **unverändert** in den Skin (nur BMP→PNG32 + Farbkey→Alpha, exakte Pixel).
+- Skin-Größe = Original (Fenster 549×394; alle Koordinaten aus `headspace.wms`, ×1).
+- Begründung: maximal originalgetreu; der Pixel-Look des Originals ist gewünscht.
+- **Tausch später möglich:** Die komplette Upscale-Maschinerie ist implementiert und dokumentiert;
+  der `theme.xml`-Builder erhält einen `-Scale`-Parameter, Upstream-Rendersätze liegen in
+  `research/upscale-review/renders/`. Eine 2×-Version ist damit ein Regenerationslauf, kein Umbau.
 
-## Modellwahl — Empfehlung
+## Dokumentierte Optionen für eine spätere Upscale-Version (nicht aktiv)
 
-| Asset-Klasse | Empfehlung | Begründung (aus Vergleichsblättern) |
+| Klasse | Empfehlung | Belege |
 |---|---|---|
-| Kopf, Ohren | **realesrgan-x4plus-anime** | sauberere Kanten, weniger „erfundene" Mikro-Textur als x4plus — wirkt originaltreuer |
-| Buttons, EQ-Icon, Drawer-Handles | **anime** | schärfere Kanten bei flachem/vektor-artigem Material |
-| progressbar / thumb | Lanczos (kein Modell) | KI unbrauchbar (Rauschen) |
+| Kopf & Ohren | KI `realesrgan-x4plus-anime` + weiche Konturmaske v3 (glatt, AA) | `sheet_head_edge.png` |
+| Thumb, Buttons, EQ-Icon, Drawer | `xBR 2×` (scharf + geglättete Diagonalen) | `sheet_thumb_decision.png`, `sheet_ui_decision.png` |
+| Seekbar-Gradient | Lanczos | `compare_progressbar.png` |
 
-Alternative: `x4plus` nur für den Kopf, falls dir dessen etwas kräftigere Gesichts-Textur besser gefällt
-(Spalte 2 der Vergleichsblätter).
+## Technik-Referenz (Phase 1)
 
-## Offene Nutzer-Freigabe
+- **1:1-Konvertierung:** BMP→PNG32, dann exakte Key-Entfernung:
+  - **Magenta `#FF00FF` → Alpha 0** in allen Assets, die Magenta enthalten (Automatik: Pixel-Messung).
+  - **Rot `#FF0000` → Alpha 0 nur in `head.bmp`** (dort = außenliegende Clip-Fläche des Kopfes).
+  - Keine Kantenglättung, keine Skalierung — exakt der Original-Pixelstand.
+  - Assets ohne Keys (`play_controls`-Sheets, `EQ_*`, `PL_*`, `progressbar*`, `vid_bkgd`, `drawer_bkgrnd_*` …)
+    bleiben opak wie im Original (`transparencyColor`-Angaben aus `headspace.wms` bestätigen das).
+- Skript: `tools/make_original_assets.ps1` (folgt in Task 2) — nutzt `ConvertTo-Png32` + Key-Entfernung.
+- Upstream (für später, bereits vorhanden): `tools/prepare_assets.ps1` (Modi `ai` / `lanczos`, Mask-Injection v3).
 
-- [ ] Vergleichsblätter gesichtet (`overview.png`, `compare_*.png` in `research/upscale-review/`)
-- [ ] Modellwahl bestätigt oder geändert
+## Review-Historie (kurz)
 
-## Beobachtete Grenzen
-
-- Silhouette wird durch die Maske um ~1 Original-Pixel erodiert (Schutz vor Farbfringes) — optisch unauffällig.
-- `thumb_01_default` (Original nur 18×9 px) bleibt auch bei 2× klein/weich — als Slider-Cursor unkritisch.
-- Nach Freigabe läuft Task 2: alle ~80 Assets nach diesen Regeln, plus prozedurale Flächen (Drawer-Hintergründe, SliderBackground-Frames).
+1. v1 (KI-Upcaale + Farb-Erkennung): Kopf/Ohr — KI-Halluzinationen in Key-Flächen; Seekbar/Thumb — Rauschen.
+2. v2: Deterministische binäre Maske aus Original — sauber, aber harte Treppenstufen (Nutzerfeedback).
+3. v3: Bilineare weiche Maske — AA-Kontur (Nutzer: „pixelig“ behoben; Sheets aktuell).
+4. **Final: Original 1:1** — Nutzerentscheidung für Phase 1.

@@ -2,6 +2,11 @@
 
 Status: **Entwurf zur Review** · Datum: 2026-10-13 · Zielversion: VLC 3.0.x (getestet: 3.0.23, Windows)
 
+> **Update 2026-10-13 (Nutzerentscheidung):** Phase 1 wird mit den **Original-Assets 1:1** gebaut
+> (kein Upscale, Skin in Originalgröße 549×394). Die Upscale-Strategien (Mask-Injection v3, KI-Modelle,
+> xBR/hqx) sind implementiert & dokumentiert (`research/upscale-review/`) und können später per
+> `-Scale`-Regeneration der `theme.xml` + Asset-Tausch nachgezogen werden.
+
 ## 1. Ziel & Erfolgskriterien
 
 Der offizielle Microsoft-"Headspace"-Skin (WMP7, © 2000) wird als natives VLC-skins2-Skin (`.vlt`) neu aufgelegt — **maximal originalgetreu**:
