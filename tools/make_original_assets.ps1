@@ -22,8 +22,10 @@ foreach($f in $bmps){
   ConvertTo-Png32 -In $f.FullName -Out $tmp
   $keys = @('#FF00FF')
   if($f.Name -eq 'head.bmp'){ $keys += '#FF0000' }
+  if($f.Name -eq 'vid_bkgd.bmp'){ $keys = @('#FFFFFF') }
   $null = Remove-KeyColor -Path $tmp -Keys $keys -OutPath $final
   Remove-Item $tmp
+  if($f.Name -like 'play_controls_*' -or $f.Name -like 'minimize_close_*'){ continue }  # Deklaration in subbitmaps.xml (Klickzonen)
   [void]$bitmapLines.Add(('  <Bitmap id="{0}.png" file="images/{0}.png" alphacolor="#FE01FE"/>' -f $f.BaseName))
 }
 $outXml = New-Object System.Collections.Generic.List[string]

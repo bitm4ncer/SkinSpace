@@ -37,6 +37,7 @@ foreach($f in $bmps){
   $ob = New-Object System.Drawing.Bitmap($f.FullName); $ow=$ob.Width; $oh=$ob.Height; $ob.Dispose()
   $keys = @('#FF00FF')
   if($f.Name -eq 'head.bmp'){ $keys += '#FF0000' }
+  if($f.Name -eq 'vid_bkgd.bmp'){ $keys = @('#FFFFFF') }
   $st = Get-PixelStats $out $keys
   $bad = @()
   if($st.W -ne $ow -or $st.H -ne $oh){ $bad += "Dim $($st.W)x$($st.H) != $ow x $oh" }

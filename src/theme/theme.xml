@@ -30,10 +30,6 @@
   <Bitmap id="left_X_01_default.png" file="images/left_X_01_default.png" alphacolor="#FE01FE"/>
   <Bitmap id="left_X_02_rollover.png" file="images/left_X_02_rollover.png" alphacolor="#FE01FE"/>
   <Bitmap id="left_X_04_disabled.png" file="images/left_X_04_disabled.png" alphacolor="#FE01FE"/>
-  <Bitmap id="minimize_close_01_default.png" file="images/minimize_close_01_default.png" alphacolor="#FE01FE"/>
-  <Bitmap id="minimize_close_02_rollover.png" file="images/minimize_close_02_rollover.png" alphacolor="#FE01FE"/>
-  <Bitmap id="minimize_close_03_down.png" file="images/minimize_close_03_down.png" alphacolor="#FE01FE"/>
-  <Bitmap id="minimize_close_04_disabled.png" file="images/minimize_close_04_disabled.png" alphacolor="#FE01FE"/>
   <Bitmap id="pause_01_default.png" file="images/pause_01_default.png" alphacolor="#FE01FE"/>
   <Bitmap id="pause_02_rollover.png" file="images/pause_02_rollover.png" alphacolor="#FE01FE"/>
   <Bitmap id="pause_03_down.png" file="images/pause_03_down.png" alphacolor="#FE01FE"/>
@@ -41,10 +37,6 @@
   <Bitmap id="PL_02_RV.png" file="images/PL_02_RV.png" alphacolor="#FE01FE"/>
   <Bitmap id="PL_03_Dwn.png" file="images/PL_03_Dwn.png" alphacolor="#FE01FE"/>
   <Bitmap id="PL_04_Dis.png" file="images/PL_04_Dis.png" alphacolor="#FE01FE"/>
-  <Bitmap id="play_controls_01_default.png" file="images/play_controls_01_default.png" alphacolor="#FE01FE"/>
-  <Bitmap id="play_controls_02_rollover.png" file="images/play_controls_02_rollover.png" alphacolor="#FE01FE"/>
-  <Bitmap id="play_controls_03_down.png" file="images/play_controls_03_down.png" alphacolor="#FE01FE"/>
-  <Bitmap id="play_controls_04_disabled.png" file="images/play_controls_04_disabled.png" alphacolor="#FE01FE"/>
   <Bitmap id="progressbar.png" file="images/progressbar.png" alphacolor="#FE01FE"/>
   <Bitmap id="progressbar_foreground.png" file="images/progressbar_foreground.png" alphacolor="#FE01FE"/>
   <Bitmap id="R_drwr_04_disabled.png" file="images/R_drwr_04_disabled.png" alphacolor="#FE01FE"/>
@@ -84,6 +76,39 @@
   <Bitmap id="viz_drop_X_03_down.png" file="images/viz_drop_X_03_down.png" alphacolor="#FE01FE"/>
   <Bitmap id="viz_drop_X_04_disabled.png" file="images/viz_drop_X_04_disabled.png" alphacolor="#FE01FE"/>
 
+  <!-- Hand-gepflegt: Sheet-Bitmaps mit Klickzonen (SubBitmaps) -->
+  <!-- Zonen exakt aus den Original-Mapping-Bitmaps gemessen (research/02-...md) -->
+  <Bitmap id="play_controls_01_default.png" file="images/play_controls_01_default.png" alphacolor="#FE01FE">
+    <SubBitmap id="play_controls_01_default.png.prev" x="1"  y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_01_default.png.play" x="26" y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_01_default.png.stop" x="52" y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_01_default.png.next" x="77" y="1" width="23" height="23"/>
+  </Bitmap>
+  <Bitmap id="play_controls_02_rollover.png" file="images/play_controls_02_rollover.png" alphacolor="#FE01FE">
+    <SubBitmap id="play_controls_02_rollover.png.prev" x="1"  y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_02_rollover.png.play" x="26" y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_02_rollover.png.stop" x="52" y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_02_rollover.png.next" x="77" y="1" width="23" height="23"/>
+  </Bitmap>
+  <Bitmap id="play_controls_03_down.png" file="images/play_controls_03_down.png" alphacolor="#FE01FE">
+    <SubBitmap id="play_controls_03_down.png.prev" x="1"  y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_03_down.png.play" x="26" y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_03_down.png.stop" x="52" y="1" width="23" height="23"/>
+    <SubBitmap id="play_controls_03_down.png.next" x="77" y="1" width="23" height="23"/>
+  </Bitmap>
+  <Bitmap id="minimize_close_01_default.png" file="images/minimize_close_01_default.png" alphacolor="#FE01FE">
+    <SubBitmap id="minimize_close_01_default.png.min"   x="0"  y="0" width="14" height="16"/>
+    <SubBitmap id="minimize_close_01_default.png.close" x="15" y="0" width="14" height="16"/>
+  </Bitmap>
+  <Bitmap id="minimize_close_02_rollover.png" file="images/minimize_close_02_rollover.png" alphacolor="#FE01FE">
+    <SubBitmap id="minimize_close_02_rollover.png.min"   x="0"  y="0" width="14" height="16"/>
+    <SubBitmap id="minimize_close_02_rollover.png.close" x="15" y="0" width="14" height="16"/>
+  </Bitmap>
+  <Bitmap id="minimize_close_03_down.png" file="images/minimize_close_03_down.png" alphacolor="#FE01FE">
+    <SubBitmap id="minimize_close_03_down.png.min"   x="0"  y="0" width="14" height="16"/>
+    <SubBitmap id="minimize_close_03_down.png.close" x="15" y="0" width="14" height="16"/>
+  </Bitmap>
+
   <Window id="main" position="Center">
     <Layout id="l_eq" width="549" height="394">
       <!-- Task 4: hier entsteht das EQ-Layout (l_eq) -->
@@ -104,9 +129,68 @@
 
     </Layout>
     <Layout id="l_closed" width="549" height="394">
-      <!-- Task 3: hier entsteht das vollstÃ¤ndige l_closed (Kopf, Transport, Seek, Tooltips) -->
-      <Image id="c.head" image="head.png" action="move"/>
-      <Button id="c.quit" x="101" y="232" up="themebutton_01_default.png" action="vlc.quit()" tooltiptext="Close (Task-2-Platzhalter)"/>
+      <!-- l_closed â€” Geschlossener Zustand. Koordinaten = Original (headspace.wms), Kopf-Offset 261,0 bereits eingerechnet. -->
+      <!-- Zeichenreihenfolge = spÃ¤tere Elemente liegen oben (wird im Ladetest verifiziert). -->
+
+      <!-- ==== Screen-Hintergrund + Ohren (liegen UNTER dem Kopf) ==== -->
+      <Image id="cl.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
+      <Image id="cl.eq.ear" x="207" y="86" image="left_ear.png"/>
+      <Image id="cl.eq.drawerTop" x="291" y="86" image="left_drawer_top.png"/>
+      <Image id="cl.eq.drawerBottom" x="291" y="236" image="left_drawer_bottom.png"/>
+      <Image id="cl.eq.drawerRight" x="458" y="86" image="left_drawer_right.png"/>
+      <Button id="cl.eq.handle" x="215" y="152"
+              up="L_drwr_open_01_default.png" over="L_drwr_open_02_rollover.png" down="L_drwr_open_03_down.png"
+              action="main.setLayout(l_eq)" tooltiptext="Open graphic equalizer controls"/>
+      <Image id="cl.pl.drawerLeft" x="277" y="86" image="right_drawer_left.png"/>
+      <Image id="cl.pl.drawerTop" x="290" y="86" image="right_drawer_top.png"/>
+      <Image id="cl.pl.drawerBottom" x="290" y="236" image="right_drawer_bottom.png"/>
+      <Image id="cl.pl.ear" x="462" y="86" image="right_ear.png"/>
+      <Button id="cl.pl.handle" x="523" y="151"
+              up="R_drwr_open_01_default.png" over="R_drwr_open_02_rollover.png" down="R_drwr_open_03_down.png"
+              action="main.setLayout(l_pl)" tooltiptext="Open playlist"/>
+
+      <!-- ==== Kopf (zichbar) ==== -->
+      <Image id="cl.head" x="261" y="0" image="head.png" action="move"/>
+
+      <!-- ==== Fenstersteuerung auf der Stirn ==== -->
+      <Button id="cl.min" x="362" y="4"
+              up="minimize_close_01_default.png.min" over="minimize_close_02_rollover.png.min" down="minimize_close_03_down.png.min"
+              action="vlc.minimize()" tooltiptext="Minimize"/>
+      <Button id="cl.close" x="377" y="4"
+              up="minimize_close_01_default.png.close" over="minimize_close_02_rollover.png.close" down="minimize_close_03_down.png.close"
+              action="vlc.quit()" tooltiptext="Close"/>
+
+      <!-- ==== Transport (prev/play/stop/next) + Pause-Overlay ==== -->
+      <Button id="cl.prev" x="310" y="32"
+              up="play_controls_01_default.png.prev" over="play_controls_02_rollover.png.prev" down="play_controls_03_down.png.prev"
+              action="playlist.previous()" tooltiptext="Previous"/>
+      <Button id="cl.play" x="335" y="32"
+              up="play_controls_01_default.png.play" over="play_controls_02_rollover.png.play" down="play_controls_03_down.png.play"
+              action="vlc.play()" tooltiptext="Play"/>
+      <Button id="cl.stop" x="361" y="32"
+              up="play_controls_01_default.png.stop" over="play_controls_02_rollover.png.stop" down="play_controls_03_down.png.stop"
+              action="vlc.stop()" tooltiptext="Stop"/>
+      <Button id="cl.next" x="386" y="32"
+              up="play_controls_01_default.png.next" over="play_controls_02_rollover.png.next" down="play_controls_03_down.png.next"
+              action="playlist.next()" tooltiptext="Next"/>
+      <Button id="cl.pause" x="335" y="32"
+              up="pause_01_default.png" over="pause_02_rollover.png" down="pause_03_down.png"
+              visible="vlc.isPlaying" action="vlc.pause()" tooltiptext="Pause"/>
+
+      <!-- ==== Kinn-Bedienelemente ==== -->
+      <Button id="cl.eqbtn" x="276" y="214"
+              up="EQ_01_DF.png" over="EQ_02_RV.png" down="EQ_03_Dwn.png"
+              action="main.setLayout(l_eq)" tooltiptext="Open graphic equalizer controls"/>
+      <Button id="cl.plbtn" x="465" y="214"
+              up="PL_01_DF.png" over="PL_02_RV.png" down="PL_03_Dwn.png"
+              action="main.setLayout(l_pl)" tooltiptext="Open playlist"/>
+      <Image id="cl.seekbg" x="300" y="223" image="progressbar.png"/>
+      <Slider id="cl.seek" x="300" y="223" points="(9,4),(154,4)" value="time"
+              up="thumb_01_default.png" over="thumb_02_rollover.png" down="thumb_03_down.png"
+              tooltiptext="Seek"/>
+      <Button id="cl.theme" x="362" y="232"
+              up="themebutton_01_default.png" over="themebutton_02_rollover.png" down="themebutton_03_down.png"
+              action="dialogs.changeSkin()" tooltiptext="Choose another skin"/>
 
     </Layout>
   </Window>

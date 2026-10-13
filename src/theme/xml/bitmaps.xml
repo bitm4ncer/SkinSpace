@@ -24,10 +24,6 @@
   <Bitmap id="left_X_01_default.png" file="images/left_X_01_default.png" alphacolor="#FE01FE"/>
   <Bitmap id="left_X_02_rollover.png" file="images/left_X_02_rollover.png" alphacolor="#FE01FE"/>
   <Bitmap id="left_X_04_disabled.png" file="images/left_X_04_disabled.png" alphacolor="#FE01FE"/>
-  <Bitmap id="minimize_close_01_default.png" file="images/minimize_close_01_default.png" alphacolor="#FE01FE"/>
-  <Bitmap id="minimize_close_02_rollover.png" file="images/minimize_close_02_rollover.png" alphacolor="#FE01FE"/>
-  <Bitmap id="minimize_close_03_down.png" file="images/minimize_close_03_down.png" alphacolor="#FE01FE"/>
-  <Bitmap id="minimize_close_04_disabled.png" file="images/minimize_close_04_disabled.png" alphacolor="#FE01FE"/>
   <Bitmap id="pause_01_default.png" file="images/pause_01_default.png" alphacolor="#FE01FE"/>
   <Bitmap id="pause_02_rollover.png" file="images/pause_02_rollover.png" alphacolor="#FE01FE"/>
   <Bitmap id="pause_03_down.png" file="images/pause_03_down.png" alphacolor="#FE01FE"/>
@@ -35,10 +31,6 @@
   <Bitmap id="PL_02_RV.png" file="images/PL_02_RV.png" alphacolor="#FE01FE"/>
   <Bitmap id="PL_03_Dwn.png" file="images/PL_03_Dwn.png" alphacolor="#FE01FE"/>
   <Bitmap id="PL_04_Dis.png" file="images/PL_04_Dis.png" alphacolor="#FE01FE"/>
-  <Bitmap id="play_controls_01_default.png" file="images/play_controls_01_default.png" alphacolor="#FE01FE"/>
-  <Bitmap id="play_controls_02_rollover.png" file="images/play_controls_02_rollover.png" alphacolor="#FE01FE"/>
-  <Bitmap id="play_controls_03_down.png" file="images/play_controls_03_down.png" alphacolor="#FE01FE"/>
-  <Bitmap id="play_controls_04_disabled.png" file="images/play_controls_04_disabled.png" alphacolor="#FE01FE"/>
   <Bitmap id="progressbar.png" file="images/progressbar.png" alphacolor="#FE01FE"/>
   <Bitmap id="progressbar_foreground.png" file="images/progressbar_foreground.png" alphacolor="#FE01FE"/>
   <Bitmap id="R_drwr_04_disabled.png" file="images/R_drwr_04_disabled.png" alphacolor="#FE01FE"/>
