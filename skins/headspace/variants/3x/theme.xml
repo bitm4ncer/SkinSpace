@@ -172,8 +172,7 @@
       <Image id="eq.drawerBottom" x="252" y="708" image="left_drawer_bottom.png"/>
       <Image id="eq.drawerRight" x="753" y="258" image="left_drawer_right.png"/>
       <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
-      <Image id="eq.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
-      <Video id="eq.vid" x="846" y="210" width="579" height="405" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="eq.vid" x="813" y="177" width="642" height="471" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== EQ-Bedienelemente im Drawer ==== -->
       <!-- Preamp (umfunktioniert aus dem Original-Balance-Slider - VLC-Skins koennen Balance technisch nicht anbinden) -->
@@ -235,6 +234,8 @@
               up="left_X_01_default.png" over="left_X_02_rollover.png"
               action="main.setLayout(l_closed)" tooltiptext="Close graphic equalizer controls"/>
 
+      <Image id="vgb.eq" x="810" y="177" image="vid_bkgd.png"/>
+
       <!-- ==== Kopf + uebrige Controls (wie geschlossen) ==== -->
       <Image id="eq.head" x="783" y="0" image="head.png" action="move"/>
       <Button id="eq.min" x="1086" y="12"
@@ -287,8 +288,7 @@
       <Button id="pl.eq.handle" x="645" y="456"
               up="L_drwr_open_01_default.png" over="L_drwr_open_02_rollover.png" down="L_drwr_open_03_down.png"
               action="main.setLayout(l_both)" tooltiptext="Open graphic equalizer controls"/>
-      <Image id="pl.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
-      <Video id="pl.vid" x="846" y="210" width="579" height="405" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="pl.vid" x="813" y="177" width="642" height="471" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Rechtes Ohr OFFEN: Schublade (sPlEar bei x=488) ==== -->
       <Image id="pl.drawerLeft" x="1464" y="258" image="right_drawer_left.png"/>
@@ -330,6 +330,8 @@
       <Button id="pl.closeX" x="2031" y="279"
               up="right_X_01_default.png" over="right_X_02_rollover.png"
               action="main.setLayout(l_closed)" tooltiptext="Close playlist"/>
+
+      <Image id="vgb.pl" x="810" y="177" image="vid_bkgd.png"/>
 
       <!-- ==== Kopf + uebrige Controls (wie geschlossen) ==== -->
       <Image id="pl.head" x="783" y="0" image="head.png" action="move"/>
@@ -376,8 +378,7 @@
       <!-- l_both â€” BEIDE Schubladen offen (EQ links bei x=0, Playlist rechts bei x=488). Fenster 760 breit. -->
 
       <!-- ==== Screen-Hintergrund + Video ==== -->
-      <Image id="both.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
-      <Video id="both.vid" x="846" y="210" width="579" height="405" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="both.vid" x="813" y="177" width="642" height="471" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Linkes Ohr OFFEN: EQ-Schublade ==== -->
       <Image id="both.eq.ear" x="0" y="258" image="left_ear.png"/>
@@ -485,6 +486,8 @@
               up="right_X_01_default.png" over="right_X_02_rollover.png"
               action="main.setLayout(l_eq)" tooltiptext="Close playlist"/>
 
+      <Image id="vgb.both" x="810" y="177" image="vid_bkgd.png"/>
+
       <!-- ==== Kopf + uebrige Controls ==== -->
       <Image id="both.head" x="783" y="0" image="head.png" action="move"/>
       <Button id="both.min" x="1086" y="12"
@@ -546,8 +549,9 @@
               up="R_drwr_open_01_default.png" over="R_drwr_open_02_rollover.png" down="R_drwr_open_03_down.png"
               action="main.setLayout(l_pl)" tooltiptext="Open playlist"/>
       <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
-      <Image id="cl.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
-      <Video id="cl.vid" x="846" y="210" width="579" height="405" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="cl.vid" x="813" y="177" width="642" height="471" autoresize="false" visible="vlc.hasVout"/>
+
+      <Image id="vgb.closed" x="810" y="177" image="vid_bkgd.png"/>
 
       <!-- ==== Kopf (zichbar) ==== -->
       <Image id="cl.head" x="783" y="0" image="head.png" action="move"/>

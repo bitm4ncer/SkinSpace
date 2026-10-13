@@ -21,8 +21,7 @@
       <Image id="eq.drawerBottom" x="84" y="236" image="left_drawer_bottom.png"/>
       <Image id="eq.drawerRight" x="251" y="86" image="left_drawer_right.png"/>
       <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
-      <Image id="eq.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
-      <Video id="eq.vid" x="282" y="70" width="193" height="135" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="eq.vid" x="271" y="59" width="214" height="157" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== EQ-Bedienelemente im Drawer ==== -->
       <!-- Preamp (umfunktioniert aus dem Original-Balance-Slider - VLC-Skins koennen Balance technisch nicht anbinden) -->
@@ -83,6 +82,8 @@
       <Button id="eq.closeX" x="72" y="93"
               up="left_X_01_default.png" over="left_X_02_rollover.png"
               action="main.setLayout(l_closed)" tooltiptext="Close graphic equalizer controls"/>
+
+      <Image id="vgb.eq" x="270" y="59" image="vid_bkgd.png"/>
 
       <!-- ==== Kopf + uebrige Controls (wie geschlossen) ==== -->
       <Image id="eq.head" x="261" y="0" image="head.png" action="move"/>

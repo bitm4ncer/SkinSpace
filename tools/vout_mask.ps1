@@ -123,7 +123,8 @@ public class ScreenMask {
     StringBuilder key = new StringBuilder();
     EnumChildWindows(Skin, delegate(IntPtr ch, IntPtr lp) {
       StringBuilder c = new StringBuilder(256); GetClassName(ch, c, 256);
-      if (c.ToString().StartsWith("VLC video")) {
+      string cs = c.ToString();
+      if (cs == "SkinWindowClass" || cs.StartsWith("VLC video")) {
         RECT r; GetWindowRect(ch, out r);
         Vids.Add(ch);
         key.Append(ch).Append(':').Append(r.R - r.L).Append('x').Append(r.B - r.T).Append('@').Append(r.L).Append(',').Append(r.T).Append(';');
@@ -134,17 +135,13 @@ public class ScreenMask {
     return key.ToString();
   }
 
-  /* Video-Fenster an das Skin-Fenster haengen, auf Lochgroesse ziehen, Lochform clippen. */
+  /* Video-Fenster auf die Lochform clippen (Steuerung selbst liegt schon auf Lochgroesse). */
   public static void Apply(int vx, int vy, int vw, int vh, int[] rects) {
     if (Skin == IntPtr.Zero || Vids.Count == 0) return;
     double scale = ScaleFor(Skin);
     if (scale <= 0) return;
-    int hx = (int)Math.Round(vx * scale), hy = (int)Math.Round(vy * scale);
-    int hw = (int)Math.Round(vw * scale), hh = (int)Math.Round(vh * scale);
 
     foreach (IntPtr v in Vids) {
-      if (GetParent(v) != Skin) SetParent(v, Skin);
-      SetWindowPos(v, IntPtr.Zero, hx, hy, hw, hh, 0x0004 | 0x0010);  /* NOZORDER|NOACTIVATE */
       IntPtr reg = CreateRectRgn(0, 0, 0, 0);
       if (rects.Length == 0) {
         SetWindowRgn(v, reg, true);
@@ -175,7 +172,7 @@ while ($true) {
   foreach ($vp in $procs) {
     $key = [ScreenMask]::Scan([uint32]$vp.Id)
     if ($key -eq 'wait' -or $key -eq 'novout') { continue }
-    if ($key -ne $lastKey -or ($tick % 4) -eq 0) {
+    if ($key -ne $lastKey -or ($tick % 10) -eq 0) {
       [ScreenMask]::Apply($HoleX, $HoleY, $HoleW, $HoleH, $flatArr)
       $lastKey = $key
     }
