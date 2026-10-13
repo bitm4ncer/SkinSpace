@@ -17,7 +17,7 @@ function Read-Frag([string]$name){
 }
 function Scale-Xml([string]$xml, [int]$s){
   if($s -eq 1){ return $xml }
-  $xml = [regex]::Replace($xml, '(\b(?:x|y|width|height|thickness)\s*=\s*")(-?\d+)(")', {
+  $xml = [regex]::Replace($xml, '(\b(?:x|y|width|height|thickness|size)\s*=\s*")(-?\d+)(")', {
     param($m) $m.Groups[1].Value + ([int]$m.Groups[2].Value * $s) + $m.Groups[3].Value
   })
   $xml = [regex]::Replace($xml, 'points\s*=\s*"([^"]+)"', {
