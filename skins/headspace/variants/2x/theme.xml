@@ -139,6 +139,13 @@
   <!-- Playlist: Entfernen-Knopf (Mehrfachauswahl via Strg/Shift-Klick) -->
   <Bitmap id="pl_remove_01_default.png"  file="images/pl_remove_01_default.png"  alphacolor="#FE01FE"/>
   <Bitmap id="pl_remove_02_rollover.png" file="images/pl_remove_02_rollover.png" alphacolor="#FE01FE"/>
+  <!-- Playlist: Sort-Knopf + Shuffle/Loop-Schalter -->
+  <Bitmap id="pl_sort_01_default.png"    file="images/pl_sort_01_default.png"    alphacolor="#FE01FE"/>
+  <Bitmap id="pl_sort_02_rollover.png"   file="images/pl_sort_02_rollover.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="pl_shuffle_off.png"        file="images/pl_shuffle_off.png"        alphacolor="#FE01FE"/>
+  <Bitmap id="pl_shuffle_on.png"         file="images/pl_shuffle_on.png"         alphacolor="#FE01FE"/>
+  <Bitmap id="pl_loop_off.png"           file="images/pl_loop_off.png"           alphacolor="#FE01FE"/>
+  <Bitmap id="pl_loop_on.png"            file="images/pl_loop_on.png"            alphacolor="#FE01FE"/>
 
   <Window id="main" position="Center">
     <Layout id="l_eq" width="1098" height="788">
@@ -300,11 +307,22 @@
                 tooltiptext="Playlist scroll"/>
       </Playtree>
       <!-- Laufzeit des aktuellen Tracks (live; skins2-Platzhalter $t=Position, $d=Dauer, kurzes Format) -->
-      <Text id="pl.time" font="tiny" x="1092" y="474" width="250" color="#77CE07" alignment="right" text="$t / $d"/>
-      <!-- Entfernen-Knopf: loescht die per Strg/Shift-Klick ausgewaehlten Eintraege -->
+      <Text id="pl.time" font="tiny" x="1120" y="474" width="222" color="#77CE07" alignment="right" text="$t / $d"/>
+      <!-- Playlist-Werkzeuge: Entfernen (Strg/Shift-Mehrfachauswahl), Sortieren, Shuffle, Loop -->
       <Button id="pl.remove" x="1006" y="472"
               up="pl_remove_01_default.png" over="pl_remove_02_rollover.png"
               action="playlist.del()" tooltiptext="Remove selected items (Ctrl/Shift-click rows to select)"/>
+      <Button id="pl.sort" x="1034" y="472"
+              up="pl_sort_01_default.png" over="pl_sort_02_rollover.png"
+              action="playlist.sort()" tooltiptext="Sort playlist (A-Z)"/>
+      <Checkbox id="pl.shuffle" x="1062" y="472"
+                up1="pl_shuffle_off.png" up2="pl_shuffle_on.png" down1="none" down2="none" over1="none" over2="none"
+                state="playlist.isRandom" action1="playlist.setRandom(true)" action2="playlist.setRandom(false)"
+                tooltiptext1="Shuffle on" tooltiptext2="Shuffle off"/>
+      <Checkbox id="pl.loop" x="1090" y="472"
+                up1="pl_loop_off.png" up2="pl_loop_on.png" down1="none" down2="none" over1="none" over2="none"
+                state="playlist.isLoop" action1="playlist.setLoop(true)" action2="playlist.setLoop(false)"
+                tooltiptext1="Loop on" tooltiptext2="Loop off"/>
       <Image id="pl.ear" x="1346" y="172" image="right_ear.png"/>
       <Button id="pl.handle" x="1468" y="302"
               up="R_drwr_close_01_default.png" over="R_drwr_close_02_rollover.png" down="R_drwr_close_03_down.png"
@@ -443,11 +461,22 @@
                 tooltiptext="Playlist scroll"/>
       </Playtree>
       <!-- Laufzeit des aktuellen Tracks (live; skins2-Platzhalter $t=Position, $d=Dauer, kurzes Format) -->
-      <Text id="both.pl.time" font="tiny" x="1092" y="474" width="250" color="#77CE07" alignment="right" text="$t / $d"/>
-      <!-- Entfernen-Knopf: loescht die per Strg/Shift-Klick ausgewaehlten Eintraege -->
+      <Text id="both.pl.time" font="tiny" x="1120" y="474" width="222" color="#77CE07" alignment="right" text="$t / $d"/>
+      <!-- Playlist-Werkzeuge: Entfernen (Strg/Shift-Mehrfachauswahl), Sortieren, Shuffle, Loop -->
       <Button id="both.pl.remove" x="1006" y="472"
               up="pl_remove_01_default.png" over="pl_remove_02_rollover.png"
               action="playlist.del()" tooltiptext="Remove selected items (Ctrl/Shift-click rows to select)"/>
+      <Button id="both.pl.sort" x="1034" y="472"
+              up="pl_sort_01_default.png" over="pl_sort_02_rollover.png"
+              action="playlist.sort()" tooltiptext="Sort playlist (A-Z)"/>
+      <Checkbox id="both.pl.shuffle" x="1062" y="472"
+                up1="pl_shuffle_off.png" up2="pl_shuffle_on.png" down1="none" down2="none" over1="none" over2="none"
+                state="playlist.isRandom" action1="playlist.setRandom(true)" action2="playlist.setRandom(false)"
+                tooltiptext1="Shuffle on" tooltiptext2="Shuffle off"/>
+      <Checkbox id="both.pl.loop" x="1090" y="472"
+                up1="pl_loop_off.png" up2="pl_loop_on.png" down1="none" down2="none" over1="none" over2="none"
+                state="playlist.isLoop" action1="playlist.setLoop(true)" action2="playlist.setLoop(false)"
+                tooltiptext1="Loop on" tooltiptext2="Loop off"/>
       <Image id="both.pl.ear" x="1346" y="172" image="right_ear.png"/>
       <Button id="both.pl.handle" x="1468" y="302"
               up="R_drwr_close_01_default.png" over="R_drwr_close_02_rollover.png" down="R_drwr_close_03_down.png"

@@ -146,6 +146,47 @@ foreach($hv in @($false, $true)){
   Save-Bmp $b $name
 }
 
+# --- Playlist: Sort-Knopf + Shuffle/Loop-Schalter ---
+foreach($hv in @($false, $true)){
+  $b = New-Object System.Drawing.Bitmap(10, 10, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+  $g = [System.Drawing.Graphics]::FromImage($b)
+  $g.Clear([System.Drawing.Color]::Transparent)
+  $bgc = if($hv){ [System.Drawing.Color]::FromArgb(255,53,111,8) } else { [System.Drawing.Color]::FromArgb(255,26,61,2) }
+  $glc = if($hv){ [System.Drawing.Color]::FromArgb(255,168,232,90) } else { [System.Drawing.Color]::FromArgb(255,119,206,7) }
+  $g.FillRectangle((New-Object System.Drawing.SolidBrush($bgc)), 0, 0, 10, 10)
+  $g.DrawRectangle((New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,15,42,0), 1)), 0, 0, 9, 9)
+  $pen = New-Object System.Drawing.Pen($glc, 1)
+  $g.DrawLine($pen, 2, 3, 7, 3)
+  $g.DrawLine($pen, 2, 5, 6, 5)
+  $g.DrawLine($pen, 2, 7, 5, 7)
+  $g.Dispose()
+  $name = if($hv){'pl_sort_02_rollover.png'}else{'pl_sort_01_default.png'}
+  Save-Bmp $b $name
+}
+foreach($def in @( @{n='pl_shuffle_off.png'; on=$false}, @{n='pl_shuffle_on.png'; on=$true}, @{n='pl_loop_off.png'; on=$false}, @{n='pl_loop_on.png'; on=$true} )){
+  $isLoop = $def.n -like 'pl_loop*'
+  $b = New-Object System.Drawing.Bitmap(10, 10, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+  $g = [System.Drawing.Graphics]::FromImage($b)
+  $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+  $g.Clear([System.Drawing.Color]::Transparent)
+  $bgc = if($def.on){ [System.Drawing.Color]::FromArgb(255,43,93,5) } else { [System.Drawing.Color]::FromArgb(255,26,61,2) }
+  $glc = if($def.on){ [System.Drawing.Color]::FromArgb(255,119,206,7) } else { [System.Drawing.Color]::FromArgb(255,74,122,16) }
+  $g.FillRectangle((New-Object System.Drawing.SolidBrush($bgc)), 0, 0, 10, 10)
+  $g.DrawRectangle((New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,15,42,0), 1)), 0, 0, 9, 9)
+  $pen = New-Object System.Drawing.Pen($glc, 1)
+  if($isLoop){
+    $g.DrawEllipse($pen, 2, 2, 5, 5)
+    $g.FillPolygon((New-Object System.Drawing.SolidBrush($glc)), [System.Drawing.Point[]]@((New-Object System.Drawing.Point(6,1)),(New-Object System.Drawing.Point(8,3)),(New-Object System.Drawing.Point(5,3))))
+  } else {
+    $g.DrawLine($pen, 2, 7, 6, 3)
+    $g.DrawLine($pen, 2, 3, 6, 7)
+    $g.FillPolygon((New-Object System.Drawing.SolidBrush($glc)), [System.Drawing.Point[]]@((New-Object System.Drawing.Point(6,2)),(New-Object System.Drawing.Point(8,2)),(New-Object System.Drawing.Point(6,4))))
+    $g.FillPolygon((New-Object System.Drawing.SolidBrush($glc)), [System.Drawing.Point[]]@((New-Object System.Drawing.Point(2,6)),(New-Object System.Drawing.Point(2,8)),(New-Object System.Drawing.Point(4,8))))
+  }
+  $g.Dispose()
+  Save-Bmp $b $def.n
+}
+
 Get-ChildItem $dir -Filter 'led_*' | Select-Object Name
 Get-ChildItem $dir -Filter 'eq_link_*' | Select-Object Name
 Get-ChildItem $dir -Filter 'drawer_fill*' | Select-Object Name

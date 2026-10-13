@@ -23,3 +23,10 @@
   <!-- Playlist: Entfernen-Knopf (Mehrfachauswahl via Strg/Shift-Klick) -->
   <Bitmap id="pl_remove_01_default.png"  file="images/pl_remove_01_default.png"  alphacolor="#FE01FE"/>
   <Bitmap id="pl_remove_02_rollover.png" file="images/pl_remove_02_rollover.png" alphacolor="#FE01FE"/>
+  <!-- Playlist: Sort-Knopf + Shuffle/Loop-Schalter -->
+  <Bitmap id="pl_sort_01_default.png"    file="images/pl_sort_01_default.png"    alphacolor="#FE01FE"/>
+  <Bitmap id="pl_sort_02_rollover.png"   file="images/pl_sort_02_rollover.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="pl_shuffle_off.png"        file="images/pl_shuffle_off.png"        alphacolor="#FE01FE"/>
+  <Bitmap id="pl_shuffle_on.png"         file="images/pl_shuffle_on.png"         alphacolor="#FE01FE"/>
+  <Bitmap id="pl_loop_off.png"           file="images/pl_loop_off.png"           alphacolor="#FE01FE"/>
+  <Bitmap id="pl_loop_on.png"            file="images/pl_loop_on.png"            alphacolor="#FE01FE"/>

@@ -85,8 +85,10 @@ Drag & drop                   Drop media onto the window -- videos and
 - Per-row checkboxes and the scrollbar with arrows are **rebuilt original
   artwork**. VLC has no per-item state (the boxes are always "on") and no
   arrow scrolling (scroll with the mouse wheel or drag the thumb). Rows can
-  be **Ctrl/Shift-click multi-selected** (highlighted); the small **bin
-  button** at the bottom-left of the drawer removes the selected items.
+  be **Ctrl/Shift-click multi-selected** (highlighted). The drawer's bottom
+  strip holds the playlist tools: **bin** (remove selected), **sort (A-Z)**,
+  **shuffle** toggle and **loop** toggle (both states are shown). Free
+  drag-reordering is not possible (engine limit).
 - The bottom right shows the **current track time** ("00:04 / 00:30"). A
   duration column per row is not possible: VLC only hands the skin the title
   strings.
