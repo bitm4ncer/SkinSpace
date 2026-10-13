@@ -1,4 +1,5 @@
 tools/realesrgan/
+tools/tmp/
 research/spike/*.log
 research/spike/vlcrc.backup
 .superpowers/
