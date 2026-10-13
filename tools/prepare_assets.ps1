@@ -66,12 +66,12 @@ function DownscaleTo2x {
 }
 
 function Apply-KeyMask {
-  # Setzt Alpha deterministisch aus dem ORIGINAL-Keymuster (2x, Erosion 1px, weiche Randringe).
-  # Inhaltsfarben (KI oder Lanczos) bleiben erhalten; Key-Flaechen werden hart transparent.
-  param([string]$Content2x, [string]$OrigBmp, [string[]]$Keys, [string]$OutPath)
+  # v3: weiche Maske — binaere Content-Map (Original, 1px erodiert) wird BILINEAR auf 2x abgetastet
+  # -> glatte, antialiasing-artige Aussenkontur; keine harten Pixelstufen. Innenfarben (KI/Lanczos) bleiben.
+  param([string]$Content2x, [string]$OrigBmp, [string[]]$Keys, [string]$OutPath, [double]$EdgeLow = 0.25, [double]$EdgeHigh = 0.85)
   $keys2 = @()
   foreach ($k in $Keys) { $keys2 += ,@([Convert]::ToInt32($k.Substring(1,2),16), [Convert]::ToInt32($k.Substring(3,2),16), [Convert]::ToInt32($k.Substring(5,2),16)) }
-  # 1) Original laden, Key-Maske in Originalgroesse
+  # 1) Original laden -> binaere Content-Map (0=key, 1=content), 1px Erosion
   $ob = New-Object System.Drawing.Bitmap($OrigBmp)
   $ow = $ob.Width; $oh = $ob.Height
   $ob2 = $ob.Clone((New-Object System.Drawing.Rectangle(0,0,$ow,$oh)), [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
@@ -81,7 +81,33 @@ function Apply-KeyMask {
   $obytes = New-Object byte[] $ol
   [System.Runtime.InteropServices.Marshal]::Copy($od.Scan0, $obytes, 0, $ol)
   $ob2.UnlockBits($od); $ob2.Dispose()
-  # 2) Zielinhalt laden
+  $raw = New-Object byte[] ($ow * $oh)
+  for ($y = 0; $y -lt $oh; $y++) {
+    for ($x = 0; $x -lt $ow; $x++) {
+      $oi = $y * $os + $x * 4
+      $orr = $obytes[$oi+2]; $ogg = $obytes[$oi+1]; $obb = $obytes[$oi]
+      $isKey = $false
+      foreach ($t in $keys2) {
+        if ($orr -eq $t[0] -and $ogg -eq $t[1] -and $obb -eq $t[2]) { $isKey = $true; break }
+      }
+      $raw[$y * $ow + $x] = if ($isKey) { 0 } else { 1 }
+    }
+  }
+  $map = New-Object byte[] ($ow * $oh)
+  for ($y = 0; $y -lt $oh; $y++) {
+    for ($x = 0; $x -lt $ow; $x++) {
+      $v = 1
+      for ($dy = -1; $dy -le 1 -and $v -eq 1; $dy++) {
+        for ($dx = -1; $dx -le 1 -and $v -eq 1; $dx++) {
+          $sx = $x + $dx; $sy = $y + $dy
+          if ($sx -lt 0 -or $sy -lt 0 -or $sx -ge $ow -or $sy -ge $oh) { continue }
+          if ($raw[$sy * $ow + $sx] -eq 0) { $v = 0 }
+        }
+      }
+      $map[$y * $ow + $x] = $v
+    }
+  }
+  # 2) Content laden
   $cb = New-Object System.Drawing.Bitmap($Content2x)
   $cw = $cb.Width; $ch = $cb.Height
   $cb2 = $cb.Clone((New-Object System.Drawing.Rectangle(0,0,$cw,$ch)), [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
@@ -90,47 +116,23 @@ function Apply-KeyMask {
   $cs = $cd.Stride; $cl = $cs * $ch
   $cbytes = New-Object byte[] $cl
   [System.Runtime.InteropServices.Marshal]::Copy($cd.Scan0, $cbytes, 0, $cl)
-  # 3) Maske auf 2x (nearest) + Alpha setzen (Erosion 1px: Key im 3x3-Umfeld der Originalprobe => transparent)
+  # 3) Bilineare Abtastung der Maske (2x-Zielpixel -> Originalkoordinaten)
+  $range = $EdgeHigh - $EdgeLow
   for ($y = 0; $y -lt $ch; $y++) {
-    $oy = [int]($y / 2)
+    $j = [int]($y / 2); $fy = if ($y % 2 -eq 1) { 0.5 } else { 0.0 }
+    if ($j -ge $oh) { $j = $oh - 1; $fy = 0.0 }
+    $j1 = [Math]::Min($j + 1, $oh - 1)
     for ($x = 0; $x -lt $cw; $x++) {
-      $ox = [int]($x / 2)
-      $isKey = $false
-      # 3x3-Nachbarschaft in Originalkoordinaten (Erosion)
-      for ($dy = -1; $dy -le 1 -and -not $isKey; $dy++) {
-        for ($dx = -1; $dx -le 1 -and -not $isKey; $dx++) {
-          $sx = $ox + $dx; $sy = $oy + $dy
-          if ($sx -lt 0 -or $sy -lt 0 -or $sx -ge $ow -or $sy -ge $oh) { continue }
-          $oi = $sy * $os + $sx * 4
-          $orr = $obytes[$oi+2]; $ogg = $obytes[$oi+1]; $obb = $obytes[$oi]
-          foreach ($t in $keys2) {
-            if ($orr -eq $t[0] -and $ogg -eq $t[1] -and $obb -eq $t[2]) { $isKey = $true; break }
-          }
-        }
-      }
-      if ($isKey) { $ci = $y * $cs + $x * 4; $cbytes[$ci+3] = 0 }
-    }
-  }
-  # 4) Weiche Randringe: opake Pixel mit Abstand 1 zur Transparenz -> 150, Abstand 2 -> 225
-  for ($pass = 1; $pass -le 2; $pass++) {
-    $target = if ($pass -eq 1) { 150 } else { 225 }
-    $setA = if ($pass -eq 1) { 0 } else { 150 }
-    for ($y = 1; $y -lt $ch-1; $y++) {
-      for ($x = 1; $x -lt $cw-1; $x++) {
-        $ci = $y * $cs + $x * 4
-        if ($cbytes[$ci+3] -eq 255) {
-          $border = $false
-          for ($dy = -$pass; $dy -le $pass -and -not $border; $dy++) {
-            for ($dx = -$pass; $dx -le $pass -and -not $border; $dx++) {
-              if ([Math]::Abs($dx) -eq $pass -or [Math]::Abs($dy) -eq $pass) {
-                $ni = ($y+$dy) * $cs + ($x+$dx) * 4
-                if ($cbytes[$ni+3] -eq $setA) { $border = $true }
-              }
-            }
-          }
-          if ($border) { $cbytes[$ci+3] = $target }
-        }
-      }
+      $i = [int]($x / 2); $fx = if ($x % 2 -eq 1) { 0.5 } else { 0.0 }
+      if ($i -ge $ow) { $i = $ow - 1; $fx = 0.0 }
+      $i1 = [Math]::Min($i + 1, $ow - 1)
+      $p00 = $map[$j * $ow + $i]; $p10 = $map[$j * $ow + $i1]
+      $p01 = $map[$j1 * $ow + $i]; $p11 = $map[$j1 * $ow + $i1]
+      $a = (1-$fx)*(1-$fy)*$p00 + $fx*(1-$fy)*$p10 + (1-$fx)*$fy*$p01 + $fx*$fy*$p11
+      $a2 = ($a - $EdgeLow) / $range
+      if ($a2 -lt 0) { $a2 = 0 } elseif ($a2 -gt 1) { $a2 = 1 }
+      $ci = $y * $cs + $x * 4
+      $cbytes[$ci+3] = [byte][Math]::Round($a2 * 255)
     }
   }
   [System.Runtime.InteropServices.Marshal]::Copy($cbytes, 0, $cd.Scan0, $cl)
