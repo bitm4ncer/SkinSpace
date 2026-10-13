@@ -24,7 +24,8 @@ foreach($on in @($false, $true)){
     $g.FillEllipse((New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(200,220,255,180))), 5, 4, 4, 3)
   }
   $g.Dispose()
-  Save-Bmp $b (if($on){'led_on.png'} else {'led_off.png'})
+  $name = if($on){'led_on.png'}else{'led_off.png'}
+  Save-Bmp $b $name
 }
 
 # --- Drawer-Fuellung (8x8 flat #285F03) ---
@@ -46,7 +47,8 @@ foreach($on in @($false, $true)){
   $g.DrawString('equalizer', $f, $br, 0, -1)
   $g.DrawLine((New-Object System.Drawing.Pen($col, 1)), 0, 9, 40, 9)
   $f.Dispose(); $br.Dispose(); $g.Dispose()
-  Save-Bmp $b (if($on){'eq_link_on.png'} else {'eq_link_off.png'})
+  $name = if($on){'eq_link_on.png'}else{'eq_link_off.png'}
+  Save-Bmp $b $name
 }
 
 Get-ChildItem $dir -Filter 'led_*' | Select-Object Name

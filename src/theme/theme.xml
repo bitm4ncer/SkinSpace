@@ -3,6 +3,7 @@
 <Theme version="2.0">
   <ThemeInfo name="Headspace" author="Headspace-Port â€” original skin (c) 2000 Microsoft Corporation"/>
   <Font id="defaultfont" file="fonts/font.otf"/>
+  <Font id="small" file="fonts/font.otf" size="9"/>
 
   <!-- GENERIERT von tools/make_original_assets.ps1 Ã¢â‚¬â€ nicht von Hand editieren -->
   <Bitmap id="drawer_bkgrnd_bottom.png" file="images/drawer_bkgrnd_bottom.png" alphacolor="#FE01FE"/>
@@ -112,11 +113,124 @@
     <SubBitmap id="minimize_close_03_down.png.close" x="15" y="0" width="14" height="16"/>
   </Bitmap>
 
+  <!-- Zusatz-Assets (unser Ersatz-Design; von tools/make_extra_assets.ps1 erzeugt) -->
+  <Bitmap id="led_off.png"       file="images/led_off.png"       alphacolor="#FE01FE"/>
+  <Bitmap id="led_on.png"        file="images/led_on.png"        alphacolor="#FE01FE"/>
+  <Bitmap id="drawer_fill.png"   file="images/drawer_fill.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="eq_link_off.png"   file="images/eq_link_off.png"   alphacolor="#FE01FE"/>
+  <Bitmap id="eq_link_on.png"    file="images/eq_link_on.png"    alphacolor="#FE01FE"/>
+
   <Window id="main" position="Center">
     <Layout id="l_eq" width="549" height="394">
-      <!-- Task 4: hier entsteht das EQ-Layout (l_eq) -->
-      <Image id="eq.bg" image="head.png" action="move"/>
-      <Button id="eq.back" x="101" y="232" up="EQ_01_DF.png" action="main.setLayout(l_closed)" tooltiptext="Back (Platzhalter)"/>
+      <!-- l_eq â€” EQ-Schublade OFFEN (linkes Ohr bei x=0). Koordinaten = Original (headspace.wms), Kopf-Offset 261,0 eingerechnet. -->
+      <!-- Zeichenreihenfolge = spÃ¤tere Elemente liegen oben. -->
+
+      <!-- ==== Screen-Hintergrund + rechtes Ohr (geschlossen) ==== -->
+      <Image id="eq.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
+      <Image id="eq.pl.drawerLeft" x="277" y="86" image="right_drawer_left.png"/>
+      <Image id="eq.pl.drawerTop" x="290" y="86" image="right_drawer_top.png"/>
+      <Image id="eq.pl.drawerBottom" x="290" y="236" image="right_drawer_bottom.png"/>
+      <Image id="eq.pl.ear" x="462" y="86" image="right_ear.png"/>
+      <Button id="eq.pl.handle" x="523" y="151"
+              up="R_drwr_open_01_default.png" over="R_drwr_open_02_rollover.png" down="R_drwr_open_03_down.png"
+              action="main.setLayout(l_both)" tooltiptext="Open playlist"/>
+
+      <!-- ==== Linkes Ohr OFFEN: Schublade (sEqEar bei x=0) ==== -->
+      <Image id="eq.ear" x="0" y="86" image="left_ear.png"/>
+      <Image id="eq.drawerFill" x="84" y="96" width="171" height="140" resize="mosaic" image="drawer_fill.png"/>
+      <Image id="eq.bgLeft" x="84" y="96" image="drawer_bkgrnd_left.png"/>
+      <Image id="eq.bgTop" x="94" y="96" image="drawer_bkgrnd_top.png"/>
+      <Image id="eq.bgBottom" x="94" y="233" image="drawer_bkgrnd_bottom.png"/>
+      <Image id="eq.bgRight" x="250" y="96" image="drawer_bkgrnd_right.png"/>
+      <Image id="eq.drawerTop" x="84" y="86" image="left_drawer_top.png"/>
+      <Image id="eq.drawerBottom" x="84" y="236" image="left_drawer_bottom.png"/>
+      <Image id="eq.drawerRight" x="251" y="86" image="left_drawer_right.png"/>
+
+      <!-- ==== EQ-Bedienelemente im Drawer ==== -->
+      <!-- Balance-Slot -> Mute-LED (Ersatz, siehe Spec) -->
+      <Checkbox id="eq.mute" x="94" y="110"
+                up1="led_off.png" up2="led_on.png" down1="none" down2="none" over1="none" over2="none"
+                state="vlc.isMute" action1="vlc.mute()" action2="vlc.mute()"
+                tooltiptext1="Mute volume" tooltiptext2="Unmute volume"/>
+      <Text id="eq.muteLabel" font="small" x="88" y="127" width="40" color="#77CE07" text="Mute"/>
+      <!-- Volume -->
+      <Image id="eq.volTrack" x="173" y="107" width="71" height="11" resize="mosaic" image="horizontal_slider.png"/>
+      <Slider id="eq.volume" x="173" y="107" points="(5,5),(66,5)" value="volume"
+              up="horizontal_thumb.png" tooltiptext="Volume"/>
+      <Text id="eq.volLabel" font="small" x="192" y="118" width="60" color="#77CE07" text="Volume"/>
+      <!-- 10-Band-Equalizer -->
+      <Image id="eq.track1"  x="95"  y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Slider id="eq.band1"  x="95"  y="140" points="(5,66),(5,8)" value="equalizer.band(0)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="eq.track2"  x="110" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Slider id="eq.band2"  x="110" y="140" points="(5,66),(5,8)" value="equalizer.band(1)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="eq.track3"  x="125" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Slider id="eq.band3"  x="125" y="140" points="(5,66),(5,8)" value="equalizer.band(2)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="eq.track4"  x="140" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Slider id="eq.band4"  x="140" y="140" points="(5,66),(5,8)" value="equalizer.band(3)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="eq.track5"  x="155" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Slider id="eq.band5"  x="155" y="140" points="(5,66),(5,8)" value="equalizer.band(4)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="eq.track6"  x="170" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Slider id="eq.band6"  x="170" y="140" points="(5,66),(5,8)" value="equalizer.band(5)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="eq.track7"  x="185" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Slider id="eq.band7"  x="185" y="140" points="(5,66),(5,8)" value="equalizer.band(6)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="eq.track8"  x="200" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Slider id="eq.band8"  x="200" y="140" points="(5,66),(5,8)" value="equalizer.band(7)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="eq.track9"  x="215" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Slider id="eq.band9"  x="215" y="140" points="(5,66),(5,8)" value="equalizer.band(8)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="eq.track10" x="230" y="140" width="11" height="76" resize="mosaic" image="vertical_slider.png"/>
+      <Slider id="eq.band10" x="230" y="140" points="(5,66),(5,8)" value="equalizer.band(9)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <!-- Enable-Link (Ersatz fuer Original-"reset"-Link) -->
+      <Checkbox id="eq.enableLink" x="224" y="221"
+                up1="eq_link_off.png" up2="eq_link_on.png" down1="none" down2="none" over1="none" over2="none"
+                state="equalizer.isEnabled" action1="equalizer.enable()" action2="equalizer.disable()"
+                tooltiptext1="Enable equalizer" tooltiptext2="Disable equalizer"/>
+      <!-- Griff + Close-X -->
+      <Button id="eq.handle" x="8" y="152"
+              up="L_drwr_close_01_default.png" over="L_drwr_close_02_rollover.png" down="L_drwr_close_03_down.png"
+              action="main.setLayout(l_closed)" tooltiptext="Close graphic equalizer controls"/>
+      <Button id="eq.closeX" x="72" y="93"
+              up="left_X_01_default.png" over="left_X_02_rollover.png"
+              action="main.setLayout(l_closed)" tooltiptext="Close graphic equalizer controls"/>
+
+      <!-- ==== Kopf + uebrige Controls (wie geschlossen) ==== -->
+      <Image id="eq.head" x="261" y="0" image="head.png" action="move"/>
+      <Button id="eq.min" x="362" y="4"
+              up="minimize_close_01_default.png.min" over="minimize_close_02_rollover.png.min" down="minimize_close_03_down.png.min"
+              action="vlc.minimize()" tooltiptext="Minimize"/>
+      <Button id="eq.close" x="377" y="4"
+              up="minimize_close_01_default.png.close" over="minimize_close_02_rollover.png.close" down="minimize_close_03_down.png.close"
+              action="vlc.quit()" tooltiptext="Close"/>
+      <Button id="eq.prev" x="310" y="32"
+              up="play_controls_01_default.png.prev" over="play_controls_02_rollover.png.prev" down="play_controls_03_down.png.prev"
+              action="playlist.previous()" tooltiptext="Previous"/>
+      <Button id="eq.play" x="335" y="32"
+              up="play_controls_01_default.png.play" over="play_controls_02_rollover.png.play" down="play_controls_03_down.png.play"
+              action="vlc.play()" tooltiptext="Play"/>
+      <Button id="eq.stop" x="361" y="32"
+              up="play_controls_01_default.png.stop" over="play_controls_02_rollover.png.stop" down="play_controls_03_down.png.stop"
+              action="vlc.stop()" tooltiptext="Stop"/>
+      <Button id="eq.next" x="386" y="32"
+              up="play_controls_01_default.png.next" over="play_controls_02_rollover.png.next" down="play_controls_03_down.png.next"
+              action="playlist.next()" tooltiptext="Next"/>
+      <Button id="eq.vis" x="428" y="32"
+              up="play_controls_01_default.png.vis" over="play_controls_02_rollover.png.vis" down="play_controls_03_down.png.vis"
+              action="dialogs.file()" tooltiptext="Open media"/>
+      <Button id="eq.pause" x="335" y="32"
+              up="pause_01_default.png" over="pause_02_rollover.png" down="pause_03_down.png"
+              visible="vlc.isPlaying" action="vlc.pause()" tooltiptext="Pause"/>
+      <Button id="eq.eqbtn" x="276" y="214"
+              up="EQ_01_DF.png" over="EQ_02_RV.png" down="EQ_03_Dwn.png"
+              action="main.setLayout(l_closed)" tooltiptext="Close graphic equalizer controls"/>
+      <Button id="eq.plbtn" x="465" y="214"
+              up="PL_01_DF.png" over="PL_02_RV.png" down="PL_03_Dwn.png"
+              action="main.setLayout(l_both)" tooltiptext="Open playlist"/>
+      <Image id="eq.seekbg" x="300" y="223" image="progressbar.png"/>
+      <Slider id="eq.seek" x="300" y="223" points="(9,4),(154,4)" value="time"
+              up="thumb_01_default.png" over="thumb_02_rollover.png" down="thumb_03_down.png"
+              tooltiptext="Seek"/>
+      <Button id="eq.theme" x="362" y="232"
+              up="themebutton_01_default.png" over="themebutton_02_rollover.png" down="themebutton_03_down.png"
+              action="dialogs.prefs()" tooltiptext="Preferences"/>
 
     </Layout>
     <Layout id="l_pl" width="549" height="394">
@@ -196,7 +310,7 @@
               tooltiptext="Seek"/>
       <Button id="cl.theme" x="362" y="232"
               up="themebutton_01_default.png" over="themebutton_02_rollover.png" down="themebutton_03_down.png"
-              action="dialogs.changeSkin()" tooltiptext="Choose another skin"/>
+              action="dialogs.prefs()" tooltiptext="Preferences"/>
 
     </Layout>
   </Window>

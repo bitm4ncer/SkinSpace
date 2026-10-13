@@ -79,7 +79,16 @@ if($doc -ne $null){
     if($v -eq '' -or $v -eq 'none'){ continue }
     if(-not $ids.ContainsKey($v)){ $errors.Add("Referenz ohne Deklaration: '$v'") }
   }
-  # 4) Koordinaten innerhalb der Layoutmaße
+  # 4) Datei-Existenz: alle file="..."-Pfade muessen relativ zum Ausgabeordner existieren (nur wenn dort ein images/-Ordner liegt)
+  $stageDir = Split-Path -Parent $OutFile
+  if(Test-Path (Join-Path $stageDir 'images')){
+    foreach($m in [regex]::Matches($text, '\bfile="([^"]+)"')){
+      $rel = $m.Groups[1].Value
+      $full = Join-Path $stageDir $rel
+      if(-not (Test-Path $full)){ $errors.Add("Datei fehlt fuer file=`"$rel`": $full") }
+    }
+  }
+  # 5) Koordinaten innerhalb der Layoutmaße
   foreach($layout in $doc.SelectNodes('//Layout')){
     $lw = [int]$layout.GetAttribute('width'); $lh = [int]$layout.GetAttribute('height')
     $lid = $layout.GetAttribute('id')

@@ -62,4 +62,4 @@
               tooltiptext="Seek"/>
       <Button id="cl.theme" x="362" y="232"
               up="themebutton_01_default.png" over="themebutton_02_rollover.png" down="themebutton_03_down.png"
-              action="dialogs.changeSkin()" tooltiptext="Choose another skin"/>
+              action="dialogs.prefs()" tooltiptext="Preferences"/>
