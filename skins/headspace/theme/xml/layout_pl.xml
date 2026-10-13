@@ -9,7 +9,7 @@
               up="L_drwr_open_01_default.png" over="L_drwr_open_02_rollover.png" down="L_drwr_open_03_down.png"
               action="main.setLayout(l_both)" tooltiptext="Open graphic equalizer controls"/>
       <Image id="pl.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
-      <Video id="pl.vid" x="276" y="64" width="204" height="147" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="pl.vid" x="273" y="61" width="210" height="153" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Rechtes Ohr OFFEN: Schublade (sPlEar bei x=488) ==== -->
       <Image id="pl.drawerLeft" x="488" y="86" image="right_drawer_left.png"/>
@@ -29,6 +29,10 @@
       </Playtree>
       <!-- Laufzeit des aktuellen Tracks (live; skins2-Platzhalter $t=Position, $d=Dauer, kurzes Format) -->
       <Text id="pl.time" font="tiny" x="546" y="237" width="125" color="#77CE07" alignment="right" text="$t / $d"/>
+      <!-- Entfernen-Knopf: loescht die per Strg/Shift-Klick ausgewaehlten Eintraege -->
+      <Button id="pl.remove" x="503" y="236"
+              up="pl_remove_01_default.png" over="pl_remove_02_rollover.png"
+              action="playlist.del()" tooltiptext="Remove selected items (Ctrl/Shift-click rows to select)"/>
       <Image id="pl.ear" x="673" y="86" image="right_ear.png"/>
       <Button id="pl.handle" x="734" y="151"
               up="R_drwr_close_01_default.png" over="R_drwr_close_02_rollover.png" down="R_drwr_close_03_down.png"

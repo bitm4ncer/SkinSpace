@@ -128,6 +128,24 @@ foreach($muted in @($false, $true)){
   Save-Bmp $b $name
 }
 
+# --- Playlist: Entfernen-Knopf (Korb, 10x10, default/rollover) ---
+foreach($hv in @($false, $true)){
+  $b = New-Object System.Drawing.Bitmap(10, 10, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+  $g = [System.Drawing.Graphics]::FromImage($b)
+  $g.Clear([System.Drawing.Color]::Transparent)
+  $bgc = if($hv){ [System.Drawing.Color]::FromArgb(255,53,111,8) } else { [System.Drawing.Color]::FromArgb(255,26,61,2) }
+  $glc = if($hv){ [System.Drawing.Color]::FromArgb(255,168,232,90) } else { [System.Drawing.Color]::FromArgb(255,119,206,7) }
+  $g.FillRectangle((New-Object System.Drawing.SolidBrush($bgc)), 0, 0, 10, 10)
+  $g.DrawRectangle((New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,15,42,0), 1)), 0, 0, 9, 9)
+  $pen = New-Object System.Drawing.Pen($glc, 1)
+  $g.DrawLine($pen, 4, 2, 5, 2)
+  $g.DrawLine($pen, 2, 3, 7, 3)
+  $g.DrawRectangle($pen, 3, 4, 4, 4)
+  $g.Dispose()
+  $name = if($hv){'pl_remove_02_rollover.png'}else{'pl_remove_01_default.png'}
+  Save-Bmp $b $name
+}
+
 Get-ChildItem $dir -Filter 'led_*' | Select-Object Name
 Get-ChildItem $dir -Filter 'eq_link_*' | Select-Object Name
 Get-ChildItem $dir -Filter 'drawer_fill*' | Select-Object Name

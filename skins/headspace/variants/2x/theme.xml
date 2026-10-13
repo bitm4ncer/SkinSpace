@@ -136,6 +136,9 @@
   <!-- Volume-Label als Mute-Anzeige (Bilder erzeugt von tools/make_extra_assets.ps1) -->
   <Bitmap id="vol_label_on.png"   file="images/vol_label_on.png"   alphacolor="#FE01FE"/>
   <Bitmap id="vol_label_mute.png" file="images/vol_label_mute.png" alphacolor="#FE01FE"/>
+  <!-- Playlist: Entfernen-Knopf (Mehrfachauswahl via Strg/Shift-Klick) -->
+  <Bitmap id="pl_remove_01_default.png"  file="images/pl_remove_01_default.png"  alphacolor="#FE01FE"/>
+  <Bitmap id="pl_remove_02_rollover.png" file="images/pl_remove_02_rollover.png" alphacolor="#FE01FE"/>
 
   <Window id="main" position="Center">
     <Layout id="l_eq" width="1098" height="788">
@@ -163,7 +166,7 @@
       <Image id="eq.drawerRight" x="502" y="172" image="left_drawer_right.png"/>
       <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
       <Image id="eq.vidbkgd" x="540" y="118" image="vid_bkgd.png"/>
-      <Video id="eq.vid" x="552" y="128" width="408" height="294" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="eq.vid" x="546" y="122" width="420" height="306" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== EQ-Bedienelemente im Drawer ==== -->
       <!-- Preamp (umfunktioniert aus dem Original-Balance-Slider - VLC-Skins koennen Balance technisch nicht anbinden) -->
@@ -278,7 +281,7 @@
               up="L_drwr_open_01_default.png" over="L_drwr_open_02_rollover.png" down="L_drwr_open_03_down.png"
               action="main.setLayout(l_both)" tooltiptext="Open graphic equalizer controls"/>
       <Image id="pl.vidbkgd" x="540" y="118" image="vid_bkgd.png"/>
-      <Video id="pl.vid" x="552" y="128" width="408" height="294" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="pl.vid" x="546" y="122" width="420" height="306" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Rechtes Ohr OFFEN: Schublade (sPlEar bei x=488) ==== -->
       <Image id="pl.drawerLeft" x="976" y="172" image="right_drawer_left.png"/>
@@ -298,6 +301,10 @@
       </Playtree>
       <!-- Laufzeit des aktuellen Tracks (live; skins2-Platzhalter $t=Position, $d=Dauer, kurzes Format) -->
       <Text id="pl.time" font="tiny" x="1092" y="474" width="250" color="#77CE07" alignment="right" text="$t / $d"/>
+      <!-- Entfernen-Knopf: loescht die per Strg/Shift-Klick ausgewaehlten Eintraege -->
+      <Button id="pl.remove" x="1006" y="472"
+              up="pl_remove_01_default.png" over="pl_remove_02_rollover.png"
+              action="playlist.del()" tooltiptext="Remove selected items (Ctrl/Shift-click rows to select)"/>
       <Image id="pl.ear" x="1346" y="172" image="right_ear.png"/>
       <Button id="pl.handle" x="1468" y="302"
               up="R_drwr_close_01_default.png" over="R_drwr_close_02_rollover.png" down="R_drwr_close_03_down.png"
@@ -352,7 +359,7 @@
 
       <!-- ==== Screen-Hintergrund + Video ==== -->
       <Image id="both.vidbkgd" x="540" y="118" image="vid_bkgd.png"/>
-      <Video id="both.vid" x="552" y="128" width="408" height="294" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="both.vid" x="546" y="122" width="420" height="306" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Linkes Ohr OFFEN: EQ-Schublade ==== -->
       <Image id="both.eq.ear" x="0" y="172" image="left_ear.png"/>
@@ -437,6 +444,10 @@
       </Playtree>
       <!-- Laufzeit des aktuellen Tracks (live; skins2-Platzhalter $t=Position, $d=Dauer, kurzes Format) -->
       <Text id="both.pl.time" font="tiny" x="1092" y="474" width="250" color="#77CE07" alignment="right" text="$t / $d"/>
+      <!-- Entfernen-Knopf: loescht die per Strg/Shift-Klick ausgewaehlten Eintraege -->
+      <Button id="both.pl.remove" x="1006" y="472"
+              up="pl_remove_01_default.png" over="pl_remove_02_rollover.png"
+              action="playlist.del()" tooltiptext="Remove selected items (Ctrl/Shift-click rows to select)"/>
       <Image id="both.pl.ear" x="1346" y="172" image="right_ear.png"/>
       <Button id="both.pl.handle" x="1468" y="302"
               up="R_drwr_close_01_default.png" over="R_drwr_close_02_rollover.png" down="R_drwr_close_03_down.png"
@@ -507,7 +518,7 @@
               action="main.setLayout(l_pl)" tooltiptext="Open playlist"/>
       <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
       <Image id="cl.vidbkgd" x="540" y="118" image="vid_bkgd.png"/>
-      <Video id="cl.vid" x="552" y="128" width="408" height="294" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="cl.vid" x="546" y="122" width="420" height="306" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Kopf (zichbar) ==== -->
       <Image id="cl.head" x="522" y="0" image="head.png" action="move"/>
