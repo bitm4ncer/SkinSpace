@@ -3,6 +3,7 @@
 
       <!-- ==== Screen-Hintergrund + Ohren (liegen UNTER dem Kopf) ==== -->
       <Image id="cl.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
+      <Video id="cl.vid" x="282" y="70" width="193" height="135" autoresize="false" visible="vlc.hasVout"/>
       <Image id="cl.eq.ear" x="207" y="86" image="left_ear.png"/>
       <Image id="cl.eq.drawerTop" x="291" y="86" image="left_drawer_top.png"/>
       <Image id="cl.eq.drawerBottom" x="291" y="236" image="left_drawer_bottom.png"/>

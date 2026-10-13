@@ -5,7 +5,6 @@
   <Font id="defaultfont" file="fonts/font.otf"/>
   <Font id="small" file="fonts/font.otf" size="27"/>
   <Font id="tiny" file="fonts/font.otf" size="21"/>
-  <Font id="list" file="fonts/tahoma.ttf" size="27"/>
 
   <!-- GENERIERT von tools/make_original_assets.ps1 Ã¢â‚¬â€ nicht von Hand editieren -->
   <Bitmap id="drawer_bkgrnd_bottom.png" file="images/drawer_bkgrnd_bottom.png" alphacolor="#FE01FE"/>
@@ -132,6 +131,7 @@
 
       <!-- ==== Screen-Hintergrund + rechtes Ohr (geschlossen) ==== -->
       <Image id="eq.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
+      <Video id="eq.vid" x="846" y="210" width="579" height="405" autoresize="false" visible="vlc.hasVout"/>
       <Image id="eq.pl.drawerLeft" x="831" y="258" image="right_drawer_left.png"/>
       <Image id="eq.pl.drawerTop" x="870" y="258" image="right_drawer_top.png"/>
       <Image id="eq.pl.drawerBottom" x="870" y="708" image="right_drawer_bottom.png"/>
@@ -259,13 +259,14 @@
               up="L_drwr_open_01_default.png" over="L_drwr_open_02_rollover.png" down="L_drwr_open_03_down.png"
               action="main.setLayout(l_both)" tooltiptext="Open graphic equalizer controls"/>
       <Image id="pl.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
+      <Video id="pl.vid" x="846" y="210" width="579" height="405" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Rechtes Ohr OFFEN: Schublade (sPlEar bei x=488) ==== -->
       <Image id="pl.drawerLeft" x="1464" y="258" image="right_drawer_left.png"/>
       <Image id="pl.drawerTop" x="1503" y="258" image="right_drawer_top.png"/>
       <Image id="pl.drawerBottom" x="1503" y="708" image="right_drawer_bottom.png"/>
       <Image id="pl.fill" x="1503" y="288" width="516" height="420" resize="mosaic" image="drawer_fill.png"/>
-      <Playtree id="pl.list" x="1503" y="288" width="516" height="420" flat="true" font="list"
+      <Playtree id="pl.list" x="1503" y="288" width="516" height="420" flat="true" font="small"
                 bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="white" playcolor="#E8FFC0" selcolor="#77CE07">
         <Slider id="pl.scroll" x="489" y="18" points="(15,15),(15,375)" up="vertical_thumb.png" tooltiptext="Playlist scroll"/>
       </Playtree>
@@ -319,9 +320,128 @@
 
     </Layout>
     <Layout id="l_both" width="2280" height="1182">
-      <!-- Task 6: hier entsteht das Kombi-Layout (l_both) -->
-      <Image id="both.bg" image="head.png" action="move"/>
-      <Button id="both.back" x="303" y="696" up="viz_drop_L_01_default.png" action="main.setLayout(l_closed)" tooltiptext="Back (Platzhalter)"/>
+      <!-- l_both â€” BEIDE Schubladen offen (EQ links bei x=0, Playlist rechts bei x=488). Fenster 760 breit. -->
+
+      <!-- ==== Screen-Hintergrund + Video ==== -->
+      <Image id="both.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
+      <Video id="both.vid" x="846" y="210" width="579" height="405" autoresize="false" visible="vlc.hasVout"/>
+
+      <!-- ==== Linkes Ohr OFFEN: EQ-Schublade ==== -->
+      <Image id="both.eq.ear" x="0" y="258" image="left_ear.png"/>
+      <Image id="both.eq.drawerFill" x="252" y="288" width="513" height="420" resize="mosaic" image="drawer_fill.png"/>
+      <Image id="both.eq.bgLeft" x="252" y="288" image="drawer_bkgrnd_left.png"/>
+      <Image id="both.eq.bgTop" x="282" y="288" image="drawer_bkgrnd_top.png"/>
+      <Image id="both.eq.bgBottom" x="282" y="699" image="drawer_bkgrnd_bottom.png"/>
+      <Image id="both.eq.bgRight" x="750" y="288" image="drawer_bkgrnd_right.png"/>
+      <Image id="both.eq.drawerTop" x="252" y="258" image="left_drawer_top.png"/>
+      <Image id="both.eq.drawerBottom" x="252" y="708" image="left_drawer_bottom.png"/>
+      <Image id="both.eq.drawerRight" x="753" y="258" image="left_drawer_right.png"/>
+      <!-- Balance (optisch) + Volume -->
+      <Image id="both.eq.balTrack" x="276" y="321" image="sl_track_h.png"/>
+      <Image id="both.eq.balThumb" x="369" y="321" image="horizontal_thumb.png"/>
+      <Text id="both.eq.balLabel" font="small" x="318" y="354" width="180" color="#77CE07" text="Balance"/>
+      <Image id="both.eq.volTrack" x="519" y="321" image="sl_track_h.png"/>
+      <Slider id="both.eq.volume" x="519" y="321" points="(15,15),(198,15)" value="volume"
+              up="horizontal_thumb.png" tooltiptext="Volume"/>
+      <Text id="both.eq.volLabel" font="small" x="576" y="354" width="180" color="#77CE07" text="Volume"/>
+      <!-- 10-Band -->
+      <Image id="both.eq.track1"  x="285"  y="420" image="eq_track_v.png"/>
+      <Slider id="both.eq.band1"  x="285"  y="420" points="(15,198),(15,24)" value="equalizer.band(0)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="both.eq.track2"  x="330" y="420" image="eq_track_v.png"/>
+      <Slider id="both.eq.band2"  x="330" y="420" points="(15,198),(15,24)" value="equalizer.band(1)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="both.eq.track3"  x="375" y="420" image="eq_track_v.png"/>
+      <Slider id="both.eq.band3"  x="375" y="420" points="(15,198),(15,24)" value="equalizer.band(2)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="both.eq.track4"  x="420" y="420" image="eq_track_v.png"/>
+      <Slider id="both.eq.band4"  x="420" y="420" points="(15,198),(15,24)" value="equalizer.band(3)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="both.eq.track5"  x="465" y="420" image="eq_track_v.png"/>
+      <Slider id="both.eq.band5"  x="465" y="420" points="(15,198),(15,24)" value="equalizer.band(4)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="both.eq.track6"  x="510" y="420" image="eq_track_v.png"/>
+      <Slider id="both.eq.band6"  x="510" y="420" points="(15,198),(15,24)" value="equalizer.band(5)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="both.eq.track7"  x="555" y="420" image="eq_track_v.png"/>
+      <Slider id="both.eq.band7"  x="555" y="420" points="(15,198),(15,24)" value="equalizer.band(6)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="both.eq.track8"  x="600" y="420" image="eq_track_v.png"/>
+      <Slider id="both.eq.band8"  x="600" y="420" points="(15,198),(15,24)" value="equalizer.band(7)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="both.eq.track9"  x="645" y="420" image="eq_track_v.png"/>
+      <Slider id="both.eq.band9"  x="645" y="420" points="(15,198),(15,24)" value="equalizer.band(8)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Image id="both.eq.track10" x="690" y="420" image="eq_track_v.png"/>
+      <Slider id="both.eq.band10" x="690" y="420" points="(15,198),(15,24)" value="equalizer.band(9)" up="vertical_thumb.png" tooltiptext="Graphic equalizer control"/>
+      <Text id="both.eq.freq1"  font="tiny" x="276"  y="651" width="48" color="#77CE07" text="32"/>
+      <Text id="both.eq.freq2"  font="tiny" x="321" y="651" width="48" color="#77CE07" text="63"/>
+      <Text id="both.eq.freq3"  font="tiny" x="366" y="651" width="48" color="#77CE07" text="125"/>
+      <Text id="both.eq.freq4"  font="tiny" x="411" y="651" width="48" color="#77CE07" text="250"/>
+      <Text id="both.eq.freq5"  font="tiny" x="456" y="651" width="48" color="#77CE07" text="500"/>
+      <Text id="both.eq.freq6"  font="tiny" x="501" y="651" width="48" color="#77CE07" text="1K"/>
+      <Text id="both.eq.freq7"  font="tiny" x="546" y="651" width="48" color="#77CE07" text="2K"/>
+      <Text id="both.eq.freq8"  font="tiny" x="591" y="651" width="48" color="#77CE07" text="4K"/>
+      <Text id="both.eq.freq9"  font="tiny" x="636" y="651" width="48" color="#77CE07" text="8K"/>
+      <Text id="both.eq.freq10" font="tiny" x="681" y="651" width="48" color="#77CE07" text="16K"/>
+      <Checkbox id="both.eq.enableLink" x="678" y="675"
+                up1="eq_link_off.png" up2="eq_link_on.png" down1="none" down2="none" over1="none" over2="none"
+                state="equalizer.isEnabled" action1="equalizer.enable()" action2="equalizer.disable()"
+                tooltiptext1="Enable equalizer" tooltiptext2="Disable equalizer"/>
+      <Button id="both.eq.handle" x="24" y="456"
+              up="L_drwr_close_01_default.png" over="L_drwr_close_02_rollover.png" down="L_drwr_close_03_down.png"
+              action="main.setLayout(l_pl)" tooltiptext="Close graphic equalizer controls"/>
+      <Button id="both.eq.closeX" x="216" y="279"
+              up="left_X_01_default.png" over="left_X_02_rollover.png"
+              action="main.setLayout(l_pl)" tooltiptext="Close graphic equalizer controls"/>
+
+      <!-- ==== Rechtes Ohr OFFEN: Playlist-Schublade ==== -->
+      <Image id="both.pl.drawerLeft" x="1464" y="258" image="right_drawer_left.png"/>
+      <Image id="both.pl.drawerTop" x="1503" y="258" image="right_drawer_top.png"/>
+      <Image id="both.pl.drawerBottom" x="1503" y="708" image="right_drawer_bottom.png"/>
+      <Image id="both.pl.fill" x="1503" y="288" width="516" height="420" resize="mosaic" image="drawer_fill.png"/>
+      <Playtree id="both.pl.list" x="1503" y="288" width="516" height="420" flat="true" font="small"
+                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="white" playcolor="#E8FFC0" selcolor="#77CE07">
+        <Slider id="both.pl.scroll" x="489" y="18" points="(15,15),(15,375)" up="vertical_thumb.png" tooltiptext="Playlist scroll"/>
+      </Playtree>
+      <Image id="both.pl.ear" x="2019" y="258" image="right_ear.png"/>
+      <Button id="both.pl.handle" x="2202" y="453"
+              up="R_drwr_close_01_default.png" over="R_drwr_close_02_rollover.png" down="R_drwr_close_03_down.png"
+              action="main.setLayout(l_eq)" tooltiptext="Close playlist"/>
+      <Button id="both.pl.closeX" x="2031" y="279"
+              up="right_X_01_default.png" over="right_X_02_rollover.png"
+              action="main.setLayout(l_eq)" tooltiptext="Close playlist"/>
+
+      <!-- ==== Kopf + uebrige Controls ==== -->
+      <Image id="both.head" x="783" y="0" image="head.png" action="move"/>
+      <Button id="both.min" x="1086" y="12"
+              up="minimize_close_01_default.png.min" over="minimize_close_02_rollover.png.min" down="minimize_close_03_down.png.min"
+              action="vlc.minimize()" tooltiptext="Minimize"/>
+      <Button id="both.close" x="1131" y="12"
+              up="minimize_close_01_default.png.close" over="minimize_close_02_rollover.png.close" down="minimize_close_03_down.png.close"
+              action="vlc.quit()" tooltiptext="Close"/>
+      <Button id="both.prev" x="930" y="96"
+              up="play_controls_01_default.png.prev" over="play_controls_02_rollover.png.prev" down="play_controls_03_down.png.prev"
+              action="playlist.previous()" tooltiptext="Previous"/>
+      <Button id="both.play" x="1005" y="96"
+              up="play_controls_01_default.png.play" over="play_controls_02_rollover.png.play" down="play_controls_03_down.png.play"
+              action="vlc.play()" tooltiptext="Play"/>
+      <Button id="both.stop" x="1083" y="96"
+              up="play_controls_01_default.png.stop" over="play_controls_02_rollover.png.stop" down="play_controls_03_down.png.stop"
+              action="vlc.stop()" tooltiptext="Stop"/>
+      <Button id="both.next" x="1158" y="96"
+              up="play_controls_01_default.png.next" over="play_controls_02_rollover.png.next" down="play_controls_03_down.png.next"
+              action="playlist.next()" tooltiptext="Next"/>
+      <Button id="both.vis" x="1284" y="96"
+              up="play_controls_01_default.png.vis" over="play_controls_02_rollover.png.vis" down="play_controls_03_down.png.vis"
+              action="dialogs.file()" tooltiptext="Open media"/>
+      <Button id="both.pause" x="1005" y="96"
+              up="pause_01_default.png" over="pause_02_rollover.png" down="pause_03_down.png"
+              visible="vlc.isPlaying" action="vlc.pause()" tooltiptext="Pause"/>
+      <Button id="both.eqbtn" x="828" y="642"
+              up="EQ_01_DF.png" over="EQ_02_RV.png" down="EQ_03_Dwn.png"
+              action="main.setLayout(l_pl)" tooltiptext="Close graphic equalizer controls"/>
+      <Button id="both.plbtn" x="1395" y="642"
+              up="PL_01_DF.png" over="PL_02_RV.png" down="PL_03_Dwn.png"
+              action="main.setLayout(l_eq)" tooltiptext="Close playlist"/>
+      <Image id="both.seekbg" x="900" y="669" image="progressbar.png"/>
+      <Slider id="both.seek" x="900" y="669" points="(27,12),(462,12)" value="time"
+              up="thumb_01_default.png" over="thumb_02_rollover.png" down="thumb_03_down.png"
+              tooltiptext="Seek"/>
+      <Button id="both.theme" x="1086" y="696"
+              up="themebutton_01_default.png" over="themebutton_02_rollover.png" down="themebutton_03_down.png"
+              action="dialogs.prefs()" tooltiptext="Preferences"/>
 
     </Layout>
     <Layout id="l_closed" width="1647" height="1182">
@@ -330,6 +450,7 @@
 
       <!-- ==== Screen-Hintergrund + Ohren (liegen UNTER dem Kopf) ==== -->
       <Image id="cl.vidbkgd" x="810" y="177" image="vid_bkgd.png"/>
+      <Video id="cl.vid" x="846" y="210" width="579" height="405" autoresize="false" visible="vlc.hasVout"/>
       <Image id="cl.eq.ear" x="621" y="258" image="left_ear.png"/>
       <Image id="cl.eq.drawerTop" x="873" y="258" image="left_drawer_top.png"/>
       <Image id="cl.eq.drawerBottom" x="873" y="708" image="left_drawer_bottom.png"/>

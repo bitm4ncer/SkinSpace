@@ -3,6 +3,7 @@
 
       <!-- ==== Screen-Hintergrund + rechtes Ohr (geschlossen) ==== -->
       <Image id="eq.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
+      <Video id="eq.vid" x="282" y="70" width="193" height="135" autoresize="false" visible="vlc.hasVout"/>
       <Image id="eq.pl.drawerLeft" x="277" y="86" image="right_drawer_left.png"/>
       <Image id="eq.pl.drawerTop" x="290" y="86" image="right_drawer_top.png"/>
       <Image id="eq.pl.drawerBottom" x="290" y="236" image="right_drawer_bottom.png"/>
