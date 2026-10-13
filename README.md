@@ -113,12 +113,13 @@ enables **goom** by default; manual option:
 - In development: **"Bitmancer Visualizer Pack"** -- custom retro and modern
   visualizers (100% own code).
 - **Screen fit:** the screen recess in the artwork is round, but skins2 renders
-  video into a *rectangular* child window on top of the skin -- and the control
-  itself paints a black rectangle. The starter bat therefore launches
-  `tools/vout_mask.ps1`, which re-parents the actual video windows directly to
-  the skin window, sizes them to the exact recess and clips them to the recess
-  shape (alpha mask of head.png). DPI-aware; follows layouts and new vouts.
-  Starting VLC directly with `--skins2-last` bypasses this (small inset video).
+  video into a *rectangular* child window on top of the skin -- and the video
+  control itself paints a black rectangle. The starter bat therefore launches
+  `tools/vout_mask.ps1`, which clips the video control and the video windows to
+  the recess shape (alpha mask of head.png). `vid_bkgd.png` is the recess-shaped
+  black backdrop with the head colour bled into its corners, so no black shows
+  at the screen edge. DPI-aware; follows layouts and new vouts. Starting VLC
+  directly with `--skins2-last` bypasses the clip (square corners).
 
 ## INSTALLER & PACKS (work in progress)
 

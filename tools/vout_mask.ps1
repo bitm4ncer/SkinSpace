@@ -178,6 +178,6 @@ while ($true) {
     }
   }
   $tick++
-  Start-Sleep -Milliseconds 700
+  Start-Sleep -Milliseconds 350
 }
 exit 0
