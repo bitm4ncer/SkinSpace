@@ -1,31 +1,27 @@
-# vout_mask.ps1 - haelt das Video randlos im runden Screen und raeumt skins2's
-# schwarzen Backdrop an den Screen-Ecken weg.
+# vout_mask.ps1 - Video randlos im runden Screen, ohne schwarze Balken/Ecken.
 #
 # Warum die Video-Steuerung auf der vollen Loch-Box steht:
-#   skins2 legt das eigentliche Video-Fenster (Klasse "SkinWindowClass", Kind
-#   des Skin-Fensters) exakt auf das <Video>-Rect und setzt diese Geometrie bei
-#   jedem Layout-Wechsel neu (CtrlVideo::onResize). Steht das Rect auf der
-#   Loch-Bounding-Box (271,59,214,157), macht VLC das selbst und stabil - das
-#   Video springt nicht mehr.
+#   skins2 legt das Video-Fenster (Klasse "SkinWindowClass", Kind des Skin-
+#   Fensters) exakt auf das <Video>-Rect und setzt diese Geometrie bei jedem
+#   Layout-Wechsel neu. Steht das Rect auf der Loch-Bounding-Box, macht VLC das
+#   selbst und stabil - das Video springt nicht.
 #
-# Warum es trotzdem Puzzlesteine braucht:
-#   CtrlVideo::draw() malt genau dieses Rect schwarz, und
-#   Win32Graphics::fillRect() nimmt das Rect per CombineRgn(RGN_OR) in die
-#   Fenster-Region auf (notwendig, damit das Kind-Fenster dort zeichnen darf).
-#   Die ~78 px der Box, die ausserhalb des Kopf-Artworks liegen (die beiden
-#   oberen Screen-Ecken, im Original die rote Clip-Farbe), werden dadurch
-#   deckend schwarz und "ragen ueber den Rahmen".
+# Balken oben/unten:
+#   Der Starter-Bat erzwingt per --crop=214:157 (Screen-Seitenverhaeltnis), dass
+#   das Video den Screen ausfuellt (sonst Letterbox-Balken).
 #
-# Loesung:
-#   (a) das Video-Fenster (nur "SkinWindowClass"-Kind, NICHT die vout-internen
-#       Fenster - die liegen z.T. versetzt/letterboxed) per SetWindowRgn auf die
-#       Lochform (aus der Alpha-Maske von head.png) schneiden;
-#   (b) genau diese ~78 px aus der Fenster-Region des Skins abziehen
-#       (SetWindowRgn mit RGN_DIFF). skins2 setzt seine Region bei jedem
-#       Repaint neu, daher laeuft die Korrektur in einer engen Schleife.
+# Schwarze Ecken / Flackern:
+#   CtrlVideo::draw() malet das Rect schwarz und Win32Graphics::fillRect() nimmt
+#   es per CombineRgn in die Fenster-Region auf. Die ~78 px der Box ausserhalb
+#   des Kopf-Artworks (obere Screen-Ecken) werden dadurch deckend schwarz und
+#   skins2 setzt seine Region bei jedem Repaint neu -> die Ecken blitzen.
+#   Loesung: Das Player-Fenster wird auf "Oeffnung + diese Zipfel" geclippt -
+#   also auf ALLE transparenten Pixel der Box (Box minus Kopf-Rahmen). Da das
+#   Video (per --crop) die ganze Box fuellt, deckt es die Zipfel mit Video ab:
+#   kein Schwarz und keine Region-Korrektur mehr noetig -> kein Flackern.
 #
 # head.png bleibt unveraendert. Wird vom Starter-Bat parallel zu VLC gestartet;
-# endet, wenn kein VLC laeuft.
+# endet, wenn kein VLC laeuft. Diagnose: %TEMP%\headspace_voutmask.log
 $ErrorActionPreference = 'Stop'
 
 # --- Diagnose-Log (der Starter-Bat startet das Skript ohne Fenster) ---
@@ -45,66 +41,33 @@ public class DpiFix { [DllImport("user32.dll")] public static extern bool SetPro
 public class TimerFix { [DllImport("winmm.dll")] public static extern uint timeBeginPeriod(uint p); }
 "@
 [void][DpiFix]::SetProcessDPIAware()
-[void][TimerFix]::timeBeginPeriod(1)   # feine Sleep-Aufloesung (sonst ~15ms)
+[void][TimerFix]::timeBeginPeriod(1)
 
 # --- Konfiguration im 1x-Layout (Headspace) ---
 $HoleX = 271; $HoleY = 59; $HoleW = 214; $HoleH = 157
 $MaskX = 10;  $MaskY = 59
 $MaskPath = Join-Path $PSScriptRoot '..\skins\headspace\theme\images\head.png'
 
-# --- Loch-Form + Eck-Zipfel aus head.png lesen ---
-# Loch  = zusammenhaengende transparente Flaeche um die Mitte (die Oeffnung).
-# Zipfel = transparente Pixel, die NICHT zu dieser Flaeche gehoeren (im
-#          Original die rote Aussen-Clip-Farbe) -> deckend schwarz durch skins2.
-$hole = New-Object System.Collections.Generic.List[int]
-$trim = New-Object System.Collections.Generic.List[int]
+# --- Video-Region = ALLE transparenten Pixel der Box (Oeffnung + Eck-Zipfel) ---
+$vid = New-Object System.Collections.Generic.List[int]
 if (Test-Path $MaskPath) {
   $bmp = New-Object System.Drawing.Bitmap($MaskPath)
   $mw = $HoleW; $mh = $HoleH
-  $trans = New-Object 'bool[,]' $mw, $mh
   for ($y = 0; $y -lt $mh; $y++) {
-    for ($x = 0; $x -lt $mw; $x++) {
-      $trans[$x, $y] = ($bmp.GetPixel($MaskX + $x, $MaskY + $y).A -lt 128)
+    $x = 0
+    while ($x -lt $mw) {
+      if ($bmp.GetPixel($MaskX + $x, $MaskY + $y).A -lt 128) {
+        $x0 = $x
+        while ($x -lt $mw -and $bmp.GetPixel($MaskX + $x, $MaskY + $y).A -lt 128) { $x++ }
+        $vid.Add($x0); $vid.Add($y); $vid.Add($x); $vid.Add($y + 1)
+      } else { $x++ }
     }
   }
   $bmp.Dispose()
-  $sx = -1; $sy = -1
-  $cx = [int]($mw / 2); $cy = [int]($mh / 2)
-  if ($trans[$cx, $cy]) { $sx = $cx; $sy = $cy }
-  else { for ($y = 0; $y -lt $mh -and $sx -lt 0; $y++) { for ($x = 0; $x -lt $mw; $x++) { if ($trans[$x, $y]) { $sx = $x; $sy = $y; break } } } }
-  $seen = New-Object 'bool[,]' $mw, $mh
-  if ($sx -ge 0) {
-    $q = New-Object System.Collections.Queue
-    $q.Enqueue(($sy * $mw + $sx)); $seen[$sx, $sy] = $true
-    while ($q.Count -gt 0) {
-      $idx = [int]$q.Dequeue(); $x = $idx % $mw; $y = [int][Math]::Floor($idx / $mw)
-      foreach ($d in @(@(1, 0), @(-1, 0), @(0, 1), @(0, -1))) {
-        $nx = $x + $d[0]; $ny = $y + $d[1]
-        if ($nx -ge 0 -and $nx -lt $mw -and $ny -ge 0 -and $ny -lt $mh -and -not $seen[$nx, $ny] -and $trans[$nx, $ny]) {
-          $seen[$nx, $ny] = $true; $q.Enqueue(($ny * $mw + $nx))
-        }
-      }
-    }
-    for ($y = 0; $y -lt $mh; $y++) {
-      $x = 0
-      while ($x -lt $mw) {
-        if ($seen[$x, $y]) { $x0 = $x; while ($x -lt $mw -and $seen[$x, $y]) { $x++ }; $hole.Add($x0); $hole.Add($y); $hole.Add($x); $hole.Add($y + 1) }
-        else { $x++ }
-      }
-    }
-    for ($y = 0; $y -lt $mh; $y++) {
-      $x = 0
-      while ($x -lt $mw) {
-        if ($trans[$x, $y] -and -not $seen[$x, $y]) { $x0 = $x; while ($x -lt $mw -and $trans[$x, $y] -and -not $seen[$x, $y]) { $x++ }; $trim.Add($x0); $trim.Add($y); $trim.Add($x); $trim.Add($y + 1) }
-        else { $x++ }
-      }
-    }
-  }
-  Write-Host ("Loch-Maske: " + ($hole.Count / 4) + " Rechtecke, Eck-Zipfel: " + ($trim.Count / 4) + " Rechtecke")
-  Write-Log ("Maske: Loch=" + ($hole.Count / 4) + " Zipfel=" + ($trim.Count / 4) + " maskExists=" + (Test-Path $MaskPath))
+  Write-Host ("Video-Region: " + ($vid.Count / 4) + " Rechtecke")
+  Write-Log ("Region: " + ($vid.Count / 4) + " Rechtecke, maskExists=" + (Test-Path $MaskPath))
 }
-$holeArr = $hole.ToArray()
-$trimArr = $trim.ToArray()
+$vidArr = $vid.ToArray()
 
 Add-Type -TypeDefinition @"
 using System;
@@ -121,7 +84,6 @@ public class ScreenMask {
   [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
   [DllImport("user32.dll")] public static extern int SetWindowRgn(IntPtr h, IntPtr hRgn, bool redraw);
   [DllImport("user32.dll")] public static extern int GetWindowRgn(IntPtr h, IntPtr hRgn);
-  [DllImport("gdi32.dll")] public static extern bool RectInRegion(IntPtr hRgn, ref RECT r);
   [DllImport("gdi32.dll")] public static extern bool PtInRegion(IntPtr hRgn, int x, int y);
   [DllImport("gdi32.dll")] public static extern IntPtr CreateRectRgn(int a, int b, int c, int d);
   [DllImport("gdi32.dll")] public static extern int CombineRgn(IntPtr d, IntPtr a, IntPtr b, int m);
@@ -130,7 +92,7 @@ public class ScreenMask {
 
   private static IntPtr Skin = IntPtr.Zero;
   private static readonly List<IntPtr> Vids = new List<IntPtr>();
-  private const int RGN_OR = 2, RGN_DIFF = 4;
+  private const int RGN_OR = 2;
 
   private static IntPtr FindSkin(uint pid) {
     IntPtr res = IntPtr.Zero;
@@ -154,7 +116,6 @@ public class ScreenMask {
     return (double)sw / layoutW;
   }
 
-  /* Skin + Video-Fenster (nur "SkinWindowClass"-Kind) suchen. */
   public static string Scan(uint pid) {
     Skin = FindSkin(pid);
     Vids.Clear();
@@ -165,7 +126,7 @@ public class ScreenMask {
       if (c.ToString() == "SkinWindowClass") {
         RECT r; GetWindowRect(ch, out r);
         Vids.Add(ch);
-        key.Append(ch).Append(':').Append(r.R - r.L).Append('x').Append(r.B - r.T).Append('@').Append(r.L).Append(',').Append(r.T).Append(';');
+        key.Append(ch).Append(':').Append(r.R - r.L).Append('x').Append(r.B - r.T).Append(';');
       }
       return true;
     }, IntPtr.Zero);
@@ -173,15 +134,15 @@ public class ScreenMask {
     return key.ToString();
   }
 
-  /* Video-Fenster auf die Lochform clippen (idempotent; die vout-internen
-     Fenster werden vom Eltern-Clipping mit erfasst). */
+  /* Player-Fenster auf die Video-Region (Oeffnung + Zipfel) clippen. Idempotent:
+     nur setzen, wenn die Region nicht schon stimmt (Mitte + Zipfel drin). */
   public static void Apply(int vx, int vy, int vw, int vh, int[] rects) {
     if (Skin == IntPtr.Zero || Vids.Count == 0) return;
     double scale = ScaleFor(Skin);
     if (scale <= 0) return;
 
     foreach (IntPtr v in Vids) {
-      if (ClipOk(v, vw, vh, scale)) continue;
+      if (RegionOk(v, vw, vh, scale)) continue;
       IntPtr reg = CreateRectRgn(0, 0, 0, 0);
       if (rects.Length == 0) {
         SetWindowRgn(v, reg, true);
@@ -198,55 +159,18 @@ public class ScreenMask {
     }
   }
 
-  /* Ist die Region des Video-Fensters bereits die Lochform?
-     (Oeffnungsmitte drin + Box-Ecke draussen) */
-  private static bool ClipOk(IntPtr v, int vw, int vh, double scale) {
+  /* Stimmt die Region des Player-Fensters schon?  Oeffnungsmitte + Box-Ecke
+     (Zipfel) muessen drin sein, sonst neu setzen. */
+  private static bool RegionOk(IntPtr v, int vw, int vh, double scale) {
     IntPtr h = CreateRectRgn(0, 0, 0, 0);
     bool ok = false;
     if (GetWindowRgn(v, h) != 0) {
       bool inMid = PtInRegion(h, (int)Math.Round((vw / 2) * scale), (int)Math.Round((vh / 2) * scale));
-      bool outCorner = !PtInRegion(h, (int)Math.Round(2 * scale), (int)Math.Round(2 * scale));
-      ok = inMid && outCorner;
+      bool inCorner = PtInRegion(h, (int)Math.Round(2 * scale), (int)Math.Round(2 * scale));
+      ok = inMid && inCorner;
     }
     DeleteObject(h);
     return ok;
-  }
-
-  /* Eck-Zipfel (ausserhalb des Gesichts) aus der Fenster-Region des Skins
-     abziehen. skins2 setzt seine Region bei jedem Repaint neu, daher wird das
-     hier immer wieder (idempotent) nachgezogen. */
-  public static void TrimRegion(int vx, int vy, int[] rects) {
-    if (Skin == IntPtr.Zero || rects.Length == 0) return;
-    double scale = ScaleFor(Skin);
-    if (scale <= 0) return;
-
-    IntPtr hTrim = CreateRectRgn(0, 0, 0, 0);
-    for (int i = 0; i < rects.Length; i += 4) {
-      int x0 = (int)Math.Round((vx + rects[i]) * scale), y0 = (int)Math.Round((vy + rects[i + 1]) * scale);
-      int x1 = (int)Math.Round((vx + rects[i + 2]) * scale), y1 = (int)Math.Round((vy + rects[i + 3]) * scale);
-      IntPtr rr = CreateRectRgn(x0, y0, x1, y1);
-      CombineRgn(hTrim, hTrim, rr, RGN_OR);
-      DeleteObject(rr);
-    }
-
-    IntPtr hCur = CreateRectRgn(0, 0, 0, 0);
-    int t = GetWindowRgn(Skin, hCur);   /* 0 = ERROR, 1 = NULLREGION, 2 = SIMPLE, 3 = COMPLEX */
-    if (t != 0) {
-      bool need = false;
-      for (int i = 0; i < rects.Length; i += 4) {
-        RECT r = new RECT();
-        r.L = (int)Math.Round((vx + rects[i]) * scale); r.T = (int)Math.Round((vy + rects[i + 1]) * scale);
-        r.R = (int)Math.Round((vx + rects[i + 2]) * scale); r.B = (int)Math.Round((vy + rects[i + 3]) * scale);
-        if (RectInRegion(hCur, ref r)) { need = true; break; }
-      }
-      if (need) {
-        IntPtr hNew = CreateRectRgn(0, 0, 0, 0);
-        CombineRgn(hNew, hCur, hTrim, RGN_DIFF);
-        SetWindowRgn(Skin, hNew, true);   /* System uebernimmt hNew; nicht freigeben */
-      }
-    }
-    DeleteObject(hCur);
-    DeleteObject(hTrim);
   }
 }
 "@
@@ -259,17 +183,14 @@ $startTick = [Environment]::TickCount
 while ($true) {
   $now = [Environment]::TickCount
   if (($now - $lastScan) -ge 20) {
-    # Handles (Skin + Video-Fenster) regelmaessig neu einlesen
     $lastScan = $now
     $procs = @(Get-Process vlc -ErrorAction SilentlyContinue)
     if ($procs.Count -eq 0) {
       if (-not $seenVlc) {
-        # Beim Start geduldig auf VLC warten (der Starter-Bat startet beide fast gleichzeitig)
         if (($now - $startTick) -gt 60000) { break }
         Start-Sleep -Milliseconds 300
         continue
       }
-      # VLC war da -> kurze Schonfrist, dann beenden
       Start-Sleep -Milliseconds 1200
       if (@(Get-Process vlc -ErrorAction SilentlyContinue).Count -eq 0) { break }
       continue
@@ -283,9 +204,9 @@ while ($true) {
     if ($skinFound -and -not $loggedFound) { Write-Log "Skin+Video gefunden, Wache aktiv"; $loggedFound = $true }
   }
   if ($skinFound) {
-    [ScreenMask]::Apply($HoleX, $HoleY, $HoleW, $HoleH, $holeArr)
-    [ScreenMask]::TrimRegion($HoleX, $HoleY, $trimArr)
+    [ScreenMask]::Apply($HoleX, $HoleY, $HoleW, $HoleH, $vidArr)
   }
   Start-Sleep -Milliseconds 2
 }
+Write-Log "VLC beendet, Wache stoppt"
 exit 0
