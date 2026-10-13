@@ -50,10 +50,12 @@ distribution/
 
 ## 4. Manifest-Format
 
-Pro Item ein JSON-Objekt; das **Aktions-Vokabular ist fest verdrahtet** (`copy | extract | regsvr32 | write-config | run-payload-script | manual-note`), Manifeste können keinen freien Code ausführen.
+Pro Item ein JSON-Objekt; das **Aktions-Vokabular ist fest verdrahtet** (`copy | write-config | regsvr32 | run-payload-script | manual-note`; Downloads landen als `%ARTIFACT%`, entpackte Archive als `%WORK%`), Manifeste können keinen freien Code ausführen. Werte dürfen Tokens enthalten: `%REPO%` `%TARGET%` `%WORK%` `%ARTIFACT%` `%APPDATA%` `%LOCALAPPDATA%` `%VLC_INSTALL_DIR%` `%WMP_VIS_DIR%`.
 
-Pflichtfelder: `id`, `name`, `category` (`vlc|wmp|winamp`), `sources[]` (geordnete URL-Kette), `sha256`, `size`, `archive` (`none|zip|7z`), `install.action`, `license.{status,redistribution}`, `default`, `notes`.
-Optional: `requires[]` (`vlc>=3.0.24`, `winamp-or-wacup`, `wmp-legacy`, `windows`), `target` (Resolver-Name), `byo` (bool).
+Pflichtfelder: `id`, `name`, `category` (`vlc|wmp|winamp|bitmancer`), `install.steps[]` (≥ 1 Aktion), `license.{status,redistribution}` (`redistribution` ∈ `repo-asset|allowed|downloader-only|byo`), `default`, `notes`.
+Pflicht bei Downloads: `sources[]` (geordnete URL-Kette, nur `https`) + `sha256`; **repo-lokale** Dateien (Build-Artefakte) benötigen keinen Hash.
+Optional: `size`, `archive` (`none|zip|7z`, Default `none`), `requires[]` (z. B. `vlc-present`, `vlc>=3.0.24`, `winamp-or-wacup`, `wmp-legacy`, `windows`), `byo` (bool).
+Schritt-Formate: `{ action:"copy", from, to }` · `{ action:"write-config", file:"vlcrc", section, key, value }` · `{ action:"regsvr32", from }` · `{ action:"manual-note", text }`.
 
 Beispiel:
 
@@ -70,7 +72,7 @@ Beispiel:
   "sha256": "<64 hex>",
   "size": 348160,
   "archive": "none",
-  "install": { "action": "regsvr32", "target": "wmp-visualizations" },
+  "install": { "steps": [ { "action": "copy", "from": "%ARTIFACT%", "to": "%WMP_VIS_DIR%/alchemy.dll" } ] },
   "license": { "status": "proprietary-abandonware", "redistribution": "downloader-only" },
   "default": true,
   "notes": "Microsoft; Core-Set."
@@ -132,7 +134,7 @@ Beispiel:
 
 ## 8. Sicherheit
 
-- SHA256-Pflicht; kein Item ohne Hash wird installiert.
+- SHA256-Pflicht für alle **Downloads**; repo-lokale Dateien (Build-Artefakte aus `dist/`) werden ohne Hash kopiert — der Validator unterscheidet beide Fälle.
 - Keine Ausführung von Fremd-`exe`s; Archive werden entpackt, nie gestartet.
 - Festes Aktions-Vokabular; `run-payload-script` nur aus `payload/` (repo-vertrauenswürdig).
 - `regsvr32` nur für verifizierte, kuratierte DLLs; Registry-Aktionen journalisiert und beim Uninstall rückgängig.
@@ -148,7 +150,7 @@ Beispiel:
 ## 10. Tests
 
 - **Manifest-Validator:** Schema, eindeutige IDs, Hash-Format, optional Online-Erreichbarkeit (Skip-Flag).
-- **Engine-Unit-Tests (Pester):** Mock-HTTP-Download, Hash-Mismatch ⇒ fail, Mirror-Fallback, BYO-Match, Journal/Uninstall, `vlcrc`-Patch + Restore mit Fixture.
+- **Engine-Unit-Tests (Repo-Konvention: eigenständige PS-Skripte mit `OK:`/`FAIL:` + Exit-Code; Pester 5 ist nicht verfügbar, Pester 3.4.0 wird nicht genutzt):** Mock-HTTP-Download, Hash-Mismatch ⇒ fail, Mirror-Fallback, BYO-Match, Journal/Uninstall, `vlcrc`-Patch + Restore mit Fixture.
 - **E2E:** `Install-Headspace.ps1 -Packs vlc -OfflinePath <cache>` auf sauberem System → VLC startet im Skin; Screenshot-Vergleich wie bestehender Skin-Testrunner (`tools/tests/` bleibt unangetastet).
 - **Installer-Test:** Silent-Install/Uninstall + Log-Auswertung.
 - Alle neuen Tests unter `distribution/tests/`.
