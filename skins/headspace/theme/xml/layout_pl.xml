@@ -9,7 +9,7 @@
               up="L_drwr_open_01_default.png" over="L_drwr_open_02_rollover.png" down="L_drwr_open_03_down.png"
               action="main.setLayout(l_both)" tooltiptext="Open graphic equalizer controls"/>
       <Image id="pl.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
-      <Video id="pl.vid" x="271" y="59" width="214" height="157" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="pl.vid" x="275" y="63" width="206" height="149" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Rechtes Ohr OFFEN: Schublade (sPlEar bei x=488) ==== -->
       <Image id="pl.drawerLeft" x="488" y="86" image="right_drawer_left.png"/>
