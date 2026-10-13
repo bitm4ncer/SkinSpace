@@ -18,6 +18,12 @@
 3. **Task 4: EQ-Schublade** (l_eq: Balance→Mute-LED, Volume, 10-Band-EQ + Enable-Link, Drawer-Grafiken)
 4. Task 5: Playlist-Schublade (l_pl) · Task 6: l_both + Video · Task 7: README + Endabnahme
 
+## 🚨 GELÖST: Der „VLC-crasht-Phasen"-Bug des Tages
+**Ursache:** Ein liegengebliebener Crash-Dump in `%APPDATA%\vlc\crashdump\*.dmp` lässt JEDEN VLC-Start crashen
+(auch Qt/Portable/Headless; auch nach Reboot!). Bewiesen per Gegen-Test (Dump rein → Crash, Dump raus → OK).
+**Fix/Regel:** Bei „VLC startet plötzlich nicht mehr": Ordner `%APPDATA%\vlc\crashdump` leeren.
+**Status:** AppData repariert (Settings/Artwork/Mediathek wiederhergestellt, Dump in `vlc.quarantine` als Beleg). Sonnen-Button visuell verifiziert (`research/progress/sun_verify_2x.png`), Skin 2× läuft.
+
 ## Wichtige Kontexte
 - Ledger: `.superpowers/sdd/2026-10-13-headspace-vlc-skin-plan/progress.md` (alle Rulings)
 - Plan: `docs/superpowers/plans/2026-10-13-headspace-vlc-skin-plan.md`
