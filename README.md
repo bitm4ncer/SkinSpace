@@ -57,14 +57,16 @@ deaktivierter Mediathek → saubere Playlist wie im Original).
   Alternativ: den „reset"-Link einmal klicken (EQ an; LED an = aktiv), nochmal klicken = aus.
 - „reset"-Link = **Equalizer an/aus**. Ein echtes Nullen aller Regler ist im VLC-Skin-System technisch
   nicht umsetzbar (die Engine bietet keinen Reset-Befehl) — die Regler ggf. manuell auf Mitte ziehen.
-- Balance: **rein optisch** — VLC-Skins besitzen keine Balance-Anbindung (keine entsprechende Variable
-  in der Engine). Mute über VLC-Taste `M`.
+- „Preamp"-Regler (ursprünglich Balance): steuert den **EQ-Vorverstärker** (±20 dB, wirkt live).
+  VLC-Skins können Balance technisch nicht anbinden — daher umfunktioniert, Label angepasst.
+  Mute über VLC-Taste `M`.
 
 ## Bekannte Abweichungen vom Original (technisch bedingt, dokumentiert)
 
 - **Visualisierungen** sind über VLC-Skins nicht steuerbar → Screen zeigt Video (und bleibt sonst schwarz
   wie im Original ohne Visualisierung); die Visualisierungs-Auswahl entfällt.
-- **Balance** ohne Funktion (kein Balance-Binding im Skin-System) — Optik 1:1.
+- **Balance** → **Preamp** umfunktioniert (VLC-Skins können Balance nicht anbinden): gleiche
+  Position/Optik, Label „Preamp", steuert den EQ-Vorverstärker.
 - **reset**-Link schaltet den Equalizer an/aus statt Gains zu nullen.
 - Keine „disabled"-Optik auf Knöpfen (skins2 kennt nur up/hover/down).
 - Ohr-Schubladen öffnen **ohne Slide-Animation** (skins2 hat keine Bewegungsanimation).

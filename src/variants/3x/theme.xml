@@ -152,10 +152,11 @@
       <Image id="eq.drawerRight" x="753" y="258" image="left_drawer_right.png"/>
 
       <!-- ==== EQ-Bedienelemente im Drawer ==== -->
-      <!-- Balance (Original-Optik und Original-Position. Hinweis: VLC-Skins koennen Balance technisch nicht anbinden - Rail + Knopf sind rein optisch, Knopf mittig wie im Original) -->
-      <Image id="eq.balTrack" x="276" y="321" image="sl_track_h.png"/>
-      <Image id="eq.balThumb" x="369" y="321" image="horizontal_thumb.png"/>
-      <Text id="eq.balLabel" font="small" x="318" y="354" width="180" color="#77CE07" text="Balance"/>
+      <!-- Preamp (umfunktioniert aus dem Original-Balance-Slider - VLC-Skins koennen Balance technisch nicht anbinden) -->
+      <Image id="eq.preTrack" x="276" y="321" image="sl_track_h.png"/>
+      <Slider id="eq.preamp" x="276" y="321" points="(15,15),(198,15)" value="equalizer.preamp"
+              up="horizontal_thumb.png" tooltiptext="Preamp"/>
+      <Text id="eq.preLabel" font="small" x="318" y="354" width="180" color="#77CE07" text="Preamp"/>
       <!-- Volume -->
       <Image id="eq.volTrack" x="519" y="321" image="sl_track_h.png"/>
       <Slider id="eq.volume" x="519" y="321" points="(15,15),(198,15)" value="volume"
@@ -336,10 +337,11 @@
       <Image id="both.eq.drawerTop" x="252" y="258" image="left_drawer_top.png"/>
       <Image id="both.eq.drawerBottom" x="252" y="708" image="left_drawer_bottom.png"/>
       <Image id="both.eq.drawerRight" x="753" y="258" image="left_drawer_right.png"/>
-      <!-- Balance (optisch) + Volume -->
-      <Image id="both.eq.balTrack" x="276" y="321" image="sl_track_h.png"/>
-      <Image id="both.eq.balThumb" x="369" y="321" image="horizontal_thumb.png"/>
-      <Text id="both.eq.balLabel" font="small" x="318" y="354" width="180" color="#77CE07" text="Balance"/>
+      <!-- Preamp (umfunktioniert aus Balance) + Volume -->
+      <Image id="both.eq.preTrack" x="276" y="321" image="sl_track_h.png"/>
+      <Slider id="both.eq.preamp" x="276" y="321" points="(15,15),(198,15)" value="equalizer.preamp"
+              up="horizontal_thumb.png" tooltiptext="Preamp"/>
+      <Text id="both.eq.preLabel" font="small" x="318" y="354" width="180" color="#77CE07" text="Preamp"/>
       <Image id="both.eq.volTrack" x="519" y="321" image="sl_track_h.png"/>
       <Slider id="both.eq.volume" x="519" y="321" points="(15,15),(198,15)" value="volume"
               up="horizontal_thumb.png" tooltiptext="Volume"/>

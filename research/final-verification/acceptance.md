@@ -7,7 +7,7 @@ Stand: 2026-10-13 · Branch `headspace-port` · Testmethode: klickfreie Preset-S
 | Kriterium | Status | Beleg |
 |---|---|---|
 | Lädt fehlerfrei mit `-vvv` (keine bad theme/unknown/non-unique) | ✅ | run_task3/4/5/6-Suiten, Logchecks PASS |
-| Keine toten Controls | ✅ | Jede sichtbare Schaltfläche verdrahtet (Transport, Min/Close, EQ, Playlist, Seek, Theme→Preferences, Sun→Open Media, EQ-Slider→VLC-EQ, Playlist-Slider). Dokumentierte Sonderfälle: Balance rein optisch; „reset" = EQ an/aus; Cursor unveränderlich |
+| Keine toten Controls | ✅ | Jede sichtbare Schaltfläche verdrahtet (Transport, Min/Close, EQ, Playlist, Seek, Theme→Preferences, Sun→Open Media, EQ-Slider→VLC-EQ, Playlist-Slider). Dokumentierte Sonderfälle: Balance→Preamp umfunktioniert (EQ-Vorverstärker, funktional); „reset" = EQ an/aus; Cursor unveränderlich |
 | Optik deckt sich mit dem Original | ✅ | Pixel-Sonden gegen Rekonstruktionen; EQ-Drawer gegen **echte WMP-Referenz-Screenshots** iteriert (Rails+Kappen+Thumbs, Frequenz-Labels, reset-Optik). Anm.: frühere Rekonstruktionen (state-B/C) enthielten einen Track-Fehler und wurden durch die Nutzer-Referenzen korrigiert |
 | EQ-Persistenz über Neustart | ✅ | Drag schreibt `equalizer-bands` in vlcrc (Spike + Task-4-Test: Band0 → 12.8 dB) |
 | Seekbar | ✅ | Slider-Mechanik in Spike + Nutzungskette verifiziert (gleiche Control-Klasse) |
