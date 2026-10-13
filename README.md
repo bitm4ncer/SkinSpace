@@ -72,8 +72,9 @@ deaktivierter Mediathek → saubere Playlist wie im Original).
 - Ohr-Schubladen öffnen **ohne Slide-Animation** (skins2 hat keine Bewegungsanimation).
 - Playlist-Optik: Checkboxen pro Zeile und Scrollbar mit Pfeilen sind **nachgebaute Original-Optik** —
   VLC kennt keinen Eintrag-Status (Checkboxen sind immer „an") und keine Pfeil-Scrollfunktion
-  (gescrollt wird per Mausrad oder Ziehen am Thumb). Die **Dauer-Spalte fehlt**: VLC liefert dem Skin
-  nur den Titel (Engine-Limit, keine Dauer verfügbar).
+  (gescrollt wird per Mausrad oder Ziehen am Thumb). Eine **Dauer pro Zeile** ist nicht möglich (VLC
+  liefert dem Skin nur den Titel) — die **Laufzeit des aktuellen Tracks** (z.B. „00:04 / 00:30") steht
+  stattdessen unten in der Playlist-Schublade (skin2-Platzhalter `$t`/`$d`, aktualisiert live).
 - Cursor wechselt nicht zu einem Hand-Cursor (im Skin-System nicht vorgesehen).
 - Ton-Standard-Optik des Original-Screens (Download-Fortschritt im Seekbar) entfällt.
 

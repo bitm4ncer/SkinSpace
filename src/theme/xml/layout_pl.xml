@@ -27,6 +27,8 @@
                 up="pl_scroll_thumb_01_default.png" over="pl_scroll_thumb_02_rollover.png" down="pl_scroll_thumb_03_down.png"
                 tooltiptext="Playlist scroll"/>
       </Playtree>
+      <!-- Laufzeit des aktuellen Tracks (live; skins2-Platzhalter $t=Position, $d=Dauer, kurzes Format) -->
+      <Text id="pl.time" font="tiny" x="546" y="237" width="125" color="#77CE07" alignment="right" text="$t / $d"/>
       <Image id="pl.ear" x="673" y="86" image="right_ear.png"/>
       <Button id="pl.handle" x="734" y="151"
               up="R_drwr_close_01_default.png" over="R_drwr_close_02_rollover.png" down="R_drwr_close_03_down.png"
