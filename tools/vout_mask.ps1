@@ -11,14 +11,15 @@
 # Warum es trotzdem Puzzlesteine braucht:
 #   CtrlVideo::draw() malt genau dieses Rect schwarz, und
 #   Win32Graphics::fillRect() nimmt das Rect per CombineRgn(RGN_OR) in die
-#   Fenster-Region auf (notwendig, damit das Kind-Fenster dort ueberhaupt
-#   zeichnen darf). Die ~78 px der Box, die ausserhalb des Kopf-Artworks liegen
-#   (die beiden oberen Screen-Ecken, im Original die rote Clip-Farbe), werden
-#   dadurch deckend schwarz und "ragen ueber den Rahmen".
+#   Fenster-Region auf (notwendig, damit das Kind-Fenster dort zeichnen darf).
+#   Die ~78 px der Box, die ausserhalb des Kopf-Artworks liegen (die beiden
+#   oberen Screen-Ecken, im Original die rote Clip-Farbe), werden dadurch
+#   deckend schwarz und "ragen ueber den Rahmen".
 #
 # Loesung:
-#   (a) das Video-Fenster per SetWindowRgn auf die Lochform (aus der Alpha-Maske
-#       von head.png) schneiden -> randfuellend, runde Kanten;
+#   (a) das Video-Fenster (nur "SkinWindowClass"-Kind, NICHT die vout-internen
+#       Fenster - die liegen z.T. versetzt/letterboxed) per SetWindowRgn auf die
+#       Lochform (aus der Alpha-Maske von head.png) schneiden;
 #   (b) genau diese ~78 px aus der Fenster-Region des Skins abziehen
 #       (SetWindowRgn mit RGN_DIFF). skins2 setzt seine Region bei jedem
 #       Repaint neu, daher laeuft die Korrektur in einer engen Schleife.
@@ -27,13 +28,24 @@
 # endet, wenn kein VLC laeuft.
 $ErrorActionPreference = 'Stop'
 
+# --- Diagnose-Log (der Starter-Bat startet das Skript ohne Fenster) ---
+$LogPath = Join-Path $env:TEMP 'headspace_voutmask.log'
+function Write-Log([string]$m){
+  try { ("{0}  {1}" -f (Get-Date -Format 'HH:mm:ss.fff'), $m) |
+        Out-File -FilePath $LogPath -Append -Encoding utf8 } catch {}
+}
+trap { Write-Log ("ERROR: " + $_.Exception.Message + " @ line " + $_.InvocationInfo.ScriptLineNumber); exit 1 }
+Write-Log ("START pid=" + $PID + " ps=" + $PSVersionTable.PSVersion.ToString())
+
 Add-Type -AssemblyName System.Drawing
 Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
 public class DpiFix { [DllImport("user32.dll")] public static extern bool SetProcessDPIAware(); }
+public class TimerFix { [DllImport("winmm.dll")] public static extern uint timeBeginPeriod(uint p); }
 "@
 [void][DpiFix]::SetProcessDPIAware()
+[void][TimerFix]::timeBeginPeriod(1)   # feine Sleep-Aufloesung (sonst ~15ms)
 
 # --- Konfiguration im 1x-Layout (Headspace) ---
 $HoleX = 271; $HoleY = 59; $HoleW = 214; $HoleH = 157
@@ -89,6 +101,7 @@ if (Test-Path $MaskPath) {
     }
   }
   Write-Host ("Loch-Maske: " + ($hole.Count / 4) + " Rechtecke, Eck-Zipfel: " + ($trim.Count / 4) + " Rechtecke")
+  Write-Log ("Maske: Loch=" + ($hole.Count / 4) + " Zipfel=" + ($trim.Count / 4) + " maskExists=" + (Test-Path $MaskPath))
 }
 $holeArr = $hole.ToArray()
 $trimArr = $trim.ToArray()
@@ -106,12 +119,10 @@ public class ScreenMask {
   [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
   [DllImport("user32.dll")] public static extern int GetClassName(IntPtr h, StringBuilder s, int m);
   [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
-  [DllImport("user32.dll")] public static extern IntPtr GetParent(IntPtr h);
-  [DllImport("user32.dll")] public static extern IntPtr SetParent(IntPtr h, IntPtr p);
-  [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr h, IntPtr after, int x, int y, int cx, int cy, uint flags);
   [DllImport("user32.dll")] public static extern int SetWindowRgn(IntPtr h, IntPtr hRgn, bool redraw);
   [DllImport("user32.dll")] public static extern int GetWindowRgn(IntPtr h, IntPtr hRgn);
   [DllImport("gdi32.dll")] public static extern bool RectInRegion(IntPtr hRgn, ref RECT r);
+  [DllImport("gdi32.dll")] public static extern bool PtInRegion(IntPtr hRgn, int x, int y);
   [DllImport("gdi32.dll")] public static extern IntPtr CreateRectRgn(int a, int b, int c, int d);
   [DllImport("gdi32.dll")] public static extern int CombineRgn(IntPtr d, IntPtr a, IntPtr b, int m);
   [DllImport("gdi32.dll")] public static extern bool DeleteObject(IntPtr h);
@@ -143,7 +154,7 @@ public class ScreenMask {
     return (double)sw / layoutW;
   }
 
-  /* Skin + Video-Fenster suchen; liefert Schluessel fuer die aktuelle Lage. */
+  /* Skin + Video-Fenster (nur "SkinWindowClass"-Kind) suchen. */
   public static string Scan(uint pid) {
     Skin = FindSkin(pid);
     Vids.Clear();
@@ -151,8 +162,7 @@ public class ScreenMask {
     StringBuilder key = new StringBuilder();
     EnumChildWindows(Skin, delegate(IntPtr ch, IntPtr lp) {
       StringBuilder c = new StringBuilder(256); GetClassName(ch, c, 256);
-      string cs = c.ToString();
-      if (cs == "SkinWindowClass" || cs.StartsWith("VLC video")) {
+      if (c.ToString() == "SkinWindowClass") {
         RECT r; GetWindowRect(ch, out r);
         Vids.Add(ch);
         key.Append(ch).Append(':').Append(r.R - r.L).Append('x').Append(r.B - r.T).Append('@').Append(r.L).Append(',').Append(r.T).Append(';');
@@ -163,13 +173,15 @@ public class ScreenMask {
     return key.ToString();
   }
 
-  /* Video-Fenster auf die Lochform clippen (Steuerung selbst liegt schon auf Lochgroesse). */
+  /* Video-Fenster auf die Lochform clippen (idempotent; die vout-internen
+     Fenster werden vom Eltern-Clipping mit erfasst). */
   public static void Apply(int vx, int vy, int vw, int vh, int[] rects) {
     if (Skin == IntPtr.Zero || Vids.Count == 0) return;
     double scale = ScaleFor(Skin);
     if (scale <= 0) return;
 
     foreach (IntPtr v in Vids) {
+      if (ClipOk(v, vw, vh, scale)) continue;
       IntPtr reg = CreateRectRgn(0, 0, 0, 0);
       if (rects.Length == 0) {
         SetWindowRgn(v, reg, true);
@@ -184,6 +196,20 @@ public class ScreenMask {
         SetWindowRgn(v, reg, true);
       }
     }
+  }
+
+  /* Ist die Region des Video-Fensters bereits die Lochform?
+     (Oeffnungsmitte drin + Box-Ecke draussen) */
+  private static bool ClipOk(IntPtr v, int vw, int vh, double scale) {
+    IntPtr h = CreateRectRgn(0, 0, 0, 0);
+    bool ok = false;
+    if (GetWindowRgn(v, h) != 0) {
+      bool inMid = PtInRegion(h, (int)Math.Round((vw / 2) * scale), (int)Math.Round((vh / 2) * scale));
+      bool outCorner = !PtInRegion(h, (int)Math.Round(2 * scale), (int)Math.Round(2 * scale));
+      ok = inMid && outCorner;
+    }
+    DeleteObject(h);
+    return ok;
   }
 
   /* Eck-Zipfel (ausserhalb des Gesichts) aus der Fenster-Region des Skins
@@ -225,25 +251,41 @@ public class ScreenMask {
 }
 "@
 
-$lastKey = ''
-$tick = 0
+$lastScan = 0
+$skinFound = $false
+$seenVlc = $false
+$loggedFound = $false
+$startTick = [Environment]::TickCount
 while ($true) {
-  $procs = @(Get-Process vlc -ErrorAction SilentlyContinue)
-  if ($procs.Count -eq 0) {
-    Start-Sleep -Milliseconds 1200
-    if (@(Get-Process vlc -ErrorAction SilentlyContinue).Count -eq 0) { break }
-    continue
-  }
-  foreach ($vp in $procs) {
-    $key = [ScreenMask]::Scan([uint32]$vp.Id)
-    if ($key -eq 'wait' -or $key -eq 'novout') { continue }
-    if ($key -ne $lastKey -or ($tick % 16) -eq 0) {
-      [ScreenMask]::Apply($HoleX, $HoleY, $HoleW, $HoleH, $holeArr)
-      $lastKey = $key
+  $now = [Environment]::TickCount
+  if (($now - $lastScan) -ge 20) {
+    # Handles (Skin + Video-Fenster) regelmaessig neu einlesen
+    $lastScan = $now
+    $procs = @(Get-Process vlc -ErrorAction SilentlyContinue)
+    if ($procs.Count -eq 0) {
+      if (-not $seenVlc) {
+        # Beim Start geduldig auf VLC warten (der Starter-Bat startet beide fast gleichzeitig)
+        if (($now - $startTick) -gt 60000) { break }
+        Start-Sleep -Milliseconds 300
+        continue
+      }
+      # VLC war da -> kurze Schonfrist, dann beenden
+      Start-Sleep -Milliseconds 1200
+      if (@(Get-Process vlc -ErrorAction SilentlyContinue).Count -eq 0) { break }
+      continue
     }
+    $seenVlc = $true
+    $skinFound = $false
+    foreach ($vp in $procs) {
+      $key = [ScreenMask]::Scan([uint32]$vp.Id)
+      if ($key -ne 'wait' -and $key -ne 'novout') { $skinFound = $true }
+    }
+    if ($skinFound -and -not $loggedFound) { Write-Log "Skin+Video gefunden, Wache aktiv"; $loggedFound = $true }
+  }
+  if ($skinFound) {
+    [ScreenMask]::Apply($HoleX, $HoleY, $HoleW, $HoleH, $holeArr)
     [ScreenMask]::TrimRegion($HoleX, $HoleY, $trimArr)
   }
-  $tick++
-  Start-Sleep -Milliseconds 20
+  Start-Sleep -Milliseconds 2
 }
 exit 0
