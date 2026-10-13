@@ -23,9 +23,9 @@
       <Image id="eq.drawerRight" x="251" y="86" image="left_drawer_right.png"/>
 
       <!-- ==== EQ-Bedienelemente im Drawer ==== -->
-      <!-- Balance (Original-Optik und Original-Position. Hinweis: VLC-Skins koennen Balance technisch nicht anbinden - der Regler ist rein optisch) -->
+      <!-- Balance (Original-Optik und Original-Position. Hinweis: VLC-Skins koennen Balance technisch nicht anbinden - Rail + Knopf sind rein optisch, Knopf mittig wie im Original) -->
       <Image id="eq.balTrack" x="92" y="107" image="sl_track_h.png"/>
-      <Slider id="eq.balance" x="92" y="107" points="(5,5),(66,5)" up="horizontal_thumb.png" tooltiptext="Balance"/>
+      <Image id="eq.balThumb" x="123" y="107" image="horizontal_thumb.png"/>
       <Text id="eq.balLabel" font="small" x="106" y="118" width="60" color="#77CE07" text="Balance"/>
       <!-- Volume -->
       <Image id="eq.volTrack" x="173" y="107" image="sl_track_h.png"/>

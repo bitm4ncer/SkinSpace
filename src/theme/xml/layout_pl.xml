@@ -1,3 +1,68 @@
-      <!-- Task 5: hier entsteht das Playlist-Layout (l_pl) -->
-      <Image id="pl.bg" image="head.png" action="move"/>
-      <Button id="pl.back" x="101" y="232" up="PL_01_DF.png" action="main.setLayout(l_closed)" tooltiptext="Back (Platzhalter)"/>
+      <!-- l_pl — Playlist-Schublade OFFEN (rechtes Ohr bei x=488). Koordinaten = Original (headspace.wms), Kopf-Offset 261,0 eingerechnet. -->
+
+      <!-- ==== Linkes Ohr (geschlossen) + Screen ==== -->
+      <Image id="pl.eq.ear" x="207" y="86" image="left_ear.png"/>
+      <Image id="pl.eq.drawerTop" x="291" y="86" image="left_drawer_top.png"/>
+      <Image id="pl.eq.drawerBottom" x="291" y="236" image="left_drawer_bottom.png"/>
+      <Image id="pl.eq.drawerRight" x="458" y="86" image="left_drawer_right.png"/>
+      <Button id="pl.eq.handle" x="215" y="152"
+              up="L_drwr_open_01_default.png" over="L_drwr_open_02_rollover.png" down="L_drwr_open_03_down.png"
+              action="main.setLayout(l_both)" tooltiptext="Open graphic equalizer controls"/>
+      <Image id="pl.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
+
+      <!-- ==== Rechtes Ohr OFFEN: Schublade (sPlEar bei x=488) ==== -->
+      <Image id="pl.drawerLeft" x="488" y="86" image="right_drawer_left.png"/>
+      <Image id="pl.drawerTop" x="501" y="86" image="right_drawer_top.png"/>
+      <Image id="pl.drawerBottom" x="501" y="236" image="right_drawer_bottom.png"/>
+      <Image id="pl.fill" x="501" y="96" width="172" height="140" resize="mosaic" image="drawer_fill.png"/>
+      <Playtree id="pl.list" x="501" y="96" width="172" height="140" flat="true" font="small"
+                bgcolor1="#285F03" bgcolor2="#285F03" fgcolor="white" playcolor="#E8FFC0" selcolor="#77CE07">
+        <Slider id="pl.scroll" x="163" y="6" points="(5,5),(5,125)" up="vertical_thumb.png" tooltiptext="Playlist scroll"/>
+      </Playtree>
+      <Image id="pl.ear" x="673" y="86" image="right_ear.png"/>
+      <Button id="pl.handle" x="734" y="151"
+              up="R_drwr_close_01_default.png" over="R_drwr_close_02_rollover.png" down="R_drwr_close_03_down.png"
+              action="main.setLayout(l_closed)" tooltiptext="Close playlist"/>
+      <Button id="pl.closeX" x="677" y="93"
+              up="right_X_01_default.png" over="right_X_02_rollover.png"
+              action="main.setLayout(l_closed)" tooltiptext="Close playlist"/>
+
+      <!-- ==== Kopf + uebrige Controls (wie geschlossen) ==== -->
+      <Image id="pl.head" x="261" y="0" image="head.png" action="move"/>
+      <Button id="pl.min" x="362" y="4"
+              up="minimize_close_01_default.png.min" over="minimize_close_02_rollover.png.min" down="minimize_close_03_down.png.min"
+              action="vlc.minimize()" tooltiptext="Minimize"/>
+      <Button id="pl.close" x="377" y="4"
+              up="minimize_close_01_default.png.close" over="minimize_close_02_rollover.png.close" down="minimize_close_03_down.png.close"
+              action="vlc.quit()" tooltiptext="Close"/>
+      <Button id="pl.prev" x="310" y="32"
+              up="play_controls_01_default.png.prev" over="play_controls_02_rollover.png.prev" down="play_controls_03_down.png.prev"
+              action="playlist.previous()" tooltiptext="Previous"/>
+      <Button id="pl.play" x="335" y="32"
+              up="play_controls_01_default.png.play" over="play_controls_02_rollover.png.play" down="play_controls_03_down.png.play"
+              action="vlc.play()" tooltiptext="Play"/>
+      <Button id="pl.stop" x="361" y="32"
+              up="play_controls_01_default.png.stop" over="play_controls_02_rollover.png.stop" down="play_controls_03_down.png.stop"
+              action="vlc.stop()" tooltiptext="Stop"/>
+      <Button id="pl.next" x="386" y="32"
+              up="play_controls_01_default.png.next" over="play_controls_02_rollover.png.next" down="play_controls_03_down.png.next"
+              action="playlist.next()" tooltiptext="Next"/>
+      <Button id="pl.vis" x="428" y="32"
+              up="play_controls_01_default.png.vis" over="play_controls_02_rollover.png.vis" down="play_controls_03_down.png.vis"
+              action="dialogs.file()" tooltiptext="Open media"/>
+      <Button id="pl.pause" x="335" y="32"
+              up="pause_01_default.png" over="pause_02_rollover.png" down="pause_03_down.png"
+              visible="vlc.isPlaying" action="vlc.pause()" tooltiptext="Pause"/>
+      <Button id="pl.eqbtn" x="276" y="214"
+              up="EQ_01_DF.png" over="EQ_02_RV.png" down="EQ_03_Dwn.png"
+              action="main.setLayout(l_both)" tooltiptext="Open graphic equalizer controls"/>
+      <Button id="pl.plbtn" x="465" y="214"
+              up="PL_01_DF.png" over="PL_02_RV.png" down="PL_03_Dwn.png"
+              action="main.setLayout(l_closed)" tooltiptext="Close playlist"/>
+      <Image id="pl.seekbg" x="300" y="223" image="progressbar.png"/>
+      <Slider id="pl.seek" x="300" y="223" points="(9,4),(154,4)" value="time"
+              up="thumb_01_default.png" over="thumb_02_rollover.png" down="thumb_03_down.png"
+              tooltiptext="Seek"/>
+      <Button id="pl.theme" x="362" y="232"
+              up="themebutton_01_default.png" over="themebutton_02_rollover.png" down="themebutton_03_down.png"
+              action="dialogs.prefs()" tooltiptext="Preferences"/>

@@ -7,7 +7,7 @@ foreach($n in 2,3){
   "=== Variante ${n}x ==="
   & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'tools\make_scaled_variant.ps1') -Scale $n -OutDir (Join-Path $stage 'images') | Select-Object -Last 1
   New-Item -ItemType Directory -Force -Path (Join-Path $stage 'fonts') | Out-Null
-  Copy-Item (Join-Path $root 'src\theme\fonts\font.otf') (Join-Path $stage 'fonts\font.otf') -Force
+  Copy-Item (Join-Path $root 'src\theme\fonts\*') (Join-Path $stage 'fonts') -Force
   & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'tools\build_theme.ps1') -Scale $n -OutFile (Join-Path $stage 'theme.xml') | Select-Object -Last 1
   & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'tools\pack.ps1') -Stage $stage -OutFile (Join-Path $root "dist\Headspace-${n}x.vlt") | Select-Object -Last 1
 }

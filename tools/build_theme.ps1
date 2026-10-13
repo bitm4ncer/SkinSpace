@@ -31,10 +31,10 @@ function Scale-Xml([string]$xml, [int]$s){
 $header  = Read-Frag 'header.xml'
 $bitmaps = Read-Frag 'bitmaps.xml'
 $layouts = @(
-  @{ id='l_eq';     file='layout_eq.xml' },
-  @{ id='l_pl';     file='layout_pl.xml' },
-  @{ id='l_both';   file='layout_both.xml' },
-  @{ id='l_closed'; file='layout_closed.xml' }
+  @{ id='l_eq';     file='layout_eq.xml';     w=549 },
+  @{ id='l_pl';     file='layout_pl.xml';     w=760 },
+  @{ id='l_both';   file='layout_both.xml';   w=760 },
+  @{ id='l_closed'; file='layout_closed.xml'; w=549 }
 )
 $w = 549 * $Scale
 $h = 394 * $Scale
@@ -49,7 +49,7 @@ $sb = New-Object System.Text.StringBuilder
 [void]$sb.AppendLine((Scale-Xml (Read-Frag 'extras.xml') $Scale))
 [void]$sb.AppendLine('  <Window id="main" position="Center">')
 foreach($l in $layouts){
-  [void]$sb.AppendLine(('    <Layout id="{0}" width="{1}" height="{2}">' -f $l.id, $w, $h))
+  [void]$sb.AppendLine(('    <Layout id="{0}" width="{1}" height="{2}">' -f $l.id, ($l.w * $Scale), ($h)))
   [void]$sb.AppendLine((Scale-Xml (Read-Frag $l.file) $Scale))
   [void]$sb.AppendLine('    </Layout>')
 }
