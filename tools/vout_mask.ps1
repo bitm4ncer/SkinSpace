@@ -1,17 +1,30 @@
-# vout_mask.ps1 - setzt den Video-Screen gross und rahmenbündig in den Kopf.
+# vout_mask.ps1 - haelt das Video randlos im runden Screen und raeumt skins2's
+# schwarzen Backdrop an den Screen-Ecken weg.
 #
-# Hintergrund: skins2 legt das Video in ein Kind-Fenster INNERHALB der Video-
-# Steuerung. Diese Steuerung ist ein Rechteck - liegt sie auf Lochgroesse,
-# schaut an den Kopf-Ecken ihr schwarzer Hintergrund heraus. Bleibt sie klein,
-# ist der Rand weg, aber das Video ist zu klein.
+# Warum die Video-Steuerung auf der vollen Loch-Box steht:
+#   skins2 legt das eigentliche Video-Fenster (Klasse "SkinWindowClass", Kind
+#   des Skin-Fensters) exakt auf das <Video>-Rect und setzt diese Geometrie bei
+#   jedem Layout-Wechsel neu (CtrlVideo::onResize). Steht das Rect auf der
+#   Loch-Bounding-Box (271,59,214,157), macht VLC das selbst und stabil - das
+#   Video springt nicht mehr.
 #
-# Loesung: Die Steuerung bleibt (wie im Original) klein. Dieser Waechter haengt
-# die eigentlichen Video-Fenster DIREKT an das Skin-Fenster um, zieht sie auf
-# die exakte Lochgroesse und schneidet sie mit einer Region auf die Lochform
-# (aus der Alpha-Maske von head.png) zu. Ergebnis: Video randfuellend, kein
-# schwarzer Rand, gerundete Ecken.
+# Warum es trotzdem Puzzlesteine braucht:
+#   CtrlVideo::draw() malt genau dieses Rect schwarz, und
+#   Win32Graphics::fillRect() nimmt das Rect per CombineRgn(RGN_OR) in die
+#   Fenster-Region auf (notwendig, damit das Kind-Fenster dort ueberhaupt
+#   zeichnen darf). Die ~78 px der Box, die ausserhalb des Kopf-Artworks liegen
+#   (die beiden oberen Screen-Ecken, im Original die rote Clip-Farbe), werden
+#   dadurch deckend schwarz und "ragen ueber den Rahmen".
 #
-# Wird vom Starter-Bat parallel zu VLC gestartet; endet, wenn kein VLC laeuft.
+# Loesung:
+#   (a) das Video-Fenster per SetWindowRgn auf die Lochform (aus der Alpha-Maske
+#       von head.png) schneiden -> randfuellend, runde Kanten;
+#   (b) genau diese ~78 px aus der Fenster-Region des Skins abziehen
+#       (SetWindowRgn mit RGN_DIFF). skins2 setzt seine Region bei jedem
+#       Repaint neu, daher laeuft die Korrektur in einer engen Schleife.
+#
+# head.png bleibt unveraendert. Wird vom Starter-Bat parallel zu VLC gestartet;
+# endet, wenn kein VLC laeuft.
 $ErrorActionPreference = 'Stop'
 
 Add-Type -AssemblyName System.Drawing
@@ -27,8 +40,12 @@ $HoleX = 271; $HoleY = 59; $HoleW = 214; $HoleH = 157
 $MaskX = 10;  $MaskY = 59
 $MaskPath = Join-Path $PSScriptRoot '..\skins\headspace\theme\images\head.png'
 
-# --- Loch-Form (maskenlokal) per Flood-Fill aus head.png lesen ---
-$flat = New-Object System.Collections.Generic.List[int]
+# --- Loch-Form + Eck-Zipfel aus head.png lesen ---
+# Loch  = zusammenhaengende transparente Flaeche um die Mitte (die Oeffnung).
+# Zipfel = transparente Pixel, die NICHT zu dieser Flaeche gehoeren (im
+#          Original die rote Aussen-Clip-Farbe) -> deckend schwarz durch skins2.
+$hole = New-Object System.Collections.Generic.List[int]
+$trim = New-Object System.Collections.Generic.List[int]
 if (Test-Path $MaskPath) {
   $bmp = New-Object System.Drawing.Bitmap($MaskPath)
   $mw = $HoleW; $mh = $HoleH
@@ -56,17 +73,25 @@ if (Test-Path $MaskPath) {
         }
       }
     }
-  }
-  for ($y = 0; $y -lt $mh; $y++) {
-    $x = 0
-    while ($x -lt $mw) {
-      if ($seen[$x, $y]) { $x0 = $x; while ($x -lt $mw -and $seen[$x, $y]) { $x++ }; $flat.Add($x0); $flat.Add($y); $flat.Add($x); $flat.Add($y + 1) }
-      else { $x++ }
+    for ($y = 0; $y -lt $mh; $y++) {
+      $x = 0
+      while ($x -lt $mw) {
+        if ($seen[$x, $y]) { $x0 = $x; while ($x -lt $mw -and $seen[$x, $y]) { $x++ }; $hole.Add($x0); $hole.Add($y); $hole.Add($x); $hole.Add($y + 1) }
+        else { $x++ }
+      }
+    }
+    for ($y = 0; $y -lt $mh; $y++) {
+      $x = 0
+      while ($x -lt $mw) {
+        if ($trans[$x, $y] -and -not $seen[$x, $y]) { $x0 = $x; while ($x -lt $mw -and $trans[$x, $y] -and -not $seen[$x, $y]) { $x++ }; $trim.Add($x0); $trim.Add($y); $trim.Add($x); $trim.Add($y + 1) }
+        else { $x++ }
+      }
     }
   }
-  Write-Host ("Loch-Maske: " + ($flat.Count / 4) + " Rechtecke")
+  Write-Host ("Loch-Maske: " + ($hole.Count / 4) + " Rechtecke, Eck-Zipfel: " + ($trim.Count / 4) + " Rechtecke")
 }
-$flatArr = $flat.ToArray()
+$holeArr = $hole.ToArray()
+$trimArr = $trim.ToArray()
 
 Add-Type -TypeDefinition @"
 using System;
@@ -85,6 +110,8 @@ public class ScreenMask {
   [DllImport("user32.dll")] public static extern IntPtr SetParent(IntPtr h, IntPtr p);
   [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr h, IntPtr after, int x, int y, int cx, int cy, uint flags);
   [DllImport("user32.dll")] public static extern int SetWindowRgn(IntPtr h, IntPtr hRgn, bool redraw);
+  [DllImport("user32.dll")] public static extern int GetWindowRgn(IntPtr h, IntPtr hRgn);
+  [DllImport("gdi32.dll")] public static extern bool RectInRegion(IntPtr hRgn, ref RECT r);
   [DllImport("gdi32.dll")] public static extern IntPtr CreateRectRgn(int a, int b, int c, int d);
   [DllImport("gdi32.dll")] public static extern int CombineRgn(IntPtr d, IntPtr a, IntPtr b, int m);
   [DllImport("gdi32.dll")] public static extern bool DeleteObject(IntPtr h);
@@ -92,6 +119,7 @@ public class ScreenMask {
 
   private static IntPtr Skin = IntPtr.Zero;
   private static readonly List<IntPtr> Vids = new List<IntPtr>();
+  private const int RGN_OR = 2, RGN_DIFF = 4;
 
   private static IntPtr FindSkin(uint pid) {
     IntPtr res = IntPtr.Zero;
@@ -150,12 +178,49 @@ public class ScreenMask {
           int x0 = (int)Math.Round(rects[i] * scale), y0 = (int)Math.Round(rects[i + 1] * scale);
           int x1 = (int)Math.Round(rects[i + 2] * scale), y1 = (int)Math.Round(rects[i + 3] * scale);
           IntPtr rr = CreateRectRgn(x0, y0, x1, y1);
-          CombineRgn(reg, reg, rr, 2); /* RGN_OR */
+          CombineRgn(reg, reg, rr, RGN_OR);
           DeleteObject(rr);
         }
         SetWindowRgn(v, reg, true);
       }
     }
+  }
+
+  /* Eck-Zipfel (ausserhalb des Gesichts) aus der Fenster-Region des Skins
+     abziehen. skins2 setzt seine Region bei jedem Repaint neu, daher wird das
+     hier immer wieder (idempotent) nachgezogen. */
+  public static void TrimRegion(int vx, int vy, int[] rects) {
+    if (Skin == IntPtr.Zero || rects.Length == 0) return;
+    double scale = ScaleFor(Skin);
+    if (scale <= 0) return;
+
+    IntPtr hTrim = CreateRectRgn(0, 0, 0, 0);
+    for (int i = 0; i < rects.Length; i += 4) {
+      int x0 = (int)Math.Round((vx + rects[i]) * scale), y0 = (int)Math.Round((vy + rects[i + 1]) * scale);
+      int x1 = (int)Math.Round((vx + rects[i + 2]) * scale), y1 = (int)Math.Round((vy + rects[i + 3]) * scale);
+      IntPtr rr = CreateRectRgn(x0, y0, x1, y1);
+      CombineRgn(hTrim, hTrim, rr, RGN_OR);
+      DeleteObject(rr);
+    }
+
+    IntPtr hCur = CreateRectRgn(0, 0, 0, 0);
+    int t = GetWindowRgn(Skin, hCur);   /* 0 = ERROR, 1 = NULLREGION, 2 = SIMPLE, 3 = COMPLEX */
+    if (t != 0) {
+      bool need = false;
+      for (int i = 0; i < rects.Length; i += 4) {
+        RECT r = new RECT();
+        r.L = (int)Math.Round((vx + rects[i]) * scale); r.T = (int)Math.Round((vy + rects[i + 1]) * scale);
+        r.R = (int)Math.Round((vx + rects[i + 2]) * scale); r.B = (int)Math.Round((vy + rects[i + 3]) * scale);
+        if (RectInRegion(hCur, ref r)) { need = true; break; }
+      }
+      if (need) {
+        IntPtr hNew = CreateRectRgn(0, 0, 0, 0);
+        CombineRgn(hNew, hCur, hTrim, RGN_DIFF);
+        SetWindowRgn(Skin, hNew, true);   /* System uebernimmt hNew; nicht freigeben */
+      }
+    }
+    DeleteObject(hCur);
+    DeleteObject(hTrim);
   }
 }
 "@
@@ -172,12 +237,13 @@ while ($true) {
   foreach ($vp in $procs) {
     $key = [ScreenMask]::Scan([uint32]$vp.Id)
     if ($key -eq 'wait' -or $key -eq 'novout') { continue }
-    if ($key -ne $lastKey -or ($tick % 10) -eq 0) {
-      [ScreenMask]::Apply($HoleX, $HoleY, $HoleW, $HoleH, $flatArr)
+    if ($key -ne $lastKey -or ($tick % 16) -eq 0) {
+      [ScreenMask]::Apply($HoleX, $HoleY, $HoleW, $HoleH, $holeArr)
       $lastKey = $key
     }
+    [ScreenMask]::TrimRegion($HoleX, $HoleY, $trimArr)
   }
   $tick++
-  Start-Sleep -Milliseconds 350
+  Start-Sleep -Milliseconds 20
 }
 exit 0
