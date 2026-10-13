@@ -22,7 +22,7 @@
       <Image id="eq.drawerRight" x="251" y="86" image="left_drawer_right.png"/>
       <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
       <Image id="eq.vidbkgd" x="270" y="59" image="vid_bkgd.png"/>
-      <Video id="eq.vid" x="282" y="70" width="193" height="135" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="eq.vid" x="271" y="59" width="214" height="157" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== EQ-Bedienelemente im Drawer ==== -->
       <!-- Preamp (umfunktioniert aus dem Original-Balance-Slider - VLC-Skins koennen Balance technisch nicht anbinden) -->
