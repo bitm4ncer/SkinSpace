@@ -1,7 +1,15 @@
-# Headspace für VLC — Fan-Port
+# SkinSpace — WMP-Klassiker & Visualizer für VLC
 
-Der legendäre **„Headspace"**-Skin (offizieller Microsoft-Skin für den Windows Media Player, © 2000/2001)
-als natives **VLC**-Skin (skins2). Fan-Projekt, maximale Originaltreue, Original-Assets 1:1.
+Alte **Windows-Media-Player-Skins** als native **VLC**-Skins (skins2) — maximal originalgetreu,
+Original-Assets 1:1, dazu VLCs Visualizer im Skin-Screen. *(Inoffizielles Fan-Projekt.)*
+
+**Enthaltene Skins:**
+
+| Skin | Status | Dateien |
+|---|---|---|
+| **„Headspace"** (Microsoft, © 2000/2001) | ✅ fertig (v1.0) | `dist/Headspace*.vlt` |
+
+Weitere Skin-Ports sind geplant.
 
 ## Dateien
 
