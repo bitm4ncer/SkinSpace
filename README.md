@@ -50,9 +50,15 @@ deaktivierter Mediathek → saubere Playlist wie im Original).
 | Kopf | Fenster ziehen |
 | Drag & Drop | Musik/Video auf das Fenster ziehen — Videos erscheinen **im Screen im Kopf** |
 
-**Equalizer-Schublade:** 10 Band-Regler (schreiben direkt in VLCs Equalizer), Volume, Balance (rein
-optisch — VLC-Skins können Balance nicht anbinden), „reset"-Link = Equalizer **an/aus** (echtes
-Zurücksetzen der Gains gibt es im Skin-System nicht), Mute über VLC-Taste `M`.
+**Equalizer-Schublade:**
+- 10 Band-Regler + Volume: Änderungen wirken **sofort** auf die laufende Wiedergabe und bleiben gespeichert.
+- ⚠️ VLCs Equalizer-Filter ist standardmäßig **aus** — die Regler bewegen sich dann, ohne zu klingen.
+  `Start-Headspace.bat` startet ihn bereits **aktiv** (wie im Original, wo der EQ immer wirkte).
+  Alternativ: den „reset"-Link einmal klicken (EQ an; LED an = aktiv), nochmal klicken = aus.
+- „reset"-Link = **Equalizer an/aus**. Ein echtes Nullen aller Regler ist im VLC-Skin-System technisch
+  nicht umsetzbar (die Engine bietet keinen Reset-Befehl) — die Regler ggf. manuell auf Mitte ziehen.
+- Balance: **rein optisch** — VLC-Skins besitzen keine Balance-Anbindung (keine entsprechende Variable
+  in der Engine). Mute über VLC-Taste `M`.
 
 ## Bekannte Abweichungen vom Original (technisch bedingt, dokumentiert)
 
