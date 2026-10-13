@@ -127,7 +127,7 @@ Beispiel:
 ## 7. Installer (Inno Setup)
 
 1. Welcome → **Optionen**: drei Sektionen (VLC ✅, WMP ⬜, Winamp ⬜) mit aufklappbaren Unteroptionen; Live-Erkennung + Versionswarnungen.
-2. **Fortschritt pro Item** (Download % → Hash ✓ → entpacken → installieren); DE-UI, EN-Strings vorhanden.
+2. **Fortschritt pro Item** (Download % → Hash ✓ → entpacken → installieren); EN-UI, DE-Strings vorhanden.
 3. **Abschluss**: „VLC mit Headspace starten", Log öffnen, Credits/Lizenzen. Offline-Modus `--offline <ordner>`; BYO-Dialog integriert.
 4. **Uninstall**: Inno-Uninstaller + Engine-Journal; `vlcrc`-Restore aus Backup.
 5. Stiller Modus für Tests: `/VERYSILENT /SUPPRESSMSGBOXES /LOG`.

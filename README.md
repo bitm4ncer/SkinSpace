@@ -108,8 +108,9 @@ Ready-made starter: `skins/headspace/Start-Headspace-Visualizer.bat` (projectM).
 
 ## INSTALLER & PACKS (work in progress)
 
-An Inno Setup installer with its own package manager is planned (German UI,
-uninstall/repair included). Design and implementation plan live under `docs/`.
+An Inno Setup installer with its own package manager is planned: English UI
+(German strings included), uninstall/repair supported. Design and implementation
+plan live under `docs/`.
 
 ```text
 Packs (individually selectable):
