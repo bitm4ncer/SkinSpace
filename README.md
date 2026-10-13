@@ -23,6 +23,12 @@ anderen Plattformen ungetestet.
 **Oder** die `.vlt` nach `C:\Program Files\VideoLAN\VLC\skins\` kopieren und in VLC unter
 *Werkzeuge → Einstellungen → Interface → „Benutzerdefiniertes Skin verwenden"* auswählen (Neustart nötig).
 
+**Am einfachsten:** `Start-Headspace.bat` doppelklicken (startet VLC mit der 2×-Version und
+deaktivierter Mediathek → saubere Playlist wie im Original).
+
+> ℹ️ **Zur Playlist:** VLC zeigt im Skin standardmäßig seine Playlist-Wurzelknoten („Playlist"/„Media
+> Library") als Zeilen an. Mit `--no-media-library` (siehe .bat) verschwindet die Mediathek-Zeile.
+
 > ⚠️ **Bekanntes Problem:** „Open skin…" (Rechtsklick-Menü im Skin) **kann VLC crashen** — auf
 > VLC 3.0.23 reproduziert (fehlerhafter Skin-Wechsel-Mechanismus des Builds). Workaround: VLC neu starten
 > bzw. `--skins2-last` verwenden.
