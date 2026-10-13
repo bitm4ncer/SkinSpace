@@ -94,11 +94,15 @@ Drag & drop                   Drop media onto the window -- videos and
 VLC's own visualizers run inside the skin screen. Enable via start option:
 
 ```text
---audio-visual=projectm        (alternative: --audio-visual=goom)
+--audio-visual=goom            (goom: ships with VLC, works reliably via CLI)
 ```
 
-Ready-made starter: `skins/headspace/Start-Headspace-Visualizer.bat` (projectM).
+Ready-made starter: `skins/headspace/Start-Headspace-Visualizer.bat` (goom).
 
+- VLC also ships **projectM** and **glSpectrum**, but VLC's `audio-visual`
+  option validation silently drops these two when set on the command line or
+  in the vlcrc -- they can only be picked **at runtime via VLC's own menu**
+  ("Audio > Visualizations"). Default is `none` (no visualizer).
 - The visualizer cannot be switched from within the skin -- VLC offers no
   visualizer actions to skins. The original Headspace had a "WhiteCap Viz"
   chooser at the top of the screen; reproducible as pure artwork if wanted.

@@ -1,349 +1,416 @@
-﻿Usage: vlc [options] [stream] ...
-You can specify multiple streams on the commandline.
-They will be enqueued in the playlist.
-The first item specified will be played first.
-
-Options-styles:
-  --option  A global option that is set for the duration of the program.
-   -option  A single letter version of a global --option.
-   :option  An option that only applies to the stream directly before it
-            and that overrides previous settings.
-
-Stream MRL syntax:
-  [[access][/demux]://]URL[#[title][:chapter][-[title][:chapter]]]
-  [:option=value ...]
-
-  Many of the global --options can also be used as MRL specific :options.
-  Multiple :option=value pairs can be specified.
-
-URL syntax:
-  file:///path/file              Plain media file
-  http://host[:port]/file        HTTP URL
-  ftp://host[:port]/file         FTP URL
-  mms://host[:port]/file         MMS URL
-  screen://                      Screen capture
-  dvd://[device]                 DVD device
-  vcd://[device]                 VCD device
-  cdda://[device]                Audio CD device
-  udp://[[<source address>]@[<bind address>][:<bind port>]]
-                                 UDP stream sent by a streaming server
-  vlc://pause:<seconds>          Pause the playlist for a certain time
-  vlc://quit                     Special item to quit VLC
-
-
- core program (core)
-
- Audio
-      --audio, --no-audio        Enable audio
-                                 (default enabled)
-      --force-dolby-surround={0 (Auto), 1 (On), 2 (Off)} 
-                                 Force detection of Dolby Surround
-      --audio-replay-gain-mode={none,track,album} 
-                                 Replay gain mode
-      --audio-replay-gain-preamp=<float> 
-                                 Replay preamp
-      --audio-replay-gain-default=<float> 
-                                 Default replay gain
-      --audio-time-stretch, --no-audio-time-stretch 
-                                 Enable time stretching audio
-                                 (default enabled)
-      --audio-filter=<string>    Audio filters
-      --audio-visual={any,goom,projectm,visual,glspectrum,none} 
-                                 Audio visualizations
-
- Video
-  -f, --fullscreen, --no-fullscreen 
-                                 Fullscreen video output
-                                 (default disabled)
-      --video-on-top, --no-video-on-top 
-                                 Always on top
-                                 (default disabled)
-      --video-wallpaper, --no-video-wallpaper 
-                                 Enable wallpaper mode
-                                 (default disabled)
-      --video-title-show, --no-video-title-show 
-                                 Show media title on video
-                                 (default disabled)
-      --video-title-timeout=<integer> 
-                                 Show video title for x milliseconds
-      --video-title-position={0 (Center), 1 (Left), 2 (Right), 4 (Top), 8 (Bottom), 5 (Top-Left), 6 (Top-Right), 9 (Bottom-Left), 10 (Bottom-Right)} 
-                                 Position of video title
-      --mouse-hide-timeout=<integer> 
-                                 Hide cursor and fullscreen controller after x
-                                 milliseconds
-   Snapshot:
-      --snapshot-path=<string>   Video snapshot directory (or filename)
-      --snapshot-prefix=<string> Video snapshot file prefix
-      --snapshot-format={png,jpg,tiff} 
-                                 Video snapshot format
-      --snapshot-preview, --no-snapshot-preview 
-                                 Display video snapshot preview
-                                 (default enabled)
-      --snapshot-sequential, --no-snapshot-sequential 
-                                 Use sequential numbers instead of timestamps
-                                 (default disabled)
-   Window properties:
-      --crop=<string>            Video cropping
-      --custom-crop-ratios=<string> 
-                                 Custom crop ratios list
-      --aspect-ratio=<string>    Source aspect ratio
-      --autoscale, --no-autoscale 
-                                 Video Auto Scaling
-                                 (default enabled)
-      --custom-aspect-ratios=<string> 
-                                 Custom aspect ratios list
-      --deinterlace={0 (Off), -1 (Automatic), 1 (On)} 
-                                 Deinterlace
-      --deinterlace-mode={auto,discard,blend,mean,bob,linear,x,yadif,yadif2x,phosphor,ivtc} 
-                                 Deinterlace mode
-      --video-filter=<string>    Video filter module
-      --video-splitter=<string>  Video splitter module
-
- Subpictures
-   On Screen Display:
-      --spu, --no-spu            Enable sub-pictures
-                                 (default enabled)
-      --osd, --no-osd            On Screen Display
-                                 (default enabled)
-   Subtitles:
-      --sub-file=<string>        Use subtitle file
-      --sub-autodetect-file, --no-sub-autodetect-file 
-                                 Autodetect subtitle files
-                                 (default enabled)
-      --sub-text-scale=<integer [10 .. 500]> 
-                                 Subtitles text scaling factor
-   Overlays:
-      --sub-source=<string>      Subpictures source module
-      --sub-filter=<string>      Subpictures filter module
-   Track settings:
-      --audio-language=<string>  Audio language
-      --sub-language=<string>    Subtitle language
-      --menu-language=<string>   Menu language
-      --preferred-resolution={-1 (Best available), 1080 (Full HD (1080p)), 720 (HD (720p)), 576 (Standard Definition (576 or 480 lines)), 360 (Low Definition (360 lines)), 240 (Very Low Definition (240 lines))} 
-                                 Preferred video resolution
-   Playback control:
-      --input-repeat=<integer [0 .. 65535]> 
-                                 Input repetitions
-      --input-fast-seek, --no-input-fast-seek 
-                                 Fast seek
-                                 (default disabled)
-      --rate=<float>             Playback speed
-   Default devices:
-      --dvd=<string>             DVD device
-      --vcd=<string>             VCD device
-   Network settings:
-      --http-proxy=<string>      HTTP proxy
-      --http-proxy-pwd=<string>  HTTP proxy password
-   Advanced:
-      --input-title-format=<string> 
-                                 Change title according to current media
-
- Input
-      --stream-filter=<string>   Stream filter module
-   Performance options:
-      --high-priority, --no-high-priority 
-                                 Increase the priority of the process
-                                 (default disabled)
-
- Playlist
-  -Z, --random, --no-random      Play files randomly forever
-                                 (default disabled)
-  -L, --loop, --no-loop          Repeat all
-                                 (default enabled)
-  -R, --repeat, --no-repeat      Repeat current item
-                                 (default disabled)
-      --play-and-exit, --no-play-and-exit 
-                                 Play and exit
-                                 (default disabled)
-      --play-and-stop, --no-play-and-stop 
-                                 Play and stop
-                                 (default disabled)
-      --start-paused, --no-start-paused 
-                                 Start paused
-                                 (default disabled)
-      --playlist-autostart, --no-playlist-autostart 
-                                 Auto start
-                                 (default enabled)
-      --playlist-cork, --no-playlist-cork 
-                                 Pause on audio communication
-                                 (default enabled)
-      --media-library, --no-media-library 
-                                 Use media library
-                                 (default disabled)
-      --playlist-tree, --no-playlist-tree 
-                                 Display playlist tree
-                                 (default disabled)
-      --open=<string>            Default stream
-      --auto-preparse, --no-auto-preparse 
-                                 Automatically preparse items
-                                 (default enabled)
-      --preparse-timeout=<integer> 
-                                 Preparsing timeout
-      --metadata-network-access, --no-metadata-network-access 
-                                 Allow metadata network access
-                                 (default enabled)
-      --recursive={none,collapse,expand} 
-                                 Subdirectory behavior
-      --ignore-filetypes=<string> 
-                                 Ignored extensions
-      --show-hiddenfiles, --no-show-hiddenfiles 
-                                 Show hidden files
-                                 (default disabled)
-  -v, --verbose=<integer>        Verbosity (0,1,2)
-      --advanced, --no-advanced  Show advanced options
-                                 (default disabled)
-      --interact, --no-interact  Interface interaction
-                                 (default enabled)
-  -I, --intf=<string>            Interface module
-      --extraintf=<string>       Extra interface modules
-      --control=<string>         Control interfaces
-
- Hot keys
-      --hotkeys-y-wheel-mode={-1 (Ignore), 0 (Volume control), 2 (Position control), 3 (Position control reversed)} 
-                                 Mouse wheel vertical axis control
-      --hotkeys-x-wheel-mode={-1 (Ignore), 0 (Volume control), 2 (Position control), 3 (Position control reversed)} 
-                                 Mouse wheel horizontal axis control
-      --global-key-toggle-fullscreen=<string> 
-                                 Fullscreen
-      --key-toggle-fullscreen=<string> 
-                                 Fullscreen
-      --global-key-leave-fullscreen=<string> 
-                                 Exit fullscreen
-      --key-leave-fullscreen=<string> 
-                                 Exit fullscreen
-      --global-key-play-pause=<string> 
-                                 Play/Pause
-      --key-play-pause=<string>  Play/Pause
-      --global-key-faster=<string> 
-                                 Faster
-      --key-faster=<string>      Faster
-      --global-key-slower=<string> 
-                                 Slower
-      --key-slower=<string>      Slower
-      --global-key-rate-normal=<string> 
-                                 Normal rate
-      --key-rate-normal=<string> Normal rate
-      --global-key-rate-faster-fine=<string> 
-                                 Faster (fine)
-      --key-rate-faster-fine=<string> 
-                                 Faster (fine)
-      --global-key-rate-slower-fine=<string> 
-                                 Slower (fine)
-      --key-rate-slower-fine=<string> 
-                                 Slower (fine)
-      --global-key-next=<string> Next
-      --key-next=<string>        Next
-      --global-key-prev=<string> Previous
-      --key-prev=<string>        Previous
-      --global-key-stop=<string> Stop
-      --key-stop=<string>        Stop
-      --global-key-jump-extrashort=<string> 
-                                 Very short backwards jump
-      --key-jump-extrashort=<string> 
-                                 Very short backwards jump
-      --global-key-jump+extrashort=<string> 
-                                 Very short forward jump
-      --key-jump+extrashort=<string> 
-                                 Very short forward jump
-      --global-key-jump-short=<string> 
-                                 Short backwards jump
-      --key-jump-short=<string>  Short backwards jump
-      --global-key-jump+short=<string> 
-                                 Short forward jump
-      --key-jump+short=<string>  Short forward jump
-      --global-key-jump-medium=<string> 
-                                 Medium backwards jump
-      --key-jump-medium=<string> Medium backwards jump
-      --global-key-jump+medium=<string> 
-                                 Medium forward jump
-      --key-jump+medium=<string> Medium forward jump
-      --global-key-jump-long=<string> 
-                                 Long backwards jump
-      --key-jump-long=<string>   Long backwards jump
-      --global-key-jump+long=<string> 
-                                 Long forward jump
-      --key-jump+long=<string>   Long forward jump
-      --global-key-frame-next=<string> 
-                                 Next frame
-      --key-frame-next=<string>  Next frame
-      --global-key-quit=<string> Quit
-      --key-quit=<string>        Quit
-      --global-key-vol-up=<string> 
-                                 Volume up
-      --key-vol-up=<string>      Volume up
-      --global-key-vol-down=<string> 
-                                 Volume down
-      --key-vol-down=<string>    Volume down
-      --global-key-vol-mute=<string> 
-                                 Mute
-      --key-vol-mute=<string>    Mute
-      --global-key-audio-track=<string> 
-                                 Cycle audio track
-      --key-audio-track=<string> Cycle audio track
-      --global-key-audiodevice-cycle=<string> 
-                                 Cycle through audio devices
-      --key-audiodevice-cycle=<string> 
-                                 Cycle through audio devices
-      --global-key-subtitle-revtrack=<string> 
-                                 Cycle subtitle track in reverse order
-      --key-subtitle-revtrack=<string> 
-                                 Cycle subtitle track in reverse order
-      --global-key-subtitle-track=<string> 
-                                 Cycle subtitle track
-      --key-subtitle-track=<string> 
-                                 Cycle subtitle track
-      --global-key-subtitle-toggle=<string> 
-                                 Toggle subtitles
-      --key-subtitle-toggle=<string> 
-                                 Toggle subtitles
-      --global-key-program-sid-next=<string> 
-                                 Cycle next program Service ID
-      --key-program-sid-next=<string> 
-                                 Cycle next program Service ID
-      --global-key-program-sid-prev=<string> 
-                                 Cycle previous program Service ID
-      --key-program-sid-prev=<string> 
-                                 Cycle previous program Service ID
-      --global-key-aspect-ratio=<string> 
-                                 Cycle source aspect ratio
-      --key-aspect-ratio=<string> 
-                                 Cycle source aspect ratio
-      --global-key-crop=<string> Cycle video crop
-      --key-crop=<string>        Cycle video crop
-      --global-key-toggle-autoscale=<string> 
-                                 Toggle autoscaling
-      --key-toggle-autoscale=<string> 
-                                 Toggle autoscaling
-      --global-key-incr-scalefactor=<string> 
-                                 Increase scale factor
-      --key-incr-scalefactor=<string> 
-                                 Increase scale factor
-      --global-key-decr-scalefactor=<string> 
-                                 Decrease scale factor
-      --key-decr-scalefactor=<string> 
-                                 Decrease scale factor
-      --global-key-deinterlace=<string> 
-                                 Toggle deinterlacing
-      --key-deinterlace=<string> Toggle deinterlacing
-      --global-key-deinterlace-mode=<string> 
-                                 Cycle deinterlace modes
-      --key-deinterlace-mode=<string> 
-                                 Cycle deinterlace modes
-      --global-key-intf-show=<string> 
-                                 Show controller in fullscreen
-      --key-intf-show=<string>   Show controller in fullscreen
-      --global-key-wallpaper=<string> 
-                                 Toggle wallpaper mode in video output
-      --key-wallpaper=<string>   Toggle wallpaper mode in video output
-      --global-key-random=<string> 
-                                 Random
-      --key-random=<string>      Random
-      --global-key-loop=<string> Normal/Loop/Repeat
-      --key-loop=<string>        Normal/Loop/Repeat
-      --global-key-zoom-quarter=<string> 
-                                 1:4 Quarter
-      --key-zoom-quarter=<string> 
-                                 1:4 Quarter
-      --global-key-zoom-half=<string> 
-                                 1:2 Half
-      
+﻿  visual                 Visualizer filter
+  projectm               libprojectM effect
+  goom                   Goom effect
+  glspectrum             3D OpenGL spectrum visualization
+  wall                   Wall video filter
+  panoramix              Panoramix: wall with overlap video filter
+  clone                  Clone video filter
+  yuv                    YUV video output
+  inhibit                Windows screen saver inhibition
+  wingdi                 Windows GDI video output
+  wgl                    WGL extension for OpenGL
+  vmem                   Video memory output
+  vdummy                 Dummy video output
+  vdummy                 Statistics video output
+  gl                     OpenGL video output
+  glwin32                OpenGL video output for Windows
+  glinterop_dxva2        DX OpenGL surface converter for D3D9
+  flaschen               Flaschen-Taschen video output
+  drawable               Embedded window video
+  directdraw             DirectX (DirectDraw) video output
+  direct3d9              Direct3D9 video output
+  direct3d11             Direct3D11 video output
+  caca                   Color ASCII art video output
+  wave                   Wave video filter
+  vhs                    VHS movie effect video filter
+  transform              Video transformation filter
+  sharpen                Sharpen video filter
+  sepia                  Sepia video filter
+  scene                  Scene video filter
+  scale                  Video scaling filter
+  rotate                 Rotate video filter
+  ripple                 Ripple video filter
+  puzzle                 Puzzle interactive game video filter
+  psychedelic            Psychedelic video filter
+  postproc               Video post processing filter
+  posterize              Posterize video filter
+  oldmovie               Old movie effect video filter
+  motiondetect           Motion detect video filter
+  motionblur             Motion blur filter
+  mirror                 Mirror video filter
+  magnify                Magnify/Zoom interactive video filter
+  invert                 Invert video filter
+  hqdn3d                 High Quality 3D Denoiser filter
+  grain                  Grain video filter
+  gradient               Gradient video filter
+  gradfun                Gradfun video filter
+  gaussianblur           Gaussian blur video filter
+  freeze                 Freezing interactive video filter
+  fps                    FPS conversion video filter
+  extract                Extract RGB component video filter
+  erase                  Erase video filter
+  edgedetection          Edge detection video filter
+  deinterlace            Deinterlacing video filter
+  croppadd               Video cropping filter
+  colorthres             Color threshold filter
+  canvas                 Canvas video filter
+  bluescreen             Bluescreen video filter
+  blend                  Video pictures blending
+  blendbench             Blending benchmark filter
+  ball                   Ball video filter
+  antiflicker            antiflicker video filter
+  anaglyph               Convert 3D picture to anaglyph image video filter
+  alphamask              Alpha mask video filter
+  adjust                 Image properties filter
+  yuy2_i422              Conversions from YUY2,YUNV,YVYU,UYVY,UYNV,Y422 to I422
+  yuy2_i420              Conversions from YUY2,YUNV,YVYU,UYVY,UYNV,Y422 to I420
+  yuvp                   YUVP converter
+  swscale                Video scaling filter
+  rv32                   RV32 conversion filter
+  i422_yuy2_sse2         SSE2 conversions from I422 to YUY2,YUNV,YVYU,UYVY,UYNV,Y422,IUYV
+  i422_yuy2              Conversions from I422 to YUY2,YUNV,YVYU,UYVY,UYNV,Y422,IUYV,Y211
+  i422_yuy2_mmx          MMX conversions from I422 to YUY2,YUNV,YVYU,UYVY,UYNV,Y422,IUYV
+  i422_i420              Conversions from I422,J422 to I420,IYUV,J420,YV12,YUVA
+  i420_yuy2_sse2         SSE2 conversions from I420,IYUV,YV12 to YUY2,YUNV,YVYU,UYVY,UYNV,Y422,IUYV
+  i420_yuy2              Conversions from I420,IYUV,YV12 to YUY2,YUNV,YVYU,UYVY,UYNV,Y422,IUYV,Y211
+  i420_yuy2_mmx          MMX conversions from I420,IYUV,YV12 to YUY2,YUNV,YVYU,UYVY,UYNV,Y422,IUYV
+  i420_rgb_sse2          SSE2 I420,IYUV,YV12 to RV15,RV16,RV24,RV32 conversions
+  i420_rgb               I420,IYUV,YV12 to RGB2,RV15,RV16,RV24,RV32 conversions
+  i420_rgb_mmx           MMX I420,IYUV,YV12 to RV15,RV16,RV24,RV32 conversions
+  i420_nv12              YUV planar to semiplanar conversions
+  i420_10_p010           YUV 10-bits planar to semiplanar 10-bits conversions
+  grey_yuv               Conversions from GREY to I420,YUY2
+  chain                  Video filtering using a chain of video filter modules
+  chain                  Video filtering using a chain of video filter modules
+  tdummy                 Dummy font renderer
+  sapi                   Speech synthesis for Windows
+  freetype               Freetype2 font renderer
+  stream_out_transcode   Transcode stream output
+  stats                  Writes statistic info about stream
+  stream_out_standard    Standard stream output
+  smem                   Stream output to memory buffer
+  setid                  Change the id of an elementary stream
+  setid                  Change the language of an elementary stream
+  stream_out_rtp         RTP stream output
+  stream_out_rtp         RTSP VoD server
+  record                 Record stream output
+  mosaic_bridge          Mosaic bridge stream output
+  gather                 Gathering stream output
+  es                     Elementary stream output
+  duplicate              Duplicate stream output
+  dummy                  Dummy stream output
+  display                Display stream output
+  description            Description stream output
+  delay                  Delay a stream
+  cycle                  Cyclic stream output
+  stream_out_chromecast  Chromecast stream output
+  stream_out_chromecast  Chromecast stream output
+  stream_out_chromecast  Chromecast stream output
+  stream_out_chromaprint Chromaprint stream output
+  bridge                 Bridge stream output
+  bridge                 Bridge stream output
+  bridge                 Bridge stream output
+  autodel                Automatically add/delete input streams
+  skiptags               APE/ID3 tags-skipping filter
+  record                 Internal stream record
+  prefetch               Stream prefetch filter
+  inflate                Zlib decompression filter
+  hds                    HTTP Dynamic Streaming
+  cache_read             Byte stream cache
+  cache_block            Block stream cache
+  aribcam                ARIB STD-B25 Cam module
+  adf                    ADF stream filter
+  archive                libarchive based stream directory
+  archive                libarchive based stream extractor
+  subsdelay              Subtitle delay
+  rss                    RSS and Atom feed display
+  remoteosd              Remote-OSD over VNC
+  mosaic                 Mosaic video sub source
+  marq                   Marquee display
+  logo                   Logo sub source
+  logo                   Logo video filter
+  audiobargraph_v        Audio Bar Graph Video sub source
+  audiobargraph_v        Audio Bar Graph Video sub source
+  windrive               windrive
+  windrive               Discs
+  windrive               windrive
+  upnp                   Universal Plug'n'Play
+  upnp                   Universal Plug'n'Play
+  upnp                   Universal Plug'n'Play
+  sap                    Network streams (SAP)
+  sap                    Network streams (SAP)
+  sap                    SDP Descriptions parser
+  podcast                Podcasts
+  podcast                Podcasts
+  microdns               mDNS Network Discovery
+  microdns               mDNS Network Discovery
+  microdns               mDNS Renderer Discovery
+  microdns               mDNS Network Discovery
+  mediadirs              My Videos
+  mediadirs              My Music
+  mediadirs              My Pictures
+  mediadirs              My Videos
+  vc1                    VC-1 packetizer
+  mpegvideo              MPEG-I/II video packetizer
+  mpegaudio              MPEG audio layer I/II/III packetizer
+  mpeg4video             MPEG4 video packetizer
+  mpeg4audio             MPEG4 audio packetizer
+  mlp                    MLP/TrueHD parser
+  hevc                   HEVC/H.265 video packetizer
+  h264                   H.264 video packetizer
+  flac                   Flac audio packetizer
+  dts                    DTS audio packetizer
+  dirac                  Dirac packetizer
+  copy                   Copy packetizer
+  av1                    AV1 video packetizer
+  a52                    A/52 audio packetizer
+  wav                    WAV muxer
+  mux_ts                 TS muxer (libdvbpsi)
+  ps                     PS muxer
+  mux_ogg                Ogg/OGM muxer
+  mpjpeg                 Multipart JPEG muxer
+  mp4                    MP4/MOV muxer
+  mp4                    Fragmented and streamable MP4 muxer
+  dummy                  Dummy/Raw muxer
+  avi                    AVI muxer
+  asf                    ASF muxer
+  xml                    XML Parser (using libxml2)
+  xml                    XML Parser (using libxml2)
+  rtsp                   Legacy RTSP VoD server
+  stats                  Stats encoder function
+  stats                  Stats decoder function
+  stats                  Stats decoder function
+  stats                  Stats decoder function
+  stats                  Stats demux function
+  logger                 File logging
+  gnutls                 GNU TLS transport layer security
+  gnutls                 GNU TLS server
+  fingerprinter          Track fingerprinter (based on Acoustid)
+  export                 export
+  export                 M3U playlist export
+  export                 M3U8 playlist export
+  export                 XSPF playlist export
+  export                 HTML playlist export
+  audioscrobbler         Submission of played songs to last.fm
+  vorepository           addons.videolan.org addons finder
+  vorepository           single .vlp archive addons finder
+  fsstorage              Addons local storage installer
+  fsstorage              Addons local storage lister
+  taglib                 taglib
+  taglib                 taglib
+  folder                 Folder meta data
+  lua                    Lua interpreter
+  lua                    Lua HTTP
+  lua                    Command-line interface
+  lua                    Lua Telnet
+  lua                    Fetch meta data using lua scripts
+  lua                    Read meta data using lua scripts
+  lua                    Lua Playlist Parser Interface
+  lua                    Fetch artwork using lua scripts
+  lua                    Lua Extension
+  lua                    Lua SD Module
+  lua                    Lua interpreter
+  file                   File logger
+  console                Console logger
+  memory                 Secrets are stored in memory
+  file                   Secrets are stored on a file without any encryption
+  file                   Secrets are stored encrypted on a file
+  skins2                 Skinnable Interface
+  skins2                 Skinnable Interface
+  qt                     Qt interface
+  qt                     Dialogs provider
+  qt                     Qt interface
+  xa                     XA demuxer
+  wav                    WAV demuxer
+  voc                    VOC demuxer
+  vobsub                 Vobsub subtitles parser
+  vc1                    VC1 video demuxer
+  ty                     TY Stream audio/video demux
+  tta                    TTA demuxer
+  ts                     MPEG Transport Stream demuxer
+  subtitle               Text subtitle parser
+  smf                    SMF demuxer
+  sid                    C64 sid demuxer
+  real                   Real demuxer
+  rawvid                 Raw video demuxer
+  rawdv                  DV (Digital Video) demuxer
+  rawaud                 Raw audio demuxer
+  pva                    PVA demuxer
+  ps                     MPEG-PS demuxer
+  ps                     MPEG-PS demuxer
+  playlist               Playlist
+  playlist               M3U playlist import
+  playlist               RAM playlist import
+  playlist               PLS playlist import
+  playlist               B4S playlist import
+  playlist               DVB playlist import
+  playlist               Podcast parser
+  playlist               XSPF playlist import
+  playlist               New winamp 5.2 shoutcast import
+  playlist               ASX playlist import
+  playlist               Kasenna MediaBase parser
+  playlist               QuickTime Media Link importer
+  playlist               Dummy IFO demux
+  playlist               iTunes Music Library importer
+  playlist               WPL playlist import
+  ogg                    OGG demuxer
+  nuv                    Nuv demuxer
+  nsv                    NullSoft demuxer
+  nsc                    Windows Media NSC metademux
+  noseek                 Seek prevention demux filter
+  mpgv                   MPEG-I/II video demuxer
+  mpc                    MusePack demuxer
+  mp4                    MP4 stream demuxer
+  mod                    MOD demuxer (libmodplug)
+  mkv                    Matroska stream demuxer
+  mjpeg                  M-JPEG camera demuxer
+  image                  Image demuxer
+  h26x                   H264 video demuxer
+  h26x                   HEVC/H.265 video demuxer
+  gme                    Game Music Emu
+  flacsys                FLAC demuxer
+  es                     MPEG-I/II/4 / A52 / DTS / MLP audio
+  es                     MPEG-4 video
+  dmxmus                 DMX music demuxer
+  directory              Directory import
+  diracsys               Dirac video demuxer
+  demux_stl              EBU STL subtitles parser
+  demux_chromecast       Chromecast demux wrapper
+  demux_cdg              CDG demuxer
+  demuxdump              File dumper
+  caf                    CAF demuxer
+  avi                    AVI demuxer
+  au                     AU demuxer
+  asf                    ASF/WMV demuxer
+  aiff                   AIFF demuxer
+  adaptive               Unified adaptive streaming for DASH/HLS
+  d3d9_filters           Direct3D9 adjust filter
+  d3d9_filters           Direct3D9 deinterlace filter
+  d3d9_filters           Direct3D9 adjust filter
+  d3d9_filters           Direct3D9 adjust filter
+  d3d11_filters          Direct3D11 adjust filter
+  d3d11_filters          Direct3D11 deinterlace filter
+  d3d11_filters          AMD VQ Enhancer
+  d3d11_filters          AMD Frame Rate Doubler
+  d3d11_filters          Direct3D11 adjust filter
+  d3d11_filters          Direct3D11 adjust filter
+  win_msg                Windows messages interface
+  win32                  Global Hotkeys interface
+  oldrc                  Remote control interface
+  ntservice              Windows Service interface
+  netsync                Network synchronization
+  hotkeys                Hotkeys management interface
+  gestures               Mouse gestures control interface
+  dummy                  Dummy interface
+  zvbi                   VBI and Teletext decoder
+  x265                   H.265/HEVC encoder (x265)
+  x264                   H.264/MPEG-4 Part 10/AVC encoder (x264)
+  x26410b                H.264/MPEG-4 Part 10/AVC encoder (x264 10-bit)
+  webvtt                 WEBVTT subtitles decoder
+  webvtt                 WEBVTT subtitles parser
+  webvtt                 WEBVTT subtitles parser
+  vpx                    WebM video decoder
+  vpx                    WebM video encoder
+  vorbis                 Vorbis audio decoder
+  vorbis                 Vorbis audio packetizer
+  vorbis                 Vorbis audio encoder
+  uleaddvaudio           Ulead DV audio decoder
+  twolame                Libtwolame audio encoder
+  ttml                   TTML subtitles decoder
+  ttml                   TTML demuxer
+  theora                 Theora video decoder
+  theora                 Theora video packetizer
+  theora                 Theora video encoder
+  textst                 HDMV TextST subtitles decoder
+  t140                   T.140 text encoder
+  svcdsub                Philips OGT (SVCD subtitle) decoder
+  svcdsub                Philips OGT (SVCD subtitle) packetizer
+  subsusf                USF subtitles decoder
+  substx3g               tx3g subtitles decoder
+  subsdec                Text subtitle decoder
+  stl                    EBU STL subtitles decoder
+  spudec                 DVD subtitles decoder
+  spudec                 DVD subtitles packetizer
+  speex                  Speex audio decoder
+  speex                  Speex audio packetizer
+  speex                  Speex audio encoder
+  spdif                  S/PDIF pass-through decoder
+  sdl_image              SDL_image video decoder
+  scte27                 SCTE-27 decoder
+  scte18                 SCTE-18 decoder
+  schroedinger           Dirac video decoder using libschroedinger
+  schroedinger           Dirac video encoder using libschroedinger
+  rtpvideo               Raw video encoder for RTP
+  rawvideo               Pseudo raw video decoder
+  rawvideo               Pseudo raw video packetizer
+  qsv                    Intel QuickSync Video encoder for MPEG4-Part10/MPEG2 (aka H.264/H.262)
+  png                    PNG video decoder
+  png                    PNG video encoder
+  opus                   Opus audio decoder
+  opus                   Opus audio encoder
+  oggspots               OggSpots video decoder
+  oggspots               OggSpots video packetizer
+  mpg123                 MPEG audio decoder using mpg123
+  mft                    Media Foundation Transform decoder
+  mft                    Media Foundation Transform decoder
+  lpcm                   Linear PCM audio decoder
+  lpcm                   Linear PCM audio packetizer
+  lpcm                   Linear PCM audio encoder
+  libass                 Subtitle renderers using libass
+  kate                   Kate overlay decoder
+  jpeg                   JPEG image decoder
+  jpeg                   JPEG image encoder
+  g711                   G.711 decoder
+  g711                   G.711 encoder
+  fluidsynth             FluidSynth MIDI synthesizer
+  flac                   Flac audio decoder
+  flac                   Flac audio encoder
+  faad                   AAC audio decoder (using libfaad2)
+  edummy                 Dummy encoder
+  dxva2                  DirectX Video Acceleration (DXVA) 2.0
+  dvbsub                 DVB subtitles decoder
+  dvbsub                 DVB subtitles encoder
+  dmo                    DirectMedia Object decoder
+  dmo                    DirectMedia Object decoder
+  dmo                    DirectMedia Object encoder
+  ddummy                 Dummy decoder
+  ddummy                 Dummy decoder
+  ddummy                 Dummy decoder
+  ddummy                 Dump decoder
+  ddummy                 Dummy decoder
+  ddummy                 Dummy decoder
+  dav1d                  Dav1d video decoder
+  d3d11va                Direct3D11 Video Acceleration
+  cvdsub                 CVD subtitle decoder
+  cvdsub                 Chaoji VCD subtitle packetizer
+  crystalhd              Crystal HD hardware video decoder
+  cdg                    CDG video decoder
+  cc                     Closed Captions decoder
+  avcodec                FFmpeg audio/video decoder
+  avcodec                FFmpeg audio/video decoder
+  avcodec                FFmpeg audio/video decoder
+  avcodec                FFmpeg audio/video decoder
+  avcodec                FFmpeg audio/video encoder
+  avcodec                Avformat demuxer
+  avcodec                Avformat muxer
+  avcodec                libavformat AVIO access
+  avcodec                libavformat AVIO access output
+  avcodec                avparser packetizer
+  aribsub                ARIB subtitles decoder
+  araw                   Raw/Log Audio decoder
+  araw                   Raw audio encoder
+  aom                    AOM video decoder
+  aes3                   AES3/SMPTE 302M audio decoder
+  aes3                   AES3/SMPTE 302M audio packetizer
+  adpcm                  ADPCM audio decoder
+  waveout                WaveOut audio output
+  wasapi                 Windows Audio Session API output
+  mmdevice               Windows Multimedia Device output
+  directsound            DirectX audio output
+  directsound            DirectX audio output
+  amem                   Audio memory output
+  afile                  File audio output
+  adummy                 Dummy audio output
+  integer_mixer          Integer audio volume
+  float_mixer            Single precision audio volume
+  ugly                   Neares
