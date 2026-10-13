@@ -1,0 +1,3 @@
+      <!-- Task 3: hier entsteht das vollständige l_closed (Kopf, Transport, Seek, Tooltips) -->
+      <Image id="c.head" image="head.png" action="move"/>
+      <Button id="c.quit" x="101" y="232" up="themebutton_01_default.png" action="vlc.quit()" tooltiptext="Close (Task-2-Platzhalter)"/>

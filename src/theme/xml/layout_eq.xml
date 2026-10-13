@@ -1,0 +1,3 @@
+      <!-- Task 4: hier entsteht das EQ-Layout (l_eq) -->
+      <Image id="eq.bg" image="head.png" action="move"/>
+      <Button id="eq.back" x="101" y="232" up="EQ_01_DF.png" action="main.setLayout(l_closed)" tooltiptext="Back (Platzhalter)"/>

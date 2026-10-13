@@ -1,0 +1,3 @@
+      <!-- Task 5: hier entsteht das Playlist-Layout (l_pl) -->
+      <Image id="pl.bg" image="head.png" action="move"/>
+      <Button id="pl.back" x="101" y="232" up="PL_01_DF.png" action="main.setLayout(l_closed)" tooltiptext="Back (Platzhalter)"/>

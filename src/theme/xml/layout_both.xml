@@ -1,0 +1,3 @@
+      <!-- Task 6: hier entsteht das Kombi-Layout (l_both) -->
+      <Image id="both.bg" image="head.png" action="move"/>
+      <Button id="both.back" x="101" y="232" up="viz_drop_L_01_default.png" action="main.setLayout(l_closed)" tooltiptext="Back (Platzhalter)"/>
