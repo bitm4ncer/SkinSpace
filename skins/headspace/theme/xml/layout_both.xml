@@ -1,7 +1,7 @@
       <!-- l_both — BEIDE Schubladen offen (EQ links bei x=0, Playlist rechts bei x=488). Fenster 760 breit. -->
 
       <!-- ==== Screen-Hintergrund + Video ==== -->
-      <Video id="both.vid" x="271" y="59" width="214" height="157" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="both.vid" x="271" y="76" width="214" height="140" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Linkes Ohr OFFEN: EQ-Schublade ==== -->
       <Image id="both.eq.ear" x="0" y="86" image="left_ear.png"/>

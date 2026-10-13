@@ -8,7 +8,7 @@
       <Button id="pl.eq.handle" x="215" y="152"
               up="L_drwr_open_01_default.png" over="L_drwr_open_02_rollover.png" down="L_drwr_open_03_down.png"
               action="main.setLayout(l_both)" tooltiptext="Open graphic equalizer controls"/>
-      <Video id="pl.vid" x="271" y="59" width="214" height="157" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="pl.vid" x="271" y="76" width="214" height="140" autoresize="false" visible="vlc.hasVout"/>
 
       <!-- ==== Rechtes Ohr OFFEN: Schublade (sPlEar bei x=488) ==== -->
       <Image id="pl.drawerLeft" x="488" y="86" image="right_drawer_left.png"/>

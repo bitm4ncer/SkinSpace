@@ -44,15 +44,18 @@ public class TimerFix { [DllImport("winmm.dll")] public static extern uint timeB
 [void][TimerFix]::timeBeginPeriod(1)
 
 # --- Konfiguration im 1x-Layout (Headspace) ---
-$HoleX = 271; $HoleY = 59; $HoleW = 214; $HoleH = 157
-$MaskX = 10;  $MaskY = 59
+# Loch-Box = Bounding-Box der Screen-Oeffnung in head.png (head-lokal 10,76 / 214x140)
+$HoleX = 271; $HoleY = 76; $HoleW = 214; $HoleH = 140
+$MaskX = 10;  $MaskY = 76
 $MaskPath = Join-Path $PSScriptRoot '..\skins\headspace\theme\images\head.png'
 
 # --- Video-Region = ALLE transparenten Pixel der Box (Oeffnung + Eck-Zipfel) ---
 $vid = New-Object System.Collections.Generic.List[int]
+$cornerIn = 0
 if (Test-Path $MaskPath) {
   $bmp = New-Object System.Drawing.Bitmap($MaskPath)
   $mw = $HoleW; $mh = $HoleH
+  if ($bmp.GetPixel($MaskX, $MaskY).A -lt 128) { $cornerIn = 1 }
   for ($y = 0; $y -lt $mh; $y++) {
     $x = 0
     while ($x -lt $mw) {
@@ -134,15 +137,15 @@ public class ScreenMask {
     return key.ToString();
   }
 
-  /* Player-Fenster auf die Video-Region (Oeffnung + Zipfel) clippen. Idempotent:
-     nur setzen, wenn die Region nicht schon stimmt (Mitte + Zipfel drin). */
-  public static void Apply(int vx, int vy, int vw, int vh, int[] rects) {
+  /* Player-Fenster auf die Video-Region clippen. Idempotent: nur setzen, wenn
+     die Region nicht schon stimmt (Oeffnungsmitte drin, Box-Ecke gemaess Maske). */
+  public static void Apply(int vx, int vy, int vw, int vh, int[] rects, int cornerIn) {
     if (Skin == IntPtr.Zero || Vids.Count == 0) return;
     double scale = ScaleFor(Skin);
     if (scale <= 0) return;
 
     foreach (IntPtr v in Vids) {
-      if (RegionOk(v, vw, vh, scale)) continue;
+      if (RegionOk(v, vw, vh, scale, cornerIn)) continue;
       IntPtr reg = CreateRectRgn(0, 0, 0, 0);
       if (rects.Length == 0) {
         SetWindowRgn(v, reg, true);
@@ -159,15 +162,15 @@ public class ScreenMask {
     }
   }
 
-  /* Stimmt die Region des Player-Fensters schon?  Oeffnungsmitte + Box-Ecke
-     (Zipfel) muessen drin sein, sonst neu setzen. */
-  private static bool RegionOk(IntPtr v, int vw, int vh, double scale) {
+  /* Stimmt die Region des Player-Fensters schon?
+     Oeffnungsmitte (drueber) + Box-Ecke (Zustand aus der Maske uebernommen). */
+  private static bool RegionOk(IntPtr v, int vw, int vh, double scale, int cornerIn) {
     IntPtr h = CreateRectRgn(0, 0, 0, 0);
     bool ok = false;
     if (GetWindowRgn(v, h) != 0) {
       bool inMid = PtInRegion(h, (int)Math.Round((vw / 2) * scale), (int)Math.Round((vh / 2) * scale));
       bool inCorner = PtInRegion(h, (int)Math.Round(2 * scale), (int)Math.Round(2 * scale));
-      ok = inMid && inCorner;
+      ok = inMid && (inCorner == (cornerIn != 0));
     }
     DeleteObject(h);
     return ok;
@@ -204,7 +207,7 @@ while ($true) {
     if ($skinFound -and -not $loggedFound) { Write-Log "Skin+Video gefunden, Wache aktiv"; $loggedFound = $true }
   }
   if ($skinFound) {
-    [ScreenMask]::Apply($HoleX, $HoleY, $HoleW, $HoleH, $vidArr)
+    [ScreenMask]::Apply($HoleX, $HoleY, $HoleW, $HoleH, $vidArr, $cornerIn)
   }
   Start-Sleep -Milliseconds 2
 }

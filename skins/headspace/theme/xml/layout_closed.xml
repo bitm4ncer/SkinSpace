@@ -17,7 +17,7 @@
               up="R_drwr_open_01_default.png" over="R_drwr_open_02_rollover.png" down="R_drwr_open_03_down.png"
               action="main.setLayout(l_pl)" tooltiptext="Open playlist"/>
       <!-- Screen-Hintergrund (deckt die durchlaufenden Rails ab) + Video -->
-      <Video id="cl.vid" x="271" y="59" width="214" height="157" autoresize="false" visible="vlc.hasVout"/>
+      <Video id="cl.vid" x="271" y="76" width="214" height="140" autoresize="false" visible="vlc.hasVout"/>
 
       <Image id="vgb.closed" x="270" y="59" image="vid_bkgd.png"/>
 
