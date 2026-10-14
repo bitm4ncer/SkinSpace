@@ -1,7 +1,6 @@
 # SkinSpace
 
-Classic Windows Media Player skins and visualizers for VLC (skins2) -- built as
-faithfully as possible: original assets converted 1:1, no redrawing. VLC's own
+Classic Windows Media Player skins and visualizers for VLC (skins2). VLC's own
 visualizers run right inside the skin screen. Unofficial fan project.
 
 ## INCLUDED SKINS

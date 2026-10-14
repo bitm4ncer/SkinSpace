@@ -48,7 +48,8 @@ wins -- before the big movie/game tie-ins).
 
 ## Conventions (from the Headspace port)
 
-- Original assets 1:1 (no redrawing), plus 1x/2x/3x variants (nearest look)
+- Original skin assets as the base (screen opening adjusted where needed),
+  plus 1x/2x/3x variants (nearest look)
 - One repo skin folder per port: `skins/<name>/{theme,variants,originals}`
 - Shared build chain: `tools/*.ps1 -Skin <name>`
 - Engine limits are adapted and documented (e.g. Balance -> Preamp,
